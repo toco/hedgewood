@@ -13,6 +13,8 @@ build/
 *.dSYM/
 English.lproj/InfoPlist.strings
 Hedgewood
+Hedgewood.mk
+Hedgewood.project
 Hedgewood.xcodeproj/project.pbxproj
 Hedgewood_Prefix.pch
 Info.plist
