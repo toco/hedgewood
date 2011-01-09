@@ -76,6 +76,8 @@ int testLoop(SDL_Surface *screen)
 					case SDLK_q:
 						done = 1;
 						break;
+					default:
+						break;
                 }	
 					break;
 				case SDL_QUIT:

@@ -27,5 +27,5 @@ int toggleFullscreen(SDL_Surface *screen, int windowed);
 
 void quitSDL();
 
-int updateGraphics(SDL_Surface *l_screen, int l_x, int l_y);
+
 

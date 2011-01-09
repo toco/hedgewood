@@ -22,3 +22,4 @@
 
 #include "SDLfunctions.h"
 #include "menu.h"
+#include "graphicUpdate.h"
