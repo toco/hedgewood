@@ -16,9 +16,9 @@
 CC = gcc 
 # Fuer Kompilerflags wird meistens die Konstante CFLAGS definiert
 #CFLAGS = -Wall -Wextra -ansi -pedantic -DPARAUSGABE -O3 -mtune=core2 -march=core2 
-CFLAGS = -Wall -Wextra -ansi -pedantic
+CFLAGS = -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
-SDLFLAGS = `sdl-config --cflags --libs` -lSDL_gfx
+SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image
 
 Hedgewood: main.o SDLfunctions.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o

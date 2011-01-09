@@ -20,3 +20,10 @@ Hedgewood_Prefix.pch
 Info.plist
 SDLMain.h
 SDLMain.m
+Hedgewood.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+Hedgewood.xcodeproj/project.xcworkspace/xcuserdata/tocoalt.xcuserdatad/WorkspaceState.xcuserstate
+Hedgewood.xcodeproj/xcuserdata/tocoalt.xcuserdatad/xcschemes/Hedgewood.xcscheme
+Hedgewood.xcodeproj/xcuserdata/tocoalt.xcuserdatad/xcschemes/xcschememanagement.plist
+
+*.o
+SDLincludes.h.gch
