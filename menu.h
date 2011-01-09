@@ -1,11 +1,11 @@
 /*
- *  main.c
+ *  menu.h
  *  Hedgewood
  *	
  *	Prozedurale Programmierung WS10/11	TUHH
  *
  *  Created by Tobias Conradi
- *	Version 08.01.11
+ *	Version 09.01.11
  *
  *  Copyright 2011 Gruppe 34. All rights reserved.
  *	
@@ -14,17 +14,10 @@
  *	
  */
 
-#include "main.h"
+#include "SDLfunctions.h"
 
+void menuStart(SDL_Surface *screen);
 
+void setupMenu(SDL_Surface *screen);
 
-int main(int argc, char *argv[])
-{
-	SDL_Surface* screen=initSDL();
-	menuStart(screen);
-
-	quitSDL();
-	
-
-	return 0;
-}
+int testLoop(SDL_Surface *screen);

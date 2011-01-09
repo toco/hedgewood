@@ -16,9 +16,14 @@
 
 #include "SDLincludes.h"
 
+
+#define WINDOWWIDTH 800
+#define WINDOWHEIGTH 600
+#define WINDOWBPP 32
+
 SDL_Surface* initSDL();
 
-int testLoop(SDL_Surface *l_screen);
+int toggleFullscreen(SDL_Surface *screen, int windowed);
 
 void quitSDL();
 

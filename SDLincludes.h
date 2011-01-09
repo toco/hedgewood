@@ -26,3 +26,9 @@
 #include "/usr/include/SDL/SDL_gfxPrimitives.h"
 #endif
 
+#define GAMENAME "Hedgewood"
+
+/*defines for SDL surface and screen settings */
+#define WINDOWWIDTH 800
+#define WINDOWHEIGTH 600
+#define WINDOWBPP 32

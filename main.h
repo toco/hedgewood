@@ -20,5 +20,5 @@
 #include <string.h>
 #include <math.h>
 
-
 #include "SDLfunctions.h"
+#include "menu.h"

@@ -18,13 +18,11 @@
 #define red "./pictures/red.bmp"
 #define green "./pictures/green.bmp"
 
-
-
 SDL_Surface* initSDL()
 {
 	Uint32 initflags = SDL_INIT_VIDEO;  /* See documentation for details */
 	SDL_Surface *screen;
-	Uint8  video_bpp = 0;
+	Uint8  video_bpp = WINDOWBPP;
 	Uint32 videoflags = SDL_SWSURFACE;
 
 	
@@ -35,49 +33,59 @@ SDL_Surface* initSDL()
 		exit(1);
 	}
 	
-	/* Set 800x600 video mode */
-	screen=SDL_SetVideoMode(800,600, video_bpp, videoflags);
+
+	/* Set 640x480 video mode */
+	screen=SDL_SetVideoMode(WINDOWWIDTH,WINDOWHEIGTH, video_bpp, videoflags);
+
 	if (screen == NULL) {
-		fprintf(stderr, "Couldn't set 800x600x%d video mode: %s\n",
-				video_bpp, SDL_GetError());
+		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
+				WINDOWWIDTH,WINDOWHEIGTH,video_bpp, SDL_GetError());
 		SDL_Quit();
 		exit(2);
 	}
+
 	
 	return screen;
 }
 
-int testLoop(SDL_Surface *l_screen)
+
+int toggleFullscreen(SDL_Surface *screen, int windowed)
 {
-	int    done,x,y;
-	SDL_Event event;
-	
-	done = 0;
-	while ( !done ) {
+	int windowOK;
+	//If the screen is windowed
+    if( windowed)
+    {
+        //Set the screen to fullscreen
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_RESIZABLE | SDL_FULLSCREEN );
 		
-		/* Check for events */
-		while ( SDL_PollEvent(&event) ) {
-			switch (event.type) {
-					
-				case SDL_MOUSEMOTION:
-					break;
-				case SDL_MOUSEBUTTONDOWN:
-					SDL_GetMouseState(&x,&y);
-					printf("Cusor-Position x: %d y: %d\n",x,y);
-					updateGraphics(l_screen, x,y); 
-					break;
-				case SDL_KEYDOWN:
-					/* Any keypress quits the app... */
-				case SDL_QUIT:
-					done = 1;
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	
-	return 0;
+        //If there's an error
+        if( screen == NULL )
+        {
+            windowOK = 0;
+            return -1;
+        }
+        
+        //Set the window state flag
+        windowed = 0;
+    }
+    //If the screen is fullscreen
+    else if( windowed == 0 )
+    {
+        //Window the screen
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_RESIZABLE);
+		
+        //If there's an error
+        if( screen == NULL )
+        {
+            windowOK = 0;
+            return -1;
+        }
+		
+        //Set the window state flag
+        windowed = 1;
+    }
+	return windowed;
+
 }
 
 void quitSDL()
