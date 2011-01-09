@@ -39,3 +39,4 @@ graphicUpdate.o: graphicUpdate.c graphicUpdate.h structs.h SDLincludes.h SDLfunc
 # Aufruf des Targets "clean" löscht  alle nicht mehr benötigten Dateien
 clean: 
 	rm *.o # lösche alle Objektdateien 
+	rm *.gch # lösche precompiled header

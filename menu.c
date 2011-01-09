@@ -26,17 +26,11 @@
 void menuStart(SDL_Surface *screen)
 {
 	struct menuDataStore *dataStore = malloc(sizeof(struct menuDataStore));
-	SDL_Surface *hello;
 	
-	hello = SDL_LoadBMP( "hello.bmp" );
-	
-    /*Apply image to screen*/
-    SDL_BlitSurface( hello, NULL, screen, NULL );
 	
     /*Update Screen*/
     SDL_Flip( screen );
 	
-	SDL_FreeSurface(hello);
 	setupMenu(screen, dataStore);
 	testLoop(screen, dataStore);
 	
@@ -49,16 +43,16 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 	if (TTF_Init() == -1)
 	{
-		printf("Error: TTF could not be initialized\n");
+		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
 		exit(1);
 	}
 	TTF_Font *font = NULL;
-	SDL_Color textColor = { 0, 0, 255 };
+	SDL_Color textColor = { 255, 255, 255 };
 	//Open the font
     font = TTF_OpenFont("ArialBlack.ttf", 28 );
 	
 	if (font == NULL) {
-		printf("Error: Font not loaded\n");
+		printf("Error: Font not loaded %s\n",SDL_GetError());
 		exit(1);
 	}
 	
@@ -90,16 +84,24 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	SDL_FillRect(screen, &buttons[HIGHSCORE_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF));
 	SDL_FillRect(screen, &buttons[ABOUT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
 	SDL_FillRect(screen, &buttons[QUIT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-	message = TTF_RenderText_Solid( font, "The quick brown fox jumps over the lazy dog", textColor );
-	
-	apply_surface( 0, 150, message, screen, NULL );
+	if (!(message = TTF_RenderText_Blended( font, "Start Game", textColor )))
+		printf("%s\n",TTF_GetError());;
+	apply_surface( BUTTONX+15, 105, message, screen, NULL );
+	if(!(message = TTF_RenderText_Blended( font, "Highscore", textColor )))
+		printf("%s\n",TTF_GetError());
+	apply_surface( BUTTONX+15, 205, message, screen, NULL );
+	if (!(message = TTF_RenderText_Blended( font, "About/Help", textColor )))
+		printf("%s\n",TTF_GetError());
+	apply_surface( BUTTONX+15, 305, message, screen, NULL );
+	if (!(message = TTF_RenderText_Blended( font, "Quit", textColor )))
+		printf("%s\n",TTF_GetError());
+	apply_surface( BUTTONX+15, 405, message, screen, NULL );
 	
 	SDL_FreeSurface(message);
 	
 	TTF_CloseFont(font);
 	
-	SDL_UpdateRect(screen, 0, 0, 0, 0);
-	
+	SDL_Flip(screen);
 	
 }
 
