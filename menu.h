@@ -16,6 +16,7 @@
 
 #include "SDLfunctions.h"
 
+
 #define BUTTONCOUNT 4
 
 struct menuDataStore

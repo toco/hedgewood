@@ -18,12 +18,14 @@
 #include<stdio.h>
 
 
+
 #define STARTEN_BUTTON 0
 #define HIGHSCORE_BUTTON 1
 #define ABOUT_BUTTON 2
 #define QUIT_BUTTON 3
 
 void menuStart(SDL_Surface *screen)
+
 {
 	struct menuDataStore *dataStore = malloc(sizeof(struct menuDataStore));
 	SDL_Surface *hello;
@@ -37,10 +39,12 @@ void menuStart(SDL_Surface *screen)
     SDL_Flip( screen );
 	
 	SDL_FreeSurface(hello);
+
 	setupMenu(screen, dataStore);
 	testLoop(screen, dataStore);
 	
 	free(dataStore);	
+
 }
 
 void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
@@ -184,6 +188,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore)
 						
 					}	
 						break;
+
 				case SDL_QUIT:
 					done = 1;
 					break;

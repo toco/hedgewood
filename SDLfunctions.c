@@ -15,8 +15,6 @@
  */
 
 #include "SDLfunctions.h"
-#define red "./pictures/red.bmp"
-#define green "./pictures/green.bmp"
 
 SDL_Surface* initSDL()
 {
@@ -94,29 +92,3 @@ void quitSDL()
 	SDL_Quit();
 }
 
-int updateGraphics(SDL_Surface *l_screen, int l_x, int l_y){
-
-	SDL_Surface *image;
-	SDL_Rect src, dst;
-	image=SDL_LoadBMP(red);
-	if (image == NULL) {
-        printf("Can't load image red: %s\n", SDL_GetError());
-        exit(1);
-    }
-	
-	src.x = 0;
-	src.y = 0;
-	src.w = image->w;
-	src.h = image->h;
-	dst.x = l_x;
-	dst.y = l_y;
-	dst.w = image->w;
-	dst.h = image->h;
-	
-    SDL_BlitSurface(image, &src, l_screen, &dst);
-    SDL_UpdateRect(l_screen, 0, 0, 0, 0);
-	printf("Test\n");
-	SDL_FreeSurface(image);
-
-	return 1;
-}

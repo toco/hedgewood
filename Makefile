@@ -20,12 +20,11 @@ CFLAGS = -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
 
-Hedgewood: main.o SDLfunctions.o menu.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o
+Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o graphicUpdate.o
 
 main.o: main.c main.h SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS)  -c main.c SDLincludes.h
-
 #gcc `sdl-config --cflags --libs` -lSDL_gfx -Wall -Wextra -o Hedgewood main.c
 
 SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h
@@ -34,6 +33,8 @@ SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h
 menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o 
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c menu.c SDLincludes.h SDLfunctions.o
 
+graphicUpdate.o: graphicUpdate.c graphicUpdate.h structs.h SDLincludes.h SDLfunctions.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c graphicUpdate.c structs.h SDLincludes.h SDLfunctions.o
 
 # Aufruf des Targets "clean" löscht  alle nicht mehr benötigten Dateien
 clean: 
