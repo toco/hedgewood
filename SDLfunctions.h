@@ -27,5 +27,5 @@ int toggleFullscreen(SDL_Surface *screen, int windowed);
 
 void quitSDL();
 
-
+SDL_Surface *load_image(char *filename );
 
