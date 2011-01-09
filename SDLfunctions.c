@@ -31,7 +31,7 @@ int initSDL()
 		exit(1);
 	}
 	
-	/* Set 640x480 video mode */
+	/* Set 800x600 video mode */
 	screen=SDL_SetVideoMode(800,600, video_bpp, videoflags);
 	if (screen == NULL) {
 		fprintf(stderr, "Couldn't set 800x600x%d video mode: %s\n",
@@ -70,6 +70,7 @@ int testLoop()
 	}
 	return 0;
 }
+
 void quitSDL()
 {
 	/* Clean up the SDL library */

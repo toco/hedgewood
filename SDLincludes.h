@@ -18,8 +18,11 @@
 #ifdef __APPLE__
 #include "SDL.h"
 #include "/usr/local/include/SDL/SDL_gfxPrimitives.h"
-#elif __WIN32__ || _MSC_VER
-#include "D:\programme\Dev-Cpp\include\SDL\SDL.h"
-#include "D:\programme\Dev-Cpp\include\SDL\SDL_gfxPrimitives.h"
+#elif __WIN32__ || _MSC_VER 
+#include "Bla" 
+#include "Blubb"
+#elif __linux__ 
+#include "/usr/include/SDL/SDL.h"
+#include "/usr/include/SDL/SDL_gfxPrimitives.h"
 #endif
 
