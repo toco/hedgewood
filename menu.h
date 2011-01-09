@@ -16,7 +16,16 @@
 
 #include "SDLfunctions.h"
 
-int menuStart(SDL_Surface *screen);
+
+#define BUTTONCOUNT 4
+
+struct menuDataStore
+{
+	SDL_Rect *buttons[BUTTONCOUNT];
+};
+
+
+void menuStart(SDL_Surface *screen);
 
 void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore);
 
@@ -24,5 +33,4 @@ void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination,
 
 
 int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore);
-
 
