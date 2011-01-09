@@ -47,10 +47,26 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 {
 	/*Background */
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+	if (TTF_Init() == -1)
+	{
+		printf("Error: TTF could not be initialized\n");
+		exit(1);
+	}
+	TTF_Font *font = NULL;
+	SDL_Color textColor = { 0, 0, 255 };
+	//Open the font
+    font = TTF_OpenFont("ArialBlack.ttf", 28 );
+	
+	if (font == NULL) {
+		printf("Error: Font not loaded\n");
+		exit(1);
+	}
+	
 	
 #define BUTTONX 300
 #define BUTTONWIDTH 200
 #define BUTTONHEIGHT 50
+	SDL_Surface *message;
 	
 	SDL_Rect *buttons = &dataStore->buttons[0];
 	buttons[ STARTEN_BUTTON ].x=BUTTONX;
@@ -74,10 +90,30 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	SDL_FillRect(screen, &buttons[HIGHSCORE_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF));
 	SDL_FillRect(screen, &buttons[ABOUT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
 	SDL_FillRect(screen, &buttons[QUIT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
+	message = TTF_RenderText_Solid( font, "The quick brown fox jumps over the lazy dog", textColor );
+	
+	apply_surface( 0, 150, message, screen, NULL );
+	
+	SDL_FreeSurface(message);
+	
+	TTF_CloseFont(font);
 	
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
 	
 	
+}
+
+void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
+{
+    //Holds offsets
+    SDL_Rect offset;
+	
+    //Get offsets
+    offset.x = x;
+    offset.y = y;
+	
+    //Blit
+    SDL_BlitSurface( source, clip, destination, &offset );
 }
 
 int whichButtonClicked(int x, int y, SDL_Rect buttons[])

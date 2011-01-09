@@ -17,7 +17,8 @@
 
 #ifdef __APPLE__
 #include "SDL.h"
-#include "/usr/local/include/SDL/SDL_gfxPrimitives.h"
+#include "/opt/local/include/SDL/SDL_image.h"
+#include "/opt/local/include/SDL/SDL_ttf.h"
 #elif __WIN32__ || _MSC_VER 
 #include "Bla" 
 #include "Blubb"

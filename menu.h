@@ -28,6 +28,9 @@ void menuStart(SDL_Surface *screen);
 
 void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore);
 
+void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
+
+
 int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore);
 
 

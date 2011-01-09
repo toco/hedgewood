@@ -18,7 +18,7 @@ CC = gcc
 #CFLAGS = -Wall -Wextra -ansi -pedantic -DPARAUSGABE -O3 -mtune=core2 -march=core2 
 CFLAGS = -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
-SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image
+SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
 
 Hedgewood: main.o SDLfunctions.o menu.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o
