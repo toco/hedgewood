@@ -16,8 +16,11 @@
 
 #include "SDLincludes.h"
 
-int initSDL();
+SDL_Surface* initSDL();
 
-int testLoop();
+int testLoop(SDL_Surface *l_screen);
 
 void quitSDL();
+
+int updateGraphics(SDL_Surface *l_screen, int l_x, int l_y);
+

@@ -16,10 +16,12 @@
 
 #include "main.h"
 
+
+
 int main(int argc, char *argv[])
 {
-	initSDL();
-	testLoop();
+	SDL_Surface *test =initSDL();
+	testLoop(test);
 	quitSDL();
 	
 

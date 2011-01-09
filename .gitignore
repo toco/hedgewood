@@ -11,9 +11,10 @@ build/
 *.mode2v3
 
 *.dSYM/
-.gitignore
 English.lproj/InfoPlist.strings
 Hedgewood
+Hedgewood.mk
+Hedgewood.project
 Hedgewood.xcodeproj/project.pbxproj
 Hedgewood_Prefix.pch
 Info.plist
