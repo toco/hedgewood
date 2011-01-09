@@ -7,19 +7,23 @@
 int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 
 	int i,j;
-	SDL_Surface *image;
+	SDL_Surface *image=NULL,*test;
 	SDL_Rect src, dst;
 	
 	for(j=0;j<12;j++){
 		for(i=0;i<16;i++){
 			if(j<2){
-				image=SDL_LoadBMP(start_pic);
+				test= SDL_LoadBMP(start_pic);
+				image=SDL_DisplayFormat( test );
+				SDL_FreeSurface(test);
 				printf("Startzone\n");
 				src.x = 50*i;
 				src.y = 50*j;
 			}
 			else{
-				image=SDL_LoadBMP(field_pic);
+				test= SDL_LoadBMP(field_pic);
+				image=SDL_DisplayFormat( test );
+				SDL_FreeSurface(test);
 				printf("Field\n");
 				src.x = 50*data->hedgewood[j][i].type;
 				src.y = 0;
@@ -37,7 +41,7 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 			SDL_BlitSurface(image, &src, l_screen, &dst);
 		}
 	}
-    SDL_UpdateRect(l_screen, 0, 0, 0, 0);
+    SDL_Flip(l_screen);
 	printf("Test\n");
 	SDL_FreeSurface(image);
 			
@@ -69,4 +73,19 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 			}
 
 	return 1;
+}
+
+struct position *pixelToGrid(struct position *l_pos){
+	int gridsize=50;
+	struct position *pos;
+	pos->x=(l_pos->x)/gridsize;
+	pos->y=(l_pos->y)/gridsize;
+	return pos;
+}
+struct position *gridToPixel(struct position *l_pos){
+	int gridsize=50;
+	struct position *pos;
+	pos->x=(l_pos->x)*gridsize+25;
+	pos->y=(l_pos->y)*gridsize+25;
+	return pos;
 }

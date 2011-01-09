@@ -21,7 +21,7 @@ SDL_Surface* initSDL()
 	Uint32 initflags = SDL_INIT_VIDEO;  /* See documentation for details */
 	SDL_Surface *screen;
 	Uint8  video_bpp = WINDOWBPP;
-	Uint32 videoflags = SDL_SWSURFACE;
+	Uint32 videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF;
 
 	
 	/* Initialize the SDL library */
@@ -92,3 +92,18 @@ void quitSDL()
 	SDL_Quit();
 }
 
+SDL_Surface *load_image(char *filename ) { 
+	//Temporary storage for the image that's loaded 
+	SDL_Surface* loadedImage = NULL; 
+	//The optimized image that will be used 
+	SDL_Surface* optimizedImage = NULL; 
+	//Load the image 
+	loadedImage = SDL_LoadBMP(filename); 
+	//If nothing went wrong in loading the image 
+		if( loadedImage != NULL ) { 
+		//Create an optimized image 
+		optimizedImage = SDL_DisplayFormat( loadedImage ); 
+		//Free the old image 
+		SDL_FreeSurface( loadedImage ); 
+	} 
+}

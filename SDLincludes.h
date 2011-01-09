@@ -24,7 +24,7 @@
 #include "Blubb"
 #elif __linux__ 
 #include "/usr/include/SDL/SDL.h"
-#include "/usr/include/SDL/SDL_gfxPrimitives.h"
+#include "/usr/include/SDL/SDL_ttf.h"
 #endif
 
 #define GAMENAME "Hedgewood"
