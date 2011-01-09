@@ -16,16 +16,7 @@
 
 #include "SDLfunctions.h"
 
-
-#define BUTTONCOUNT 4
-
-struct menuDataStore
-{
-	SDL_Rect *buttons[BUTTONCOUNT];
-};
-
-
-void menuStart(SDL_Surface *screen);
+int menuStart(SDL_Surface *screen);
 
 void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore);
 
