@@ -16,7 +16,7 @@
 
 #include "SDLfunctions.h"
 
-void menuStart(SDL_Surface *screen);
+int menuStart(SDL_Surface *screen);
 
 void setupMenu(SDL_Surface *screen);
 

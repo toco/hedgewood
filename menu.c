@@ -18,7 +18,7 @@
 #include<stdio.h>
 
 
-void menuStart(SDL_Surface *screen)
+int menuStart(SDL_Surface *screen)
 {
 	
 	SDL_Surface *hello;
@@ -34,6 +34,7 @@ void menuStart(SDL_Surface *screen)
 	SDL_FreeSurface(hello);
 	setupMenu(screen);
 	testLoop(screen);
+	return 1;
 }
 
 void setupMenu(SDL_Surface *screen)

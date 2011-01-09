@@ -47,11 +47,12 @@ int main(int argc, char *argv[])
 	for(i=2;i<11;i++){
 		for(j=1;j<15;j++){
 			test->hedgewood[i][j].visible=1;
-			if(k++>3)k=1;
-			test->hedgewood[i][j].type=k;
+			test->hedgewood[i][j].type=(k%3)+1;
+			k++;
 		}
 	}
 	
+	updateGraphics(screen,test);
 	
 	quitSDL();
 	
