@@ -20,6 +20,11 @@ struct backpack{
 struct person{
     struct position p_pos;
     struct backpack bp;
+	/* 0: UP
+	 * 1: RIGHT
+	 * 2: DOWN
+	 * 3: LEFT
+	 */
 	int heading;
     int maxEnergy;
     int currentEnergy;

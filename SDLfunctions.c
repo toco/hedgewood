@@ -107,9 +107,9 @@ SDL_Surface *load_image(char *filename ) {
 		SDL_FreeSurface( loadedImage ); 
 	} 
 	if( optimizedImage != NULL ) {
-//Map the color key
+			//Map the color key
 			Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0, 255, 255 );
-//Set all pixels of color R 0xFF, G 0xFF, B 0xFF to be transparent
+			//Set all pixels of color R 0 G 255, B 255 to be transparent
 			SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
 	}
 	return optimizedImage;

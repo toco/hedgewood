@@ -7,22 +7,21 @@
 int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 
 	int i,j,scrollposition=data->verticalScroll;
-	SDL_Surface *image=NULL,*test;
+	SDL_Surface *image=NULL;
 	SDL_Rect src, dst;
 	
 	for(j=0;j<12;j++){
 		for(i=0;i<16;i++){
 			if(data->hedgewood[j+scrollposition][i].type==-1){
-				test= SDL_LoadBMP(start_pic);
-				image=SDL_DisplayFormat( test );
+				image=load_image(start_pic);
 				SDL_FreeSurface(test);
 				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
 				src.y = 50*(j+scrollposition);
 			}
 			else{
-				test= SDL_LoadBMP(field_pic);
-				image=SDL_DisplayFormat( test );
+
+				image=load_image(field_pic);
 				SDL_FreeSurface(test);
 				if(DEBUG)printf("Field\n");
 				src.x = 50*data->hedgewood[j+scrollposition][i].type;
