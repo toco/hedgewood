@@ -18,8 +18,9 @@ struct backpack{
     int currentVolume;
 };
 struct person{
-    struct position position;
-    struct backpack backpack;
+    struct position p_pos;
+    struct backpack bp;
+	int heading;
     int maxEnergy;
     int currentEnergy;
 };
@@ -27,9 +28,9 @@ struct person{
 struct dataStore{
     //pointer auf 2D Array welches das Spielfeld enthält
 	//Zeile 0-1 sind der Startbereich
-    struct field hedgewood[12][16];
-    struct person *player;
+    struct field hedgewood[24][16];
+    struct person player;
     //Aktuell oberste sichtbar Zeile im Array
-    int *verticalScroll;
+    int verticalScroll;
 
 };

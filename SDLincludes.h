@@ -33,3 +33,5 @@
 #define WINDOWWIDTH 800
 #define WINDOWHEIGTH 600
 #define WINDOWBPP 32
+
+#define DEBUG 0

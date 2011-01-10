@@ -6,17 +6,17 @@
 
 int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 
-	int i,j;
+	int i,j,scrollposition=0;
 	SDL_Surface *image=NULL,*test;
 	SDL_Rect src, dst;
 	
 	for(j=0;j<12;j++){
 		for(i=0;i<16;i++){
-			if(j<2){
+			if(data->hedgewood[j+scrollposition][i].type==-1){
 				test= SDL_LoadBMP(start_pic);
 				image=SDL_DisplayFormat( test );
 				SDL_FreeSurface(test);
-				printf("Startzone\n");
+				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
 				src.y = 50*j;
 			}
@@ -24,8 +24,8 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 				test= SDL_LoadBMP(field_pic);
 				image=SDL_DisplayFormat( test );
 				SDL_FreeSurface(test);
-				printf("Field\n");
-				src.x = 50*data->hedgewood[j][i].type;
+				if(DEBUG)printf("Field\n");
+				src.x = 50*data->hedgewood[j+scrollposition][i].type;
 				src.y = 0;
 			}
 			if (image == NULL) {
@@ -39,20 +39,47 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 			dst.y = 50*j;
 			dst.w = dst.h = 50;
 			SDL_BlitSurface(image, &src, l_screen, &dst);
+			SDL_FreeSurface(image);
 		}
 	}
+	
+	image=load_image(person_pic);
+	src.x = 50*data->player.heading;
+	src.y = 0;
+	src.w =src.h = 50;
+	dst.x = 50*data->player.p_pos.x;
+	dst.y = 50*data->player.p_pos.y;
+	dst.w = dst.h = 50;
+	SDL_BlitSurface(image, &src, l_screen, &dst);
     SDL_Flip(l_screen);
 	printf("Test\n");
 	SDL_FreeSurface(image);
 			
-			int done=0;
-			SDL_Event event;
+	return 1;
+}
+					
+void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
+	int done=0;
+	SDL_Event event;
+	struct position *mouse_pos=malloc(sizeof(struct position)); //*tmp=NULL;
 			
 			while (!done) {
 				/* Check for events */
 				while ( SDL_PollEvent(&event) ) {
 					switch (event.type) {
-					
+						
+					case SDL_MOUSEBUTTONDOWN:
+						//tmp=malloc(sizeof(struct position));
+						SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
+						printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+						mouse_pos=pixelToGrid(mouse_pos);
+						printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+						data->player.p_pos.x=mouse_pos->x;
+						data->player.p_pos.y=mouse_pos->y;
+						printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
+						updateGraphics(l_screen, data);
+						break;
+						
 					case SDL_KEYDOWN:
 					/* Any keypress quits the app... */
 						switch( event.key.keysym.sym )
@@ -71,21 +98,20 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 					}
 				}
 			}
-
-	return 1;
 }
 
 struct position *pixelToGrid(struct position *l_pos){
 	int gridsize=50;
-	struct position *pos;
+	struct position *pos=malloc(sizeof(struct position));
 	pos->x=(l_pos->x)/gridsize;
 	pos->y=(l_pos->y)/gridsize;
 	return pos;
 }
 struct position *gridToPixel(struct position *l_pos){
 	int gridsize=50;
-	struct position *pos;
+	struct position *pos=malloc(sizeof(struct position));
 	pos->x=(l_pos->x)*gridsize+25;
 	pos->y=(l_pos->y)*gridsize+25;
 	return pos;
 }
+
