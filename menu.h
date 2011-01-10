@@ -21,7 +21,7 @@
 
 struct menuDataStore
 {
-	SDL_Rect *buttons[BUTTONCOUNT];
+	SDL_Rect buttons[BUTTONCOUNT];
 };
 
 

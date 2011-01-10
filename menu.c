@@ -47,7 +47,6 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 		exit(1);
 	}
 	TTF_Font *font = NULL;
-	SDL_Color textColor = { 255, 255, 255 };
 	//Open the font
     font = TTF_OpenFont("ArialBlack.ttf", 28 );
 	
@@ -62,7 +61,7 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 #define BUTTONHEIGHT 50
 	SDL_Surface *message;
 	
-	SDL_Rect *buttons = &dataStore->buttons[0];
+	SDL_Rect *buttons = &(dataStore->buttons[0]);
 	buttons[ STARTEN_BUTTON ].x=BUTTONX;
 	buttons[ STARTEN_BUTTON ].y=100;
 	buttons[ STARTEN_BUTTON ].w=BUTTONWIDTH;
@@ -84,6 +83,10 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	SDL_FillRect(screen, &buttons[HIGHSCORE_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF));
 	SDL_FillRect(screen, &buttons[ABOUT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
 	SDL_FillRect(screen, &buttons[QUIT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
+	
+	SDL_Color textColor = { 255, 255, 255,0};
+
+	
 	if (!(message = TTF_RenderText_Blended( font, "Start Game", textColor )))
 		printf("%s\n",TTF_GetError());;
 	apply_surface( BUTTONX+15, 105, message, screen, NULL );
