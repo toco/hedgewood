@@ -14,7 +14,6 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 		for(i=0;i<16;i++){
 			if(data->hedgewood[j+scrollposition][i].type==-1){
 				image=load_image(start_pic);
-				SDL_FreeSurface(test);
 				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
 				src.y = 50*(j+scrollposition);
@@ -22,7 +21,6 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 			else{
 
 				image=load_image(field_pic);
-				SDL_FreeSurface(test);
 				if(DEBUG)printf("Field\n");
 				src.x = 50*data->hedgewood[j+scrollposition][i].type;
 				src.y = 0;
