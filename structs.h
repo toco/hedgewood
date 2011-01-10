@@ -1,6 +1,7 @@
 struct field{
     int visible;
     int currency;
+	int aStarValue;
 	//0 := Bach
 	//-1 := Startzone
     int type;

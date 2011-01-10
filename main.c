@@ -26,17 +26,21 @@ void makeTestData(struct dataStore *test)
 		for(j=0;j<16;j++){
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=-1;
+			test->hedgewood[i][j].aStarValue=1
 		}
 	}
 	for(i=2;i<24;i++){
 		test->hedgewood[i][0].visible=1;
 		test->hedgewood[i][0].type=0;
+		test->hedgewood[i][0].aStarValue=-1
 		test->hedgewood[i][15].visible=1;
 		test->hedgewood[i][15].type=0;
+		test->hedgewood[i][15].aStarValue=-1
 	}
 	for(i=1;i<15;i++){
 		test->hedgewood[23][i].visible=1;
 		test->hedgewood[23][i].type=0;
+		test->hedgewood[23][i].aStarValue=-1
 		
 	}
 	
@@ -44,6 +48,7 @@ void makeTestData(struct dataStore *test)
 		for(j=1;j<15;j++){
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=(k%3)+1;
+			test->hedgewood[i][j].aStarValue=-3
 			k++;
 		}
 	}
