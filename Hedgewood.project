@@ -20,6 +20,8 @@
     <File Name="graphicUpdate.c"/>
     <File Name="graphicUpdate.h"/>
     <File Name="structs.h"/>
+    <File Name="pathfinding.c"/>
+    <File Name="pathfinding.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu gcc" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
