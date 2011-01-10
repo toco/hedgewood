@@ -58,7 +58,7 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 	int done=0;
 	SDL_Event event;
-	struct position *mouse_pos=malloc(sizeof(struct position));
+	struct position *mouse_pos=malloc(sizeof(struct position)),*tmp;
 			
 			while (!done) {
 				/* Check for events */
@@ -72,6 +72,7 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 						printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						data->player.p_pos.x=mouse_pos->x;
 						data->player.p_pos.y=mouse_pos->y;
+						positionListAdd(data,mouse_pos);
 						printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 						verticalScrollPos(data);
 						updateGraphics(l_screen, data);
@@ -81,7 +82,13 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 					/* Any keypress quits the app... */
 						switch( event.key.keysym.sym )
 					{
-
+						case SDLK_o:
+							tmp=positionListRead(data);
+							if(tmp!=NULL)printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
+														
+							//free(tmp);
+							
+							break;
 						case SDLK_ESCAPE:
 						case SDLK_q:
 							done = 1;

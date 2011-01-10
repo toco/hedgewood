@@ -29,6 +29,8 @@ struct person{
 	int heading;
     int maxEnergy;
     int currentEnergy;
+	struct position *anfang;
+	struct position *next;
 };
 
 struct dataStore{

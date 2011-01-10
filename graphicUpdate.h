@@ -1,5 +1,5 @@
 #include "SDLfunctions.h"
-#include "structs.h"
+#include "pathfinding.h"
 
 int updateGraphics(SDL_Surface *l_screen, struct dataStore *data);
 void graphicLoop(SDL_Surface *l_screen, struct dataStore *data);
