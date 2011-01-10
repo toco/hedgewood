@@ -15,7 +15,6 @@
  */
 
 #include "menu.h"
-#include<stdio.h>
 
 
 #define STARTEN_BUTTON 0
@@ -46,15 +45,7 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
 		exit(1);
 	}
-	TTF_Font *font = NULL;
-	//Open the font
-    font = TTF_OpenFont("ArialBlack.ttf", 28 );
-	
-	if (font == NULL) {
-		printf("Error: Font not loaded %s\n",SDL_GetError());
-		exit(1);
-	}
-	
+	TTF_Font *font = buttonFont();
 	
 #define BUTTONX 300
 #define BUTTONWIDTH 200
@@ -89,16 +80,16 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	
 	if (!(message = TTF_RenderText_Blended( font, "Start Game", textColor )))
 		printf("%s\n",TTF_GetError());;
-	apply_surface( BUTTONX+15, 105, message, screen, NULL );
+	apply_surface( buttons[STARTEN_BUTTON].x+15, buttons[STARTEN_BUTTON].y+5, message, screen, NULL );
 	if(!(message = TTF_RenderText_Blended( font, "Highscore", textColor )))
 		printf("%s\n",TTF_GetError());
-	apply_surface( BUTTONX+15, 205, message, screen, NULL );
+	apply_surface( buttons[HIGHSCORE_BUTTON].x+15, buttons[HIGHSCORE_BUTTON].y+5, message, screen, NULL );
 	if (!(message = TTF_RenderText_Blended( font, "About/Help", textColor )))
 		printf("%s\n",TTF_GetError());
-	apply_surface( BUTTONX+15, 305, message, screen, NULL );
+	apply_surface( buttons[ABOUT_BUTTON].x+15, buttons[ABOUT_BUTTON].y+5, message, screen, NULL );
 	if (!(message = TTF_RenderText_Blended( font, "Quit", textColor )))
 		printf("%s\n",TTF_GetError());
-	apply_surface( BUTTONX+15, 405, message, screen, NULL );
+	apply_surface( buttons[QUIT_BUTTON].x+15, buttons[QUIT_BUTTON].y+5, message, screen, NULL );
 	
 	SDL_FreeSurface(message);
 	
@@ -165,6 +156,9 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore)
 					else if (buttonClicked == ABOUT_BUTTON)
 					{
 						printf("display about\n");
+						displayAbout(screen);
+						printf("back in Menu\n");
+						setupMenu(screen, dataStore);
 					}
 					else if (buttonClicked == QUIT_BUTTON)
 					{

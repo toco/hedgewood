@@ -15,7 +15,7 @@
  */
 
 #include "SDLfunctions.h"
-
+#include "about.h"
 
 #define BUTTONCOUNT 4
 

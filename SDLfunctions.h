@@ -29,3 +29,5 @@ void quitSDL();
 
 SDL_Surface *load_image(char *filename );
 
+TTF_Font *buttonFont();
+/*requires  	TTF_CloseFont(font);*/

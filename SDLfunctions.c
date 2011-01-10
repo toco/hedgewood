@@ -100,7 +100,7 @@ SDL_Surface *load_image(char *filename ) {
 	//Load the image 
 	loadedImage = IMG_Load(filename); 
 	//If nothing went wrong in loading the image 
-		if( loadedImage != NULL ) { 
+	if( loadedImage != NULL ) { 
 		//Create an optimized image 
 		optimizedImage = SDL_DisplayFormat( loadedImage ); 
 		//Free the old image 
@@ -113,4 +113,17 @@ SDL_Surface *load_image(char *filename ) {
 			SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
 	}
 	return optimizedImage;
+}
+
+TTF_Font *buttonFont()
+{
+	TTF_Font *font = NULL;
+	//Open the font
+	font = TTF_OpenFont("ArialBlack.ttf", 28 );
+	
+	if (font == NULL) {
+		printf("Error: Font not loaded %s\n",SDL_GetError());
+		exit(1);
+	}
+	return font; /*requires  	TTF_CloseFont(font);*/
 }
