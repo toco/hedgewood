@@ -98,7 +98,7 @@ SDL_Surface *load_image(char *filename ) {
 	//The optimized image that will be used 
 	SDL_Surface* optimizedImage = NULL; 
 	//Load the image 
-	loadedImage = SDL_LoadBMP(filename); 
+	loadedImage = IMG_Load(filename); 
 	//If nothing went wrong in loading the image 
 		if( loadedImage != NULL ) { 
 		//Create an optimized image 
@@ -108,7 +108,7 @@ SDL_Surface *load_image(char *filename ) {
 	} 
 	if( optimizedImage != NULL ) {
 //Map the color key
-			Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0xFF, 0xFF, 0xFF );
+			Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0, 255, 255 );
 //Set all pixels of color R 0xFF, G 0xFF, B 0xFF to be transparent
 			SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
 	}

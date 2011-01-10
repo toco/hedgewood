@@ -23,6 +23,7 @@
 #include "Bla" 
 #include "Blubb"
 #elif __linux__ 
+#include "/usr/include/SDL/SDL_image.h"
 #include "/usr/include/SDL/SDL.h"
 #include "/usr/include/SDL/SDL_ttf.h"
 #endif

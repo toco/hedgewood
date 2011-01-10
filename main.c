@@ -50,6 +50,7 @@ void makeTestData(struct dataStore *test)
 	test->player.p_pos.x=7;
 	test->player.p_pos.y=1;
 	test->player.heading=0;
+	test->verticalScroll=0;
 	
 }
 int main(int argc, char *argv[])
