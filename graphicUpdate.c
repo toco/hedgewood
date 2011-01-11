@@ -9,50 +9,60 @@
 
 int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 
-	int i,j,scrollposition=data->verticalScroll;
-	SDL_Surface *image=NULL;
+	int i,j,scrollposition=data->verticalScroll,startzone=0;
+	SDL_Surface *image_start=NULL,*image_field=NULL,*image_person=NULL;
 	SDL_Rect src, dst;
 
+	if ((image_start =load_image(start_pic))== NULL) {
+				printf("Can't load image red: %s\n", SDL_GetError());
+				exit(1);
+	}
+	if ((image_field=load_image(field_pic)) == NULL) {
+				printf("Can't load image red: %s\n", SDL_GetError());
+				exit(1);
+	}
+	if ((image_person=load_image(person_pic)) == NULL) {
+				printf("Can't load image red: %s\n", SDL_GetError());
+				exit(1);
+	}
+	
+	src.w =src.h = 50;	
+	dst.w = dst.h = 50;
 	for(j=0;j<12;j++){
+		dst.y = 50*j;
+		if(data->hedgewood[j+scrollposition][1].type==-1)startzone=1;
+		else startzone=0;
+		
 		for(i=0;i<16;i++){
-			if(data->hedgewood[j+scrollposition][i].type==-1){
-				image=load_image(start_pic);
+			dst.x = 50*i;
+			
+			if(startzone){
 //				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
 				src.y = 50*j;
 			}
 			else{
-
-				image=load_image(field_pic);
 //				if(DEBUG)printf("Field\n");
 				src.x = 50*data->hedgewood[j+scrollposition][i].type;
 				src.y = 0;
 			}
-			if (image == NULL) {
-				printf("Can't load image red: %s\n", SDL_GetError());
-				exit(1);
-			}
 			
+			if(startzone)SDL_BlitSurface(image_start, &src, l_screen, &dst);
+			else SDL_BlitSurface(image_field, &src, l_screen, &dst);
 			
-			src.w =src.h = 50;
-			dst.x = 50*i;
-			dst.y = 50*j;
-			dst.w = dst.h = 50;
-			SDL_BlitSurface(image, &src, l_screen, &dst);
-			SDL_FreeSurface(image);
 		}
 	}
-	
-	image=load_image(person_pic);
+	SDL_FreeSurface(image_start);
+	SDL_FreeSurface(image_field);
 	src.x = 50*data->player.heading;
 	src.y = 0;
 	src.w =src.h = 50;
 	dst.x = 50*data->player.p_pos.x;
 	dst.y = 50*(data->player.p_pos.y-scrollposition);
 	dst.w = dst.h = 50;
-	SDL_BlitSurface(image, &src, l_screen, &dst);
+	SDL_BlitSurface(image_person, &src, l_screen, &dst);
     SDL_Flip(l_screen);
-	SDL_FreeSurface(image);
+	SDL_FreeSurface(image_person);
 			
 	return 1;
 }
