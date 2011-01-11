@@ -14,14 +14,14 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 		for(i=0;i<16;i++){
 			if(data->hedgewood[j+scrollposition][i].type==-1){
 				image=load_image(start_pic);
-				if(DEBUG)printf("Startzone\n");
+//				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
 				src.y = 50*(j+scrollposition);
 			}
 			else{
 
 				image=load_image(field_pic);
-				if(DEBUG)printf("Field\n");
+//				if(DEBUG)printf("Field\n");
 				src.x = 50*data->hedgewood[j+scrollposition][i].type;
 				src.y = 0;
 			}
@@ -58,7 +58,7 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 	int done=0;
 	SDL_Event event;
-	struct position *mouse_pos=malloc(sizeof(struct position)),*tmp;
+	struct position *mouse_pos=NULL,*tmp=NULL;
 			
 			while (!done) {
 				/* Check for events */
@@ -66,16 +66,18 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 					switch (event.type) {
 						
 					case SDL_MOUSEBUTTONDOWN:
+						mouse_pos=calloc(1,sizeof(struct position));
 						SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 						printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						mouse_pos=pixelToGrid(mouse_pos);
-						printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+						if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						data->player.p_pos.x=mouse_pos->x;
 						data->player.p_pos.y=mouse_pos->y;
 						positionListAdd(data,mouse_pos);
-						printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
+						if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 						verticalScrollPos(data);
 						updateGraphics(l_screen, data);
+						free(mouse_pos);
 						break;
 						
 					case SDL_KEYDOWN:
@@ -83,10 +85,16 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 						switch( event.key.keysym.sym )
 					{
 						case SDLK_o:
+							if((tmp =calloc(1,sizeof(struct position))) == NULL) {
+								printf("MEM::pathfinding::42\n");
+								return;
+							}
 							tmp=positionListRead(data);
-							if(tmp!=NULL)printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
-														
-							//free(tmp);
+							if(tmp!=NULL){
+								printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
+								free(tmp);
+							};
+							
 							
 							break;
 						case SDLK_ESCAPE:

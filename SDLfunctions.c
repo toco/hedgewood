@@ -114,3 +114,7 @@ SDL_Surface *load_image(char *filename ) {
 	}
 	return optimizedImage;
 }
+
+void printdb(char *str){
+	if(DEBUG)printf(str);
+}
