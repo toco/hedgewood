@@ -48,7 +48,7 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	src.y = 0;
 	src.w =src.h = 50;
 	dst.x = 50*data->player.p_pos.x;
-	dst.y = 50*(data->player.p_pos.y-scrollposition);
+	dst.y = 50*(data->player.p_pos.y);
 	dst.w = dst.h = 50;
 	SDL_BlitSurface(image, &src, l_screen, &dst);
     SDL_Flip(l_screen);
@@ -77,10 +77,11 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 						if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						data->player.p_pos.x=mouse_pos->x;
 						data->player.p_pos.y=mouse_pos->y;
-							mouse_pos->y+=data->verticalScroll;
-						positionListAdd(data,mouse_pos);
+							//mouse_pos->y+=data->verticalScroll;
+						
 						if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 						verticalScrollPos(data);
+						positionListAdd(data,mouse_pos);
 						updateGraphics(l_screen, data);
 						free(mouse_pos);
 						break;
@@ -133,12 +134,12 @@ struct position *gridToPixel(struct position *l_pos){
 }
 
 void verticalScrollPos(struct dataStore *data){
-	int verticalScroll,verticalPos=data->player.p_pos.y+=data->verticalScroll;
+	int verticalScroll,verticalPos=data->player.p_pos.y+data->verticalScroll;
 	
 	if(verticalPos<7)verticalScroll=0;
 	else if (verticalPos>6 && verticalPos<19 )verticalScroll=verticalPos-6;
 	else verticalScroll=12;
-
+	data->player.p_pos.y+=verticalScroll;
 	data->verticalScroll=verticalScroll;
 	printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }
