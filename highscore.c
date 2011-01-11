@@ -1,11 +1,11 @@
 /*
- *  about.c
+ *  highscore.c
  *  Hedgewood
  *	
  *	Prozedurale Programmierung WS10/11	TUHH
  *
  *  Created by Tobias Conradi
- *	Version 10.01.11
+ *	Version 11.01.11
  *
  *  Copyright 2011 Gruppe 34. All rights reserved.
  *	
@@ -15,18 +15,19 @@
  */
 
 #include<stdio.h>
+
 #include "SDLfunctions.h"
-
-#include "about.h"
-
+#include "highscore.h"
 
 
-int displayAbout(SDL_Surface *screen)
+
+
+int displayHighscore(SDL_Surface *screen)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
 	SDL_Surface *message;
-
+	
 	
 	
 	
@@ -34,7 +35,13 @@ int displayAbout(SDL_Surface *screen)
 	SDL_Color textColor = { 255, 255, 255,0};
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
-
+	
+	if (!(message = TTF_RenderText_Blended( font, "Highscore", textColor )))
+		printf("%s\n",TTF_GetError());
+	
+	apply_surface( screen->clip_rect.w/2-message->w/2, 20, message, screen, NULL );
+	
+	
 	SDL_Rect button;
 	button.x = BUTTONX;
 	button.y = 500;
@@ -49,7 +56,7 @@ int displayAbout(SDL_Surface *screen)
 	
 	SDL_Flip(screen);
 	
-							 
+	
 	TTF_CloseFont(font);
 	SDL_FreeSurface(message);
 	done = 0;

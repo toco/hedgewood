@@ -16,6 +16,7 @@
 
 #include "SDLfunctions.h"
 #include "about.h"
+#include "highscore.h"
 
 #define BUTTONCOUNT 4
 

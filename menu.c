@@ -77,19 +77,24 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	
 	SDL_Color textColor = { 255, 255, 255,0};
 
+	int buttonID;
 	
 	if (!(message = TTF_RenderText_Blended( font, "Start Game", textColor )))
 		printf("%s\n",TTF_GetError());;
-	apply_surface( buttons[STARTEN_BUTTON].x+15, buttons[STARTEN_BUTTON].y+5, message, screen, NULL );
+	buttonID = STARTEN_BUTTON;
+	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
 	if(!(message = TTF_RenderText_Blended( font, "Highscore", textColor )))
 		printf("%s\n",TTF_GetError());
-	apply_surface( buttons[HIGHSCORE_BUTTON].x+15, buttons[HIGHSCORE_BUTTON].y+5, message, screen, NULL );
+	buttonID = HIGHSCORE_BUTTON;
+	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
 	if (!(message = TTF_RenderText_Blended( font, "About/Help", textColor )))
 		printf("%s\n",TTF_GetError());
-	apply_surface( buttons[ABOUT_BUTTON].x+15, buttons[ABOUT_BUTTON].y+5, message, screen, NULL );
+	buttonID = ABOUT_BUTTON;
+	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
 	if (!(message = TTF_RenderText_Blended( font, "Quit", textColor )))
 		printf("%s\n",TTF_GetError());
-	apply_surface( buttons[QUIT_BUTTON].x+15, buttons[QUIT_BUTTON].y+5, message, screen, NULL );
+	buttonID = QUIT_BUTTON;
+	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
 	
 	SDL_FreeSurface(message);
 	
@@ -151,7 +156,10 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore)
 					}
 					else if (buttonClicked == HIGHSCORE_BUTTON)
 					{
+						displayHighscore(screen);
 						printf("display highscore\n");
+						setupMenu(screen, dataStore);
+
 					}
 					else if (buttonClicked == ABOUT_BUTTON)
 					{
