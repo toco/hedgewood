@@ -115,6 +115,7 @@ SDL_Surface *load_image(char *filename ) {
 	return optimizedImage;
 }
 
+
 TTF_Font *buttonFont()
 {
 	TTF_Font *font = NULL;
@@ -126,4 +127,8 @@ TTF_Font *buttonFont()
 		exit(1);
 	}
 	return font; /*requires  	TTF_CloseFont(font);*/
+
+void printdb(char *str){
+	if(DEBUG)printf(str);
+
 }

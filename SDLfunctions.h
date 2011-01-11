@@ -28,6 +28,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed);
 void quitSDL();
 
 SDL_Surface *load_image(char *filename );
+void printdb(char *str);
 
 TTF_Font *buttonFont();
 /*requires  	TTF_CloseFont(font);*/
