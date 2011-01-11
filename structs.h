@@ -1,8 +1,16 @@
+#ifndef STRUCTS_H
+#define STRUCTS_H
+
 struct field{
     int visible;
     int currency;
 	int aStarValue;
-	//0 := Bach
+	//0 := Verdeckt
+	//1 := Bach
+	//2 := Sand
+	//3 := leichter Busch
+	//4 := mittel Busch
+	//5 := harter Busch
 	//-1 := Startzone
     int type;
 };
@@ -33,12 +41,33 @@ struct person{
 	struct position *next;
 };
 
-struct dataStore{
+//Highscore-Element
+typedef struct highscoreElement
+{
+	char name[10];
+	int points;
+}highscoreElement;
+
+typedef struct dataStore{
     //pointer auf 2D Array welches das Spielfeld enthält
 	//Zeile 0-1 sind der Startbereich
     struct field hedgewood[24][16];
     struct person player;
     //Aktuell oberste sichtbar Zeile im Array
     int verticalScroll;
+	//Highscore-Array max. 10 Einträge
+	highscoreElement highscore[10];
+}dataStore;
 
-};
+typedef struct pfNode{
+	struct position n_pos;
+	int F;
+	int G;
+	int H;
+	//Für den Pfad
+	struct pfNode *last;
+	//Für die open/closed List
+	struct pfNode *list;
+}pfNode;
+
+#endif

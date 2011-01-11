@@ -13,11 +13,11 @@
  *	
  *	
  */
-#include "SDLincludes.h"
+
 
 #include "main.h"
 
-void makeTestData(struct dataStore *test)
+void makeTestData(dataStore *test)
 
 {
 	int i,j,k=0;
@@ -32,15 +32,15 @@ void makeTestData(struct dataStore *test)
 	}
 	for(i=2;i<24;i++){
 		test->hedgewood[i][0].visible=1;
-		test->hedgewood[i][0].type=0;
+		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
 		test->hedgewood[i][15].visible=1;
-		test->hedgewood[i][15].type=0;
+		test->hedgewood[i][15].type=2;
 		test->hedgewood[i][15].aStarValue=-1;
 	}
 	for(i=1;i<15;i++){
 		test->hedgewood[23][i].visible=1;
-		test->hedgewood[23][i].type=0;
+		test->hedgewood[23][i].type=3;
 		test->hedgewood[23][i].aStarValue=-1;
 		
 	}
@@ -48,26 +48,49 @@ void makeTestData(struct dataStore *test)
 	for(i=2;i<23;i++){
 		for(j=1;j<15;j++){
 			test->hedgewood[i][j].visible=1;
-			test->hedgewood[i][j].type=(k%3)+1;
-			test->hedgewood[i][j].aStarValue=-3;
+			test->hedgewood[i][j].type=(k%4)+4;
+			test->hedgewood[i][j].aStarValue=((k%4)+1)*10;
 			k++;
 		}
 	}
 	test->player.p_pos.x=7;
 	test->player.p_pos.y=1;
+	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
 	test->player.next=NULL;
 	test->verticalScroll=0;
 	
 }
+
+void highscoreTestdata(dataStore *store)
+{
+	char *test = "Tester";
+	int i;
+	for (i=0; i<10; i++) {
+		store->highscore[i].points=i;
+		strncpy(store->highscore[i].name,test,strlen(test));
+
+	}
+}
+
 int main(int argc, char *argv[])
 {
+	printf("%s %d",argv[0],argc);
+
+
+	struct dataStore *test = malloc(sizeof(dataStore));
+	
+	highscoreTestdata(test);
 	
 	SDL_Surface* screen=initSDL();
-	menuStart(screen);
 	
-	struct dataStore *test = malloc(sizeof(struct dataStore));
+	readDataStore(test);
+	
+	menuStart(screen, test);
+	
+
+	saveDataStore(test);
 
 /* just for testing*/
  
@@ -75,9 +98,9 @@ int main(int argc, char *argv[])
 	updateGraphics(screen,test);
 	graphicLoop(screen,test);
 
-	
+
 	quitSDL();
-	free(test);
+//	free(test);
 	
 	return 0;
 }

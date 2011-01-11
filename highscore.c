@@ -14,17 +14,12 @@
  *	
  */
 
-#include<stdio.h>
 
-#include "SDLincludes.h"
-#include "SDLfunctions.h"
 
 #include "highscore.h"
 
 
-
-
-int displayHighscore(SDL_Surface *screen)
+int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
@@ -33,16 +28,47 @@ int displayHighscore(SDL_Surface *screen)
 	
 	
 	
-	TTF_Font *font = buttonFont();
+	TTF_Font *aButtonFont = buttonFont();
 	SDL_Color textColor = { 255, 255, 255,0};
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 	
-	if (!(message = TTF_RenderText_Blended( font, "Highscore", textColor )))
+	if (!(message = TTF_RenderText_Blended( aButtonFont, "Highscore", textColor )))
 		printf("%s\n",TTF_GetError());
 	
 	apply_surface( screen->clip_rect.w/2-message->w/2, 20, message, screen, NULL );
 	
+	SDL_Rect rankRect={200,70,0,0};
+	SDL_Rect nameRect={250,70,0,0};
+	SDL_Rect pointsRect={650,70,0,0};
+	int pointRight=pointsRect.x;
+	TTF_Font *midFont = arialFont(28);
+	
+	int i;
+	int lineOffset = 40;
+	char tmp[15];
+	for (i=0;i<10 ; i++) {
+		/*Rank*/
+		sprintf(tmp, "%d",i+1);
+		if (!(message = TTF_RenderText_Blended( midFont,tmp, textColor )))
+			printf("%s\n",TTF_GetError());
+		SDL_BlitSurface( message, NULL, screen, &rankRect);
+		rankRect.y+=lineOffset;
+		/*Name*/
+		if (!(message = TTF_RenderText_Blended( midFont,highscore->name, textColor )))
+			printf("%s\n",TTF_GetError());
+		SDL_BlitSurface( message, NULL, screen, &nameRect);
+		nameRect.y+=lineOffset;
+		/*Points*/
+		sprintf(tmp, "%d",highscore->points);
+		if (!(message = TTF_RenderText_Blended( midFont,tmp, textColor )))
+			printf("%s\n",TTF_GetError());
+		pointsRect.x=pointRight-message->w;
+		SDL_BlitSurface( message, NULL, screen, &pointsRect);
+		pointsRect.y+=lineOffset;
+	}
+	
+	TTF_CloseFont(midFont);
 	
 	SDL_Rect button;
 	button.x = BUTTONX;
@@ -52,14 +78,14 @@ int displayHighscore(SDL_Surface *screen)
 	
 	SDL_FillRect(screen, &button, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
 	
-	if (!(message = TTF_RenderText_Blended( font, "Back", textColor )))
+	if (!(message = TTF_RenderText_Blended( aButtonFont, "Back", textColor )))
 		printf("%s\n",TTF_GetError());
 	apply_surface( button.x+button.w/2-message->w/2, button.y+button.h/2-message->h/2, message, screen, NULL );
 	
 	SDL_Flip(screen);
 	
 	
-	TTF_CloseFont(font);
+	TTF_CloseFont(aButtonFont);
 	SDL_FreeSurface(message);
 	done = 0;
 	while ( !done ) {

@@ -50,6 +50,18 @@ SDL_Surface* initSDL()
 	return screen;
 }
 
+void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
+{
+    //Holds offsets
+    SDL_Rect offset;
+	
+    //Get offsets
+    offset.x = x;
+    offset.y = y;
+	
+    //Blit
+    SDL_BlitSurface( source, clip, destination, &offset );
+}
 
 int toggleFullscreen(SDL_Surface *screen, int windowed)
 {
@@ -118,19 +130,21 @@ SDL_Surface *load_image(char *filename ) {
 	}
 	return optimizedImage;
 }
-
-
 TTF_Font *buttonFont()
+{
+	return arialFont(28); /*requires  	TTF_CloseFont(font); after use*/
+}
+TTF_Font *arialFont(int size)
 {
 	TTF_Font *font = NULL;
 	//Open the font
-	font = TTF_OpenFont("ArialBlack.ttf", 28 );
+	font = TTF_OpenFont("ArialBlack.ttf", size );
 	
 	if (font == NULL) {
 		printf("Error: Font not loaded %s\n",SDL_GetError());
 		exit(1);
 	}
-	return font; /*requires  	TTF_CloseFont(font);*/
+	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
 
 void printdb(char *str){

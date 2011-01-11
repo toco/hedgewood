@@ -13,6 +13,15 @@
  *	
  *	
  */
+#ifndef ABOUT_H
+#define ABOUT_H
 
+#include <stdio.h>
+#include "SDLincludes.h"
+#include "SDLfunctions.h"
 
 int displayAbout(SDL_Surface *screen);
+int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen);
+
+
+#endif

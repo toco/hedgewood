@@ -13,13 +13,20 @@
  *	
  *	
  */
-
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
+#include "structs.h"
+#include "SDLincludes.h"
 #include "SDLfunctions.h"
 #include "menu.h"
 #include "graphicUpdate.h"
+#include "hedgewoodIO.h"
+
+
+#endif

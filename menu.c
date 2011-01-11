@@ -14,10 +14,6 @@
  *	
  */
 
-#include "SDLincludes.h"
-#include "SDLfunctions.h"
-#include "about.h"
-#include "highscore.h"
 
 #include "menu.h"
 
@@ -27,18 +23,18 @@
 #define ABOUT_BUTTON 2
 #define QUIT_BUTTON 3
 
-void menuStart(SDL_Surface *screen)
+void menuStart(SDL_Surface *screen, dataStore *data)
 {
-	struct menuDataStore *dataStore = malloc(sizeof(struct menuDataStore));
+	struct menuDataStore *menuData = malloc(sizeof(struct menuDataStore));
 	
 	
     /*Update Screen*/
     SDL_Flip( screen );
 	
-	setupMenu(screen, dataStore);
-	testLoop(screen, dataStore);
+	setupMenu(screen, menuData);
+	testLoop(screen, menuData, data);
 	
-	free(dataStore);	
+	free(menuData);	
 }
 
 void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
@@ -109,19 +105,6 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	
 }
 
-void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
-{
-    //Holds offsets
-    SDL_Rect offset;
-	
-    //Get offsets
-    offset.x = x;
-    offset.y = y;
-	
-    //Blit
-    SDL_BlitSurface( source, clip, destination, &offset );
-}
-
 int whichButtonClicked(int x, int y, SDL_Rect buttons[])
 {
 	int i;
@@ -133,7 +116,7 @@ int whichButtonClicked(int x, int y, SDL_Rect buttons[])
 	}
 	return -1;
 }
-int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore)
+int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
@@ -154,16 +137,16 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore)
 					SDL_GetMouseState(&mouseX,&mouseY);
 					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
-					int buttonClicked = whichButtonClicked(mouseX, mouseY,&dataStore->buttons[0]);
+					int buttonClicked = whichButtonClicked(mouseX, mouseY,&menuData->buttons[0]);
 					printf("Button %i clicked\n",buttonClicked);
 					if (buttonClicked == STARTEN_BUTTON) {
 						printf("start game\n");
 					}
 					else if (buttonClicked == HIGHSCORE_BUTTON)
 					{
-						displayHighscore(screen);
+						displayHighscore(screen,data->highscore);
 						printf("display highscore\n");
-						setupMenu(screen, dataStore);
+						setupMenu(screen, menuData);
 
 					}
 					else if (buttonClicked == ABOUT_BUTTON)
@@ -171,7 +154,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *dataStore)
 						printf("display about\n");
 						displayAbout(screen);
 						printf("back in Menu\n");
-						setupMenu(screen, dataStore);
+						setupMenu(screen, menuData);
 					}
 					else if (buttonClicked == QUIT_BUTTON)
 					{

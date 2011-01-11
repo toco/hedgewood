@@ -2,7 +2,7 @@
 
 
 #include "graphicUpdate.h"
-#define field_pic "./pictures/test.bmp"
+#define field_pic "./pictures/textur2.1.png"
 #define start_pic "./pictures/startzone.bmp"
 #define person_pic "./pictures/person.bmp"
 
@@ -12,14 +12,14 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	int i,j,scrollposition=data->verticalScroll;
 	SDL_Surface *image=NULL;
 	SDL_Rect src, dst;
-	
+
 	for(j=0;j<12;j++){
 		for(i=0;i<16;i++){
 			if(data->hedgewood[j+scrollposition][i].type==-1){
 				image=load_image(start_pic);
 //				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
-				src.y = 50*(j+scrollposition);
+				src.y = 50*j;
 			}
 			else{
 
@@ -48,11 +48,10 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	src.y = 0;
 	src.w =src.h = 50;
 	dst.x = 50*data->player.p_pos.x;
-	dst.y = 50*(data->player.p_pos.y);
+	dst.y = 50*(data->player.p_pos.y-scrollposition);
 	dst.w = dst.h = 50;
 	SDL_BlitSurface(image, &src, l_screen, &dst);
     SDL_Flip(l_screen);
-	printf("Test\n");
 	SDL_FreeSurface(image);
 			
 	return 1;
@@ -76,12 +75,10 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 						mouse_pos=pixelToGrid(mouse_pos);
 						if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						data->player.p_pos.x=mouse_pos->x;
-						data->player.p_pos.y=mouse_pos->y;
-							//mouse_pos->y+=data->verticalScroll;
-						
+						data->player.p_pos.y=mouse_pos->y+=data->verticalScroll;
+						positionListAdd(data,mouse_pos);
 						if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 						verticalScrollPos(data);
-						positionListAdd(data,mouse_pos);
 						updateGraphics(l_screen, data);
 						free(mouse_pos);
 						break;
@@ -134,12 +131,12 @@ struct position *gridToPixel(struct position *l_pos){
 }
 
 void verticalScrollPos(struct dataStore *data){
-	int verticalScroll,verticalPos=data->player.p_pos.y+data->verticalScroll;
+	int verticalScroll,verticalPos=data->player.p_pos.y;
 	
 	if(verticalPos<7)verticalScroll=0;
 	else if (verticalPos>6 && verticalPos<19 )verticalScroll=verticalPos-6;
 	else verticalScroll=12;
-	data->player.p_pos.y+=verticalScroll;
+
 	data->verticalScroll=verticalScroll;
 	printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }

@@ -30,6 +30,8 @@
 
 #define GAMENAME "Hedgewood"
 
+#define GAMEDATA_PATH "Hedgewood.dataStore"
+
 #define ABOUT_PATH "about.txt"
 
 #define BUTTONX 300
@@ -43,3 +45,4 @@
 #define WINDOWBPP 32
 
 #define DEBUG 0
+#define DBPATH 1

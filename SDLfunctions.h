@@ -14,13 +14,16 @@
  *	
  */
 
-
+#ifndef SDLFUNCTIONS_H
+#define SDLFUNCTIONS_H
 
 #define WINDOWWIDTH 800
 #define WINDOWHEIGTH 600
 #define WINDOWBPP 32
 
 SDL_Surface* initSDL();
+
+void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
 
 int toggleFullscreen(SDL_Surface *screen, int windowed);
 
@@ -29,5 +32,7 @@ void quitSDL();
 SDL_Surface *load_image(char *filename );
 void printdb(char *str);
 
-TTF_Font *buttonFont();
-/*requires  	TTF_CloseFont(font);*/
+TTF_Font *buttonFont(); /*requires  	TTF_CloseFont(font); after use*/
+TTF_Font *arialFont(int size); /*requires  	TTF_CloseFont(font); after use*/
+
+#endif
