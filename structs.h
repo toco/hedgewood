@@ -1,6 +1,7 @@
 struct field{
     int visible;
     int currency;
+	int aStarValue;
 	//0 := Bach
 	//-1 := Startzone
     int type;
@@ -28,6 +29,8 @@ struct person{
 	int heading;
     int maxEnergy;
     int currentEnergy;
+	struct position *anfang;
+	struct position *next;
 };
 
 struct dataStore{
