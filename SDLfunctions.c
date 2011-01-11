@@ -127,6 +127,7 @@ TTF_Font *buttonFont()
 		exit(1);
 	}
 	return font; /*requires  	TTF_CloseFont(font);*/
+}
 
 void printdb(char *str){
 	if(DEBUG)printf(str);
