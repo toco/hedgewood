@@ -11,7 +11,6 @@
 #define HIGHSCORE_H
 #include<stdio.h>
 
-#include "structs.h"
 #include "SDLincludes.h"
 #include "SDLfunctions.h"
 

@@ -13,11 +13,10 @@
  *	
  *	
  */
-#include "SDLincludes.h"
 
 #include "main.h"
 
-void makeTestData(struct dataStore *test)
+void makeTestData(dataStore *test)
 
 {
 	int i,j,k=0;
@@ -75,22 +74,29 @@ void highscoreTestdata(dataStore *store)
 
 int main(int argc, char *argv[])
 {
+	printf("%s %d",argv[0],argc);
+
 
 	struct dataStore *test = malloc(sizeof(dataStore));
 	
 	highscoreTestdata(test);
 	
 	SDL_Surface* screen=initSDL();
+	
+	readDataStore(test);
+	
 	menuStart(screen, test);
 	
 
-	
+	saveDataStore(test);
+
 /* just for testing*/
  
 	makeTestData(test);
 	updateGraphics(screen,test);
 	graphicLoop(screen,test);
 
+	
 	
 	quitSDL();
 	free(test);
