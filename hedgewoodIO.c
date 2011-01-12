@@ -24,13 +24,15 @@ int saveDataStore(dataStore *data)
 	if (!dataFile) {
 		printf("Error opening File: %s",GAMEDATA_PATH);
 	}
+	
+	/*Highscore*/
 	fprintf(dataFile, "!#highscore\n");
 	int i;
-	char tmp[10];
 	for (i=0; i<10; i++) {
-		sprintf(tmp, "%d",data->highscore[i].points);
-		fprintf(dataFile, "%s\t%s\n",data->highscore[i].name,tmp);
+		fprintf(dataFile,"%s\t%d\n",data->highscore[i].name,data->highscore[i].points);
 	}
+	
+	
 	
 	fclose(dataFile);
 	printf("Successfully written Game-Data\n");
@@ -47,10 +49,26 @@ int readDataStore(dataStore *data)
 		return 1;
 	}
 	char read[300];
-	memset(read, 0, sizeof(char)*strlen(read));
+	memset(read, '\0', sizeof(char)*300);
+	int highscore=0;
+	int linecounter = 0;
+	int tabPos;
+	char tab = '\t';
 	while (fgets(read,300, dataFile)) {
-		printf("read\n");
-		printf("%s",read);
+		if (read=="!#highscore") {
+			highscore=1;
+			printf("highscore tag\n");
+		}
+		
+		if (highscore=1) {
+			printf("in highscore data\n");
+			tabPos = strcspn(read,&tab);
+			strncpy(data->highscore[linecounter].name,read,tabPos);
+			data->highscore[linecounter].points=atoi(&read[tabPos]);
+			//@TODO: not working
+			printf("%s %d\n",data->highscore[linecounter].name,data->highscore[linecounter].points);
+			linecounter++;
+		}
 	}
 	fclose(dataFile);
 	return 0;
