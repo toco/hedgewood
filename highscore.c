@@ -14,7 +14,7 @@
  *	
  */
 
-#include "structs.h"
+
 
 #include "highscore.h"
 

@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 
 
 	quitSDL();
-	free(test);
+//	free(test);
 	
 	return 0;
 }
