@@ -16,9 +16,6 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "structs.h"
-#include "SDLincludes.h"
-#include "SDLfunctions.h"
 #include "about.h"
 #include "highscore.h"
 
@@ -33,9 +30,6 @@ struct menuDataStore
 void menuStart(SDL_Surface *screen, dataStore *data);
 
 void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData);
-
-void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
-
 
 int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data);
 

@@ -4,10 +4,30 @@
 
 #include "pathfinding.h"
 
-//void aStar(struct dataStore *data,struct position *end)
+void aStar(struct dataStore *data,struct position *end){
 	
-
-
+	int suchen=0;
+	pfNode *open=NULL; 
+	pfNode *closed=NULL ;
+	
+	struct position start = data->player.p_pos;
+	
+	if ((open = realloc(open,sizeof(struct pfNode)))==NULL) {
+		printf("MEM::pathfinding::15");
+		return;
+	}
+	
+	open[0].n_pos=start;
+	open[0].F=0;
+	open[0].G=0;
+	open[0].H=0;
+	open[0].last=NULL;
+	
+	while(suchen){
+		
+	}
+	
+}
 
 //Fuegt hinten an die Liste das Element pos_add an.
 void positionListAdd(struct dataStore *data, struct position *pos_add) {

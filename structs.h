@@ -5,7 +5,12 @@ struct field{
     int visible;
     int currency;
 	int aStarValue;
-	//0 := Bach
+	//0 := Verdeckt
+	//1 := Bach
+	//2 := Sand
+	//3 := leichter Busch
+	//4 := mittel Busch
+	//5 := harter Busch
 	//-1 := Startzone
     int type;
 };
@@ -53,5 +58,13 @@ typedef struct dataStore{
 	//Highscore-Array max. 10 Einträge
 	highscoreElement highscore[10];
 }dataStore;
+
+typedef struct pfNode{
+	struct position n_pos;
+	int F;
+	int G;
+	int H;
+	struct pfNode *last;
+}pfNode;
 
 #endif
