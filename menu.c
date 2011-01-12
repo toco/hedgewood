@@ -14,6 +14,11 @@
  *	
  */
 
+#include "SDLincludes.h"
+#include "SDLfunctions.h"
+#include "about.h"
+#include "highscore.h"
+
 #include "menu.h"
 
 

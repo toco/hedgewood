@@ -26,4 +26,4 @@ Hedgewood.xcodeproj/xcuserdata/tocoalt.xcuserdatad/xcschemes/Hedgewood.xcscheme
 Hedgewood.xcodeproj/xcuserdata/tocoalt.xcuserdatad/xcschemes/xcschememanagement.plist
 
 *.o
-SDLincludes.h.gch
+*.gch

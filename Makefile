@@ -39,8 +39,8 @@ about.o: about.h about.c SDLfunctions.o
 highscore.o: highscore.c highscore.h SDLfunctions.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c highscore.c SDLincludes.h SDLfunctions.o
 
-graphicUpdate.o: graphicUpdate.c graphicUpdate.h structs.h SDLincludes.h pathfinding.h SDLfunctions.o pathfinding.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c graphicUpdate.c structs.h SDLincludes.h pathfinding.h SDLfunctions.o pathfinding.o
+graphicUpdate.o: graphicUpdate.c graphicUpdate.h pathfinding.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c graphicUpdate.c pathfinding.o
 	
 pathfinding.o: pathfinding.c pathfinding.h structs.h SDLincludes.h SDLfunctions.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c pathfinding.c structs.h SDLincludes.h SDLfunctions.o

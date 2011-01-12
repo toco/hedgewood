@@ -13,6 +13,7 @@
  *	
  *	
  */
+#include "SDLincludes.h"
 
 #include "main.h"
 

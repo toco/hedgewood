@@ -1,3 +1,7 @@
+#include "SDLincludes.h"
+#include "SDLfunctions.h"
+
+
 #include "pathfinding.h"
 
 //void aStar(struct dataStore *data,struct position *end)

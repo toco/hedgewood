@@ -1,3 +1,6 @@
+#include "SDLincludes.h"
+
+
 #include "graphicUpdate.h"
 #define field_pic "./pictures/test.bmp"
 #define start_pic "./pictures/startzone.bmp"

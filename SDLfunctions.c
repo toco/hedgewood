@@ -14,7 +14,11 @@
  *	
  */
 
+#include "SDLincludes.h"
+
+
 #include "SDLfunctions.h"
+
 
 SDL_Surface* initSDL()
 {

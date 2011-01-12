@@ -14,7 +14,6 @@
  *	
  */
 
-#include "SDLincludes.h"
 
 
 #define WINDOWWIDTH 800

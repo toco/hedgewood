@@ -15,6 +15,7 @@
  */
 
 #include<stdio.h>
+#include "SDLincludes.h"
 #include "SDLfunctions.h"
 
 #include "about.h"
