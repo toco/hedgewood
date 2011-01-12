@@ -64,7 +64,10 @@ typedef struct pfNode{
 	int F;
 	int G;
 	int H;
+	//Für den Pfad
 	struct pfNode *last;
+	//Für die open/closed List
+	struct pfNode *list;
 }pfNode;
 
 #endif

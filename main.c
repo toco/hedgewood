@@ -35,12 +35,12 @@ void makeTestData(dataStore *test)
 		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
 		test->hedgewood[i][15].visible=1;
-		test->hedgewood[i][15].type=1;
+		test->hedgewood[i][15].type=2;
 		test->hedgewood[i][15].aStarValue=-1;
 	}
 	for(i=1;i<15;i++){
 		test->hedgewood[23][i].visible=1;
-		test->hedgewood[23][i].type=1;
+		test->hedgewood[23][i].type=3;
 		test->hedgewood[23][i].aStarValue=-1;
 		
 	}
@@ -48,8 +48,8 @@ void makeTestData(dataStore *test)
 	for(i=2;i<23;i++){
 		for(j=1;j<15;j++){
 			test->hedgewood[i][j].visible=1;
-			test->hedgewood[i][j].type=(k%4)+2;
-			test->hedgewood[i][j].aStarValue=-3;
+			test->hedgewood[i][j].type=(k%4)+4;
+			test->hedgewood[i][j].aStarValue=((k%4)+1)*10;
 			k++;
 		}
 	}

@@ -2,7 +2,7 @@
 
 
 #include "graphicUpdate.h"
-#define field_pic "./pictures/textur.png"
+#define field_pic "./pictures/textur2.1.png"
 #define start_pic "./pictures/startzone.bmp"
 #define person_pic "./pictures/person.bmp"
 
