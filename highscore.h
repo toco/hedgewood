@@ -7,5 +7,18 @@
  *
  */
 
-int displayHighscore(SDL_Surface *screen);
+#ifndef HIGHSCORE_H
+#define HIGHSCORE_H
+#include<stdio.h>
+
+#include "structs.h"
+#include "SDLincludes.h"
+#include "SDLfunctions.h"
+
+
+int displayHighscore(SDL_Surface *screen, highscoreElement highscore[]);
+
+
+
+#endif
 

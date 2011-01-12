@@ -1,3 +1,6 @@
+#ifndef STRUCTS_H
+#define STRUCTS_H
+
 struct field{
     int visible;
     int currency;
@@ -33,12 +36,22 @@ struct person{
 	struct position *next;
 };
 
-struct dataStore{
+//Highscore-Element
+typedef struct highscoreElement
+{
+	char name[10];
+	int points;
+}highscoreElement;
+
+typedef struct dataStore{
     //pointer auf 2D Array welches das Spielfeld enthält
 	//Zeile 0-1 sind der Startbereich
     struct field hedgewood[24][16];
     struct person player;
     //Aktuell oberste sichtbar Zeile im Array
     int verticalScroll;
+	//Highscore-Array max. 10 Einträge
+	highscoreElement highscore[10];
+}dataStore;
 
-};
+#endif

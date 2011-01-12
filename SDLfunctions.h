@@ -14,7 +14,8 @@
  *	
  */
 
-
+#ifndef SDLFUNCTIONS_H
+#define SDLFUNCTIONS_H
 
 #define WINDOWWIDTH 800
 #define WINDOWHEIGTH 600
@@ -29,5 +30,7 @@ void quitSDL();
 SDL_Surface *load_image(char *filename );
 void printdb(char *str);
 
-TTF_Font *buttonFont();
-/*requires  	TTF_CloseFont(font);*/
+TTF_Font *buttonFont(); /*requires  	TTF_CloseFont(font); after use*/
+TTF_Font *arialFont(int size); /*requires  	TTF_CloseFont(font); after use*/
+
+#endif

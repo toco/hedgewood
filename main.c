@@ -61,14 +61,30 @@ void makeTestData(struct dataStore *test)
 	test->verticalScroll=0;
 	
 }
+
+void highscoreTestdata(dataStore *store)
+{
+	char *test = "Tester";
+	int i;
+	for (i=0; i<10; i++) {
+		store->highscore[i].points=i;
+		strncpy(store->highscore[i].name,test,strlen(test));
+
+	}
+}
+
 int main(int argc, char *argv[])
 {
+
+	struct dataStore *test = malloc(sizeof(dataStore));
+	
+	highscoreTestdata(test);
 	
 	SDL_Surface* screen=initSDL();
-	menuStart(screen);
+	menuStart(screen, test);
 	
-	struct dataStore *test = malloc(sizeof(struct dataStore));
 
+	
 /* just for testing*/
  
 	makeTestData(test);

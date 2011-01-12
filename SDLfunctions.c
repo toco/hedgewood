@@ -118,19 +118,21 @@ SDL_Surface *load_image(char *filename ) {
 	}
 	return optimizedImage;
 }
-
-
 TTF_Font *buttonFont()
+{
+	return arialFont(28); /*requires  	TTF_CloseFont(font); after use*/
+}
+TTF_Font *arialFont(int size)
 {
 	TTF_Font *font = NULL;
 	//Open the font
-	font = TTF_OpenFont("ArialBlack.ttf", 28 );
+	font = TTF_OpenFont("ArialBlack.ttf", size );
 	
 	if (font == NULL) {
 		printf("Error: Font not loaded %s\n",SDL_GetError());
 		exit(1);
 	}
-	return font; /*requires  	TTF_CloseFont(font);*/
+	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
 
 void printdb(char *str){

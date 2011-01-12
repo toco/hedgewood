@@ -13,6 +13,10 @@
  *	
  *	
  */
-
+#ifndef ABOUT_H
+#define ABOUT_H
 
 int displayAbout(SDL_Surface *screen);
+
+
+#endif
