@@ -18,28 +18,29 @@
 #include "menu.h"
 
 
-#define STARTEN_BUTTON 0
-#define HIGHSCORE_BUTTON 1
-#define ABOUT_BUTTON 2
-#define QUIT_BUTTON 3
-
 void menuStart(SDL_Surface *screen, dataStore *data)
 {
-	struct menuDataStore *menuData = malloc(sizeof(menuDataStore));
+	menuDataStore *menuData = malloc(sizeof(menuDataStore));
+	menuData->buttons = malloc(sizeof(myButton)*BUTTONCOUNT);
 	
-	
-    /*Update Screen*/
-    SDL_Flip( screen );
 	
 	setupMenu(screen, menuData);
 	testLoop(screen, menuData, data);
 	
+	free(menuData->buttons);
 	free(menuData);	
 }
 
 int startGame( SDL_Surface *screen, dataStore *data)
 {
+	printf("Start ingame Menu\n");
+	
+	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+	SDL_Flip(screen);
+	ingameMenuStart(screen, data);
+
 	printf("StartGame Clicked\n");
+	
 	return 0;
 }
 int menuQuit(SDL_Surface *screen, dataStore *data)

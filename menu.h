@@ -21,12 +21,12 @@
 
 #include "structs.h"
 
-#define BUTTONCOUNT 4
+#define STARTEN_BUTTON 0
+#define HIGHSCORE_BUTTON 1
+#define ABOUT_BUTTON 2
+#define QUIT_BUTTON 3
 
-typedef struct menuDataStore
-{
-	myButton buttons[BUTTONCOUNT];
-}menuDataStore;
+#define BUTTONCOUNT 4
 
 
 void menuStart(SDL_Surface *screen, dataStore *data);

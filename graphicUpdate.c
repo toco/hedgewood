@@ -111,6 +111,9 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 							
 							break;
 						case SDLK_ESCAPE:
+							ingameMenuStart(l_screen, data);
+							updateGraphics(l_screen, data);
+							break;
 						case SDLK_q:
 							done = 1;
 							break;
