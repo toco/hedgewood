@@ -3,7 +3,7 @@
 
 #include "graphicUpdate.h"
 #define field_pic "./pictures/textur2.1.png"
-#define start_pic "./pictures/startzone.bmp"
+#define start_pic "./pictures/startzonetest.png"
 #define person_pic "./pictures/person.bmp"
 
 

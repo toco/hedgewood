@@ -119,9 +119,11 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 	
 	done = 0;
 	while ( !done ) {
-		
+
 		/* Check for events */
 		while ( SDL_PollEvent(&event) ) {
+
+			
 			switch (event.type) {
 					
 				case SDL_MOUSEMOTION:
@@ -165,8 +167,9 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 					break;
 				default:
 					break;
-			}
 		}
+
+		}		
 	}
 	return 0;
 }
