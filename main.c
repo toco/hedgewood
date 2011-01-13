@@ -65,10 +65,10 @@ void makeTestData(dataStore *test)
 
 void highscoreTestdata(dataStore *store)
 {
-	char *test = "Tester";
+	char *test = "nobody";
 	int i;
 	for (i=0; i<10; i++) {
-		store->highscore[i].points=i;
+		store->highscore[i].points=0;
 		strncpy(store->highscore[i].name,test,strlen(test));
 
 	}

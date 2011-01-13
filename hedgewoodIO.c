@@ -53,21 +53,34 @@ int readDataStore(dataStore *data)
 	int highscore=0;
 	int linecounter = 0;
 	int tabPos;
-	char tab = '\t';
+	char *tab = "\t";
+	
+	char tmp[100];
+	memset(tmp, '\0', sizeof(char)*100);
+
 	while (fgets(read,300, dataFile)) {
-		if (read=="!#highscore") {
-			highscore=1;
-			printf("highscore tag\n");
-		}
 		
-		if (highscore=1) {
-			printf("in highscore data\n");
-			tabPos = strcspn(read,&tab);
-			strncpy(data->highscore[linecounter].name,read,tabPos);
+		memset(tmp, '\0', sizeof(char)*100);
+
+		if (highscore==1&&linecounter<10) {
+			tabPos = strcspn(read,tab);
+			strncpy(tmp,read,tabPos);
+			printf("read: %s\n",tmp);
+			strcpy(data->highscore[linecounter].name, tmp);
 			data->highscore[linecounter].points=atoi(&read[tabPos]);
 			//@TODO: not working
-			printf("%s %d\n",data->highscore[linecounter].name,data->highscore[linecounter].points);
+			printf("Save to dataStore: %s %d\n",data->highscore[linecounter].name,data->highscore[linecounter].points);
 			linecounter++;
+		}
+		else {
+			printf("Not imported: %s",read);
+		}
+
+
+		if (!strcmp(read,"!#highscore\n")) {
+			highscore=1;
+			linecounter = 0;
+			printf("highscore tag\n");
 		}
 	}
 	fclose(dataFile);

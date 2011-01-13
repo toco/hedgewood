@@ -55,12 +55,12 @@ int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 		SDL_BlitSurface( message, NULL, screen, &rankRect);
 		rankRect.y+=lineOffset;
 		/*Name*/
-		if (!(message = TTF_RenderText_Blended( midFont,highscore->name, textColor )))
+		if (!(message = TTF_RenderText_Blended( midFont,highscore[i].name, textColor )))
 			printf("%s\n",TTF_GetError());
 		SDL_BlitSurface( message, NULL, screen, &nameRect);
 		nameRect.y+=lineOffset;
 		/*Points*/
-		sprintf(tmp, "%d",highscore->points);
+		sprintf(tmp, "%d",highscore[i].points);
 		if (!(message = TTF_RenderText_Blended( midFont,tmp, textColor )))
 			printf("%s\n",TTF_GetError());
 		pointsRect.x=pointRight-message->w;
