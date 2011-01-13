@@ -22,7 +22,7 @@ int saveDataStore(dataStore *data)
 	FILE *dataFile;
 	dataFile = fopen(GAMEDATA_PATH, "w");
 	if (!dataFile) {
-		printf("Error opening File: %s",GAMEDATA_PATH);
+		printf("Error opening File: %s \n",GAMEDATA_PATH);
 	}
 	
 	/*Highscore*/
@@ -45,7 +45,7 @@ int readDataStore(dataStore *data)
 	FILE *dataFile;
 	dataFile = fopen(GAMEDATA_PATH, "r");
 	if (dataFile==NULL) {
-		printf("Error opening File: %s\n",GAMEDATA_PATH);
+		printf("Could not open file: %s will not overwrite default data\n",GAMEDATA_PATH);
 		return 1;
 	}
 	char read[300];
@@ -65,11 +65,8 @@ int readDataStore(dataStore *data)
 		if (highscore==1&&linecounter<10) {
 			tabPos = strcspn(read,tab);
 			strncpy(tmp,read,tabPos);
-			printf("read: %s\n",tmp);
 			strcpy(data->highscore[linecounter].name, tmp);
 			data->highscore[linecounter].points=atoi(&read[tabPos]);
-			//@TODO: not working
-			printf("Save to dataStore: %s %d\n",data->highscore[linecounter].name,data->highscore[linecounter].points);
 			linecounter++;
 		}
 		else {
@@ -80,7 +77,7 @@ int readDataStore(dataStore *data)
 		if (!strcmp(read,"!#highscore\n")) {
 			highscore=1;
 			linecounter = 0;
-			printf("highscore tag\n");
+			printf("Import highscore\n");
 		}
 	}
 	fclose(dataFile);

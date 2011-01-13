@@ -19,16 +19,16 @@
 #include "highscore.h"
 
 
-int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
+int displayHighscore(SDL_Surface *screen, dataStore *data)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
 	SDL_Surface *message;
+	highscoreElement *highscore=data->highscore;
 	
 	
 	
-	
-	TTF_Font *aButtonFont = buttonFont();
+	TTF_Font *aButtonFont = arialFont(32);
 	SDL_Color textColor = { 255, 255, 255,0};
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
@@ -37,6 +37,9 @@ int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 		printf("%s\n",TTF_GetError());
 	
 	apply_surface( screen->clip_rect.w/2-message->w/2, 20, message, screen, NULL );
+	SDL_FreeSurface(message);
+	TTF_CloseFont(aButtonFont);
+
 	
 	SDL_Rect rankRect={200,70,0,0};
 	SDL_Rect nameRect={250,70,0,0};
@@ -53,11 +56,13 @@ int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 		if (!(message = TTF_RenderText_Blended( midFont,tmp, textColor )))
 			printf("%s\n",TTF_GetError());
 		SDL_BlitSurface( message, NULL, screen, &rankRect);
+		SDL_FreeSurface(message);
 		rankRect.y+=lineOffset;
 		/*Name*/
 		if (!(message = TTF_RenderText_Blended( midFont,highscore[i].name, textColor )))
 			printf("%s\n",TTF_GetError());
 		SDL_BlitSurface( message, NULL, screen, &nameRect);
+		SDL_FreeSurface(message);
 		nameRect.y+=lineOffset;
 		/*Points*/
 		sprintf(tmp, "%d",highscore[i].points);
@@ -65,28 +70,23 @@ int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 			printf("%s\n",TTF_GetError());
 		pointsRect.x=pointRight-message->w;
 		SDL_BlitSurface( message, NULL, screen, &pointsRect);
+		SDL_FreeSurface(message);
 		pointsRect.y+=lineOffset;
 	}
 	
 	TTF_CloseFont(midFont);
 	
-	SDL_Rect button;
-	button.x = BUTTONX;
-	button.y = 500;
-	button.w = BUTTONWIDTH;
-	button.h = BUTTONHEIGHT;
+	myButton button;
+	button.rect.x = screen->clip_rect.w/2-BUTTONWIDTH/2;
+	button.rect.y = 500;
+	button.rect.w = BUTTONWIDTH;
+	button.rect.h = BUTTONHEIGHT;
+	button.name="Back";
 	
-	SDL_FillRect(screen, &button, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-	
-	if (!(message = TTF_RenderText_Blended( aButtonFont, "Back", textColor )))
-		printf("%s\n",TTF_GetError());
-	apply_surface( button.x+button.w/2-message->w/2, button.y+button.h/2-message->h/2, message, screen, NULL );
+	drawButton(screen, &button);
 	
 	SDL_Flip(screen);
 	
-	
-	TTF_CloseFont(aButtonFont);
-	SDL_FreeSurface(message);
 	done = 0;
 	while ( !done ) {
 		
@@ -99,7 +99,7 @@ int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 				case SDL_MOUSEBUTTONDOWN:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					if (button.x < mouseX && mouseX < button.x+button.w && button.y < mouseY && mouseY < button.y+button.h) {
+					if (isButtonClicked(&button, mouseX, mouseY)) {
 						done = 1;
 					}
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
@@ -112,8 +112,9 @@ int displayHighscore(SDL_Surface *screen, highscoreElement highscore[])
 						break;
 						
 					case SDLK_ESCAPE:
-					case SDLK_q:
 						done = 1;
+						break;
+					case SDLK_q:
 						break;
 					default:
 						break;

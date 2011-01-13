@@ -48,6 +48,7 @@ typedef struct highscoreElement
 	int points;
 }highscoreElement;
 
+
 typedef struct dataStore{
     //pointer auf 2D Array welches das Spielfeld enthält
 	//Zeile 0-1 sind der Startbereich
@@ -69,5 +70,14 @@ typedef struct pfNode{
 	//Für die open/closed List
 	struct pfNode *list;
 }pfNode;
+
+
+//Button-Rect
+typedef struct myButton{
+	SDL_Rect rect;
+	char *name;
+	int (*function)(SDL_Surface *screen, dataStore *data);
+}myButton;
+
 
 #endif

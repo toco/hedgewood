@@ -21,8 +21,8 @@
 #include <string.h>
 #include <math.h>
 
-#include "structs.h"
 #include "SDLincludes.h"
+#include "structs.h"
 #include "SDLfunctions.h"
 #include "menu.h"
 #include "graphicUpdate.h"

@@ -14,7 +14,6 @@
  *	
  */
 
-#include "SDLincludes.h"
 
 
 #include "SDLfunctions.h"
@@ -146,8 +145,36 @@ TTF_Font *arialFont(int size)
 	}
 	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
+int drawButton (SDL_Surface *destinationSurface, myButton *button)
+{
+	SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x00, 0x00, 0xFF ));
 
+	SDL_Surface *message;
+	TTF_Font *font = buttonFont();
+	SDL_Color textColor = { 255, 255, 255};
+	if (!(message = TTF_RenderText_Blended( font, button->name, textColor )))
+	{
+		printf("%s\n",TTF_GetError());
+		return 1;
+	}
+	TTF_CloseFont(font);
+	SDL_Rect text = {button->rect.x+button->rect.w/2-message->w/2,button->rect.y+button->rect.h/2-message->h/2,0,0};
+	if(0==SDL_BlitSurface( message, NULL, destinationSurface, &text))
+		return 0;
+	else {
+		printf("%s\n",SDL_GetError());
+		return 1;
+	}
+	SDL_FreeSurface(message);
+}
+int isButtonClicked(myButton *button, int x, int y)
+{
+	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h)
+		return 1;
+	else
+		return 0;
+}
 void printdb(char *str){
-	if(DEBUG)printf(str);
+	if(DEBUG)printf("%s",str);
 
 }

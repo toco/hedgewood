@@ -19,12 +19,14 @@
 #include "about.h"
 #include "highscore.h"
 
+#include "structs.h"
+
 #define BUTTONCOUNT 4
 
-struct menuDataStore
+typedef struct menuDataStore
 {
-	SDL_Rect buttons[BUTTONCOUNT];
-};
+	myButton buttons[BUTTONCOUNT];
+}menuDataStore;
 
 
 void menuStart(SDL_Surface *screen, dataStore *data);

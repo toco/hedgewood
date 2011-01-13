@@ -16,6 +16,12 @@
 
 #ifndef SDLFUNCTIONS_H
 #define SDLFUNCTIONS_H
+#ifndef SDLINCLUDES_H
+#include "SDLincludes.h"
+#endif
+#ifndef STRUCTS_H
+#include "structs.h"
+#endif
 
 #define WINDOWWIDTH 800
 #define WINDOWHEIGTH 600
@@ -34,5 +40,8 @@ void printdb(char *str);
 
 TTF_Font *buttonFont(); /*requires  	TTF_CloseFont(font); after use*/
 TTF_Font *arialFont(int size); /*requires  	TTF_CloseFont(font); after use*/
+
+int drawButton (SDL_Surface *destinationSurface, myButton *button);
+int isButtonClicked(myButton *button, int x, int y);
 
 #endif

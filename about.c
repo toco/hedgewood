@@ -33,14 +33,14 @@ int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color te
 		if (!(lineSurface = TTF_RenderText_Blended(font, text[i], textColor)))
 			printf("%s\n",TTF_GetError());
 		apply_surface(100,yPos, lineSurface, screen, NULL);
-	
+		
+		SDL_FreeSurface(lineSurface);
 		yPos+=lineSurface->h;
 		if (xMax<lineSurface->w) {
 			xMax=lineSurface->w;
 		}
 		line = strtok (NULL, " ,.-");
 	}
-	SDL_FreeSurface(lineSurface);
 
 	SDL_Flip(screen);
 
@@ -48,41 +48,35 @@ int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color te
 	
 }
 
-int displayAbout(SDL_Surface *screen)
+int displayAbout(SDL_Surface *screen, dataStore *data)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
-	SDL_Surface *message;
 
-	
-	TTF_Font *fontButton = buttonFont();
 	SDL_Color textColor = { 255, 255, 255,0};
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 
-	SDL_Rect button;
-	button.x = BUTTONX;
-	button.y = 500;
-	button.w = BUTTONWIDTH;
-	button.h = BUTTONHEIGHT;
+	myButton button;
+	button.rect.x = screen->clip_rect.w/2-BUTTONWIDTH/2;
+	button.rect.y = 500;
+	button.rect.w = BUTTONWIDTH;
+	button.rect.h = BUTTONHEIGHT;
+	button.name="Back";
 	
-	SDL_FillRect(screen, &button, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-	
-	if (!(message = TTF_RenderText_Blended( fontButton, "Back", textColor )))
-		printf("%s\n",TTF_GetError());
-	apply_surface( button.x+button.w/2-message->w/2, button.y+button.h/2-message->h/2, message, screen, NULL );
+	drawButton(screen, &button);
 	
 	TTF_Font *font = arialFont(18);
 	
 	char aboutText[6][100] = {"Hedgewood is a Programm written by:"," - toco"," - tk"," - JTR","   "," we hope you enjoy it."};
 	
-	if (!(renderMultiLineText(font, &aboutText[0][0],6, textColor,screen)))
+	if (!(renderMultiLineText(font, &aboutText[0],6, textColor,screen)))
 		printf("%s\n",TTF_GetError());
 	
 	
 	SDL_Flip(screen);
 	TTF_CloseFont(font);
-	TTF_CloseFont(fontButton);
+
 //	SDL_FreeSurface(message);
 	done = 0;
 	while ( !done ) {
@@ -96,7 +90,8 @@ int displayAbout(SDL_Surface *screen)
 				case SDL_MOUSEBUTTONDOWN:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					if (button.x < mouseX && mouseX < button.x+button.w && button.y < mouseY && mouseY < button.y+button.h) {
+					if (isButtonClicked(&button, mouseX, mouseY)) {
+						
 						done = 1;
 					}
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);

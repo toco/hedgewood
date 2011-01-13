@@ -25,7 +25,7 @@
 
 void menuStart(SDL_Surface *screen, dataStore *data)
 {
-	struct menuDataStore *menuData = malloc(sizeof(struct menuDataStore));
+	struct menuDataStore *menuData = malloc(sizeof(menuDataStore));
 	
 	
     /*Update Screen*/
@@ -37,6 +37,16 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 	free(menuData);	
 }
 
+int startGame( SDL_Surface *screen, dataStore *data)
+{
+	printf("StartGame Clicked\n");
+	return 0;
+}
+int menuQuit(SDL_Surface *screen, dataStore *data)
+{
+	printf("Quit");
+	return 0;
+}
 void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 {
 	/*Background */
@@ -46,76 +56,60 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
 		exit(1);
 	}
-	TTF_Font *font = buttonFont();
 	
 #define BUTTONX 300
 #define BUTTONWIDTH 200
 #define BUTTONHEIGHT 50
-	SDL_Surface *message;
 	
-	SDL_Rect *buttons = &(dataStore->buttons[0]);
-	buttons[ STARTEN_BUTTON ].x=BUTTONX;
-	buttons[ STARTEN_BUTTON ].y=100;
-	buttons[ STARTEN_BUTTON ].w=BUTTONWIDTH;
-	buttons[ STARTEN_BUTTON ].h=BUTTONHEIGHT;
-	buttons[ HIGHSCORE_BUTTON ].x=BUTTONX;
-	buttons[ HIGHSCORE_BUTTON ].y=200;
-	buttons[ HIGHSCORE_BUTTON ].w=BUTTONWIDTH;
-	buttons[ HIGHSCORE_BUTTON ].h=BUTTONHEIGHT;
-	buttons[ ABOUT_BUTTON ].x=BUTTONX;
-	buttons[ ABOUT_BUTTON ].y=300;
-	buttons[ ABOUT_BUTTON ].w=BUTTONWIDTH;
-	buttons[ ABOUT_BUTTON ].h=BUTTONHEIGHT;
-	buttons[ QUIT_BUTTON ].x=BUTTONX;
-	buttons[ QUIT_BUTTON ].y=400;
-	buttons[ QUIT_BUTTON ].w=BUTTONWIDTH;
-	buttons[ QUIT_BUTTON ].h=BUTTONHEIGHT;
+	myButton *buttons = &(dataStore->buttons[0]);
+	buttons[ STARTEN_BUTTON ].rect.x=BUTTONX;
+	buttons[ STARTEN_BUTTON ].rect.y=100;
+	buttons[ STARTEN_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ STARTEN_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ STARTEN_BUTTON ].name="Start Game";
+	buttons[ STARTEN_BUTTON ].function=startGame;
+
+	buttons[ HIGHSCORE_BUTTON ].rect.x=BUTTONX;
+	buttons[ HIGHSCORE_BUTTON ].rect.y=200;
+	buttons[ HIGHSCORE_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ HIGHSCORE_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ HIGHSCORE_BUTTON ].name="Highscore";
+	buttons[ HIGHSCORE_BUTTON ].function=displayHighscore;
+
 	
-	SDL_FillRect(screen, &buttons[STARTEN_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-	SDL_FillRect(screen, &buttons[HIGHSCORE_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF));
-	SDL_FillRect(screen, &buttons[ABOUT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-	SDL_FillRect(screen, &buttons[QUIT_BUTTON], SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
+	buttons[ ABOUT_BUTTON ].rect.x=BUTTONX;
+	buttons[ ABOUT_BUTTON ].rect.y=300;
+	buttons[ ABOUT_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ ABOUT_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ ABOUT_BUTTON ].name="About/Help";
+	buttons[ ABOUT_BUTTON ].function=displayAbout;
+
 	
-	SDL_Color textColor = { 255, 255, 255,0};
+	buttons[ QUIT_BUTTON ].rect.x=BUTTONX;
+	buttons[ QUIT_BUTTON ].rect.y=400;
+	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ QUIT_BUTTON ].name="Quit";
+	buttons[ QUIT_BUTTON ].function=menuQuit;
+
+	
+//	SDL_FillRect(screen, &buttons[STARTEN_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
+//	SDL_FillRect(screen, &buttons[HIGHSCORE_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF));
+//	SDL_FillRect(screen, &buttons[ABOUT_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
+//	SDL_FillRect(screen, &buttons[QUIT_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
+//	
 
 	int buttonID;
 	
-	if (!(message = TTF_RenderText_Blended( font, "Start Game", textColor )))
-		printf("%s\n",TTF_GetError());;
-	buttonID = STARTEN_BUTTON;
-	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
-	if(!(message = TTF_RenderText_Blended( font, "Highscore", textColor )))
-		printf("%s\n",TTF_GetError());
-	buttonID = HIGHSCORE_BUTTON;
-	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
-	if (!(message = TTF_RenderText_Blended( font, "About/Help", textColor )))
-		printf("%s\n",TTF_GetError());
-	buttonID = ABOUT_BUTTON;
-	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
-	if (!(message = TTF_RenderText_Blended( font, "Quit", textColor )))
-		printf("%s\n",TTF_GetError());
-	buttonID = QUIT_BUTTON;
-	apply_surface( buttons[buttonID].x+buttons[buttonID].w/2-message->w/2, buttons[buttonID].y+buttons[buttonID].h/2-message->h/2, message, screen, NULL );
-	
-	SDL_FreeSurface(message);
-	
-	TTF_CloseFont(font);
-	
+	for (buttonID = 0; buttonID<BUTTONCOUNT; buttonID++) {
+		drawButton(screen, &buttons[buttonID]);
+	}
+
+
 	SDL_Flip(screen);
 	
 }
 
-int whichButtonClicked(int x, int y, SDL_Rect buttons[])
-{
-	int i;
-	for (i=0; i<BUTTONCOUNT ;i++) {
-		SDL_Rect aButton = buttons[i];
-		if (x>aButton.x&&x<aButton.x+aButton.w&&y>aButton.y&&y<aButton.y+aButton.h) {
-			return i;
-		}
-	}
-	return -1;
-}
 int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
 {
 	int done, mouseX, mouseY;
@@ -137,29 +131,15 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 					SDL_GetMouseState(&mouseX,&mouseY);
 					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
-					int buttonClicked = whichButtonClicked(mouseX, mouseY,&menuData->buttons[0]);
-					printf("Button %i clicked\n",buttonClicked);
-					if (buttonClicked == STARTEN_BUTTON) {
-						printf("start game\n");
-					}
-					else if (buttonClicked == HIGHSCORE_BUTTON)
-					{
-						displayHighscore(screen,data->highscore);
-						printf("display highscore\n");
-						setupMenu(screen, menuData);
-
-					}
-					else if (buttonClicked == ABOUT_BUTTON)
-					{
-						printf("display about\n");
-						displayAbout(screen);
-						printf("back in Menu\n");
-						setupMenu(screen, menuData);
-					}
-					else if (buttonClicked == QUIT_BUTTON)
-					{
-						printf("Quit Programm\n");
-						done = 1;
+					int buttonID;
+					for (buttonID = 0; buttonID<BUTTONCOUNT; buttonID++) {
+						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
+							(menuData->buttons[buttonID].function)(screen, data);
+							setupMenu(screen, menuData);
+							if (buttonID==QUIT_BUTTON) {
+								done = 1;
+							}
+						}
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -168,6 +148,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 				{
 					case SDLK_f:
 						windowed = toggleFullscreen(screen, windowed);
+						setupMenu(screen,menuData);
 						break;
 						
 					case SDLK_ESCAPE:

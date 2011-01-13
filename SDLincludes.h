@@ -14,9 +14,11 @@
  *	
  */
 
+#ifndef SDLINCLUDES_H
+#define SDLINCLUDES_H
 
 #ifdef __APPLE__
-#include "SDL.h"
+#include "/opt/local/include/SDL/SDL.h"
 #include "/opt/local/include/SDL/SDL_image.h"	/* http://www.libsdl.org/projects/SDL_image/ */
 #include "/opt/local/include/SDL/SDL_ttf.h"		/* http://www.libsdl.org/projects/SDL_ttf/ */
 #elif __WIN32__ || _MSC_VER 
@@ -46,3 +48,6 @@
 
 #define DEBUG 0
 #define DBPATH 1
+
+
+#endif
