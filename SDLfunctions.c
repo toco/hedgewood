@@ -137,7 +137,7 @@ TTF_Font *arialFont(int size)
 {
 	TTF_Font *font = NULL;
 	//Open the font
-	font = TTF_OpenFont("ArialBlack.ttf", size );
+	font = TTF_OpenFont("./ArialBlack.ttf", size );
 	
 	if (font == NULL) {
 		printf("Error: Font not loaded %s\n",SDL_GetError());
@@ -151,7 +151,7 @@ int drawButton (SDL_Surface *destinationSurface, myButton *button)
 
 	SDL_Surface *message;
 	TTF_Font *font = buttonFont();
-	SDL_Color textColor = { 255, 255, 255};
+	SDL_Color textColor = { 255, 255, 255,NULL};
 	if (!(message = TTF_RenderText_Blended( font, button->name, textColor )))
 	{
 		printf("%s\n",TTF_GetError());

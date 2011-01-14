@@ -115,17 +115,17 @@ void aStar( dataStore *data, position *end) {
 }
 
 //Fuegt hinten an die Liste das Element pos_add an.
-void positionListAdd( dataStore *data,  position *pos_add) {
+void positionListAdd(dataStore *data,  position *pos_add) {
 
 	struct position *zeiger=NULL;
 
 	if(data->player.anfang == NULL) {
 
-		if((data->player.anfang =calloc(1,sizeof(struct position))) == NULL) {
+		if((data->player.anfang =calloc(1,sizeof(position))) == NULL) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
 		}
-		/*if((data->player.next =calloc(1,sizeof(struct position))) == NULL) {
+		/*if((data->player.next =calloc(1,sizeof(struct positiřon))) == NULL) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
 		}*/

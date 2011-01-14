@@ -18,8 +18,8 @@
 
 #include "about.h"
 #include "highscore.h"
-
 #include "structs.h"
+#include "ingameMenu.h"
 
 #define STARTEN_BUTTON 0
 #define HIGHSCORE_BUTTON 1
