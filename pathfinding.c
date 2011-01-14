@@ -109,10 +109,8 @@ void aStar( dataStore *data, position *end) {
 					positionListAdd(data,&tmp_element->n_pos);
 					tmp_element=tmp_element->last;
 				}
-				//free(zeiger);
 				aStarListDelete(open);
 				aStarListDelete(closed);
-				//data->player.aStarEnd = *end;
 				return;
 			}
 			

@@ -10,5 +10,6 @@ void graphicLoop(SDL_Surface *l_screen, dataStore *data);
 struct position *pixelToGrid(position *l_pos);
 struct position *gridToPixel(struct position *l_pos);
 void verticalScrollPos(struct dataStore *data);
+void headPositionUpdate(dataStore *data,position *newPos);
 
 #endif

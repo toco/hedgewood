@@ -106,8 +106,7 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data){
 							tmp=positionListRead(data);
 							if(tmp!=NULL){
 								printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
-								data->player.p_pos=(*tmp);
-								verticalScrollPos(data);
+								headPositionUpdate(data,tmp);
 								updateGraphics(l_screen,data);
 								free(tmp);
 							};
@@ -157,4 +156,18 @@ void verticalScrollPos(struct dataStore *data){
 
 	data->verticalScroll=verticalScroll;
 	printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
+}
+
+void headPositionUpdate(dataStore *data,position *newPos){
+	position old=data->player.p_pos,n_pos=(*newPos);
+	
+	int x=0,y=0;
+	x=old.x-n_pos.x;
+	y=old.y-n_pos.y;
+	if(x<0)data->player.heading=1;
+	if(x>0)data->player.heading=3;
+	if(y<0)data->player.heading=2;
+	if(y>0)data->player.heading=0;
+	data->player.p_pos=n_pos;
+	verticalScrollPos(data);
 }
