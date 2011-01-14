@@ -17,10 +17,11 @@
 
 #include "hedgewoodIO.h"
 
-#define SAVEGAME_BUTTON 0
-#define LOADGAME_BUTTON 1
-#define CONTINUE_BUTTON 2
-#define INGAMEBUTTONCOUNT 3
+#define CONTINUE_BUTTON 0
+#define SAVEGAME_BUTTON 1
+#define LOADGAME_BUTTON 2
+#define QUIT_BUTTON 3
+#define INGAMEBUTTONCOUNT 4
 
 int ingameMenuStart(SDL_Surface *screen, dataStore *data);
 

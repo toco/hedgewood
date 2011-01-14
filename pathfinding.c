@@ -74,7 +74,7 @@ void aStar( dataStore *data, position *end) {
 			if(tmp_pos[i+2].x<0)tmp_pos[i+2].x=0;
 		}
 		
-		for(int i=0; i<4; i++){
+		for(i=0; i<4; i++){
 			tmp_element->n_pos=tmp_pos[i] ;
 			aStarVal=(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].aStarValue);
 			

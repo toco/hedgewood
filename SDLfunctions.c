@@ -69,7 +69,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
     if( windowed)
     {
         //Set the screen to fullscreen
-        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_RESIZABLE | SDL_FULLSCREEN );
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_FULLSCREEN ); /* | SDL_RESIZABLE */
 		
         //If there's an error
         if( screen == NULL )
@@ -85,7 +85,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
     else if( windowed == 0 )
     {
         //Window the screen
-        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_RESIZABLE);
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE); /* | SDL_RESIZABLE */
 		
         //If there's an error
         if( screen == NULL )

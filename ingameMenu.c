@@ -25,27 +25,33 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 	myButton *buttons = menuData->buttons;
 	
 	/*background from 150 to 450 */
+	buttons[ CONTINUE_BUTTON ].rect.y=162;
+	buttons[ CONTINUE_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ CONTINUE_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ CONTINUE_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[CONTINUE_BUTTON].rect.w/2;
+	buttons[ CONTINUE_BUTTON ].name="Continue";
+	buttons[ CONTINUE_BUTTON ].function=NULL;
 	
-	buttons[ SAVEGAME_BUTTON ].rect.y=175; 
+	buttons[ SAVEGAME_BUTTON ].rect.y=238; 
 	buttons[ SAVEGAME_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ SAVEGAME_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ SAVEGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[SAVEGAME_BUTTON].rect.w/2;
 	buttons[ SAVEGAME_BUTTON ].name="Save Game";
 	buttons[ SAVEGAME_BUTTON ].function=saveGame;
 	
-	buttons[ LOADGAME_BUTTON ].rect.y=275;
+	buttons[ LOADGAME_BUTTON ].rect.y=312;
 	buttons[ LOADGAME_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ LOADGAME_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ LOADGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
 	buttons[ LOADGAME_BUTTON ].name="Load Game";
-	buttons[ LOADGAME_BUTTON ].function=loadGame;
+	buttons[ LOADGAME_BUTTON ].function=NULL;
 	
-	buttons[ CONTINUE_BUTTON ].rect.y=375;
-	buttons[ CONTINUE_BUTTON ].rect.w=BUTTONWIDTH;
-	buttons[ CONTINUE_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ CONTINUE_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[CONTINUE_BUTTON].rect.w/2;
-	buttons[ CONTINUE_BUTTON ].name="Continue";
-	buttons[ CONTINUE_BUTTON ].function=NULL;
+	buttons[ QUIT_BUTTON ].rect.y=388;
+	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
+	buttons[ QUIT_BUTTON ].name="Quit";
+	buttons[ QUIT_BUTTON ].function=loadGame;
 	
 	displayIngameMenu(screen, data, menuData);
 	ingameMenuLoop(screen, data, menuData);
@@ -59,7 +65,7 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 {
 	/*Background */
-	int width = 400, height = 300;
+	int width = 400, height = 350;
 	SDL_Rect background = {screen->clip_rect.w/2-width/2,screen->clip_rect.h/2-height/2,width,height};
 	
 	SDL_FillRect( screen, &background, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
@@ -106,6 +112,11 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 							if (buttonID==CONTINUE_BUTTON) {
 								done = 1;
 							}
+							else if(buttonID == QUIT_BUTTON){
+								quitSDL();
+								exit(0);
+							}
+
 						}
 					}
 					break;

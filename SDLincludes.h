@@ -47,7 +47,7 @@
 #define WINDOWBPP 32
 
 #define DEBUG 1
-#define DBPATH 1
+#define DBPATH 0
 
 
 #endif
