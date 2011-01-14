@@ -58,7 +58,6 @@ void makeTestData(dataStore *test)
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
-	test->player.next=NULL;
 	test->verticalScroll=0;
 	
 }

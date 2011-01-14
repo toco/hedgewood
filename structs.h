@@ -40,7 +40,6 @@ typedef struct person{
     int maxEnergy;
     int currentEnergy;
 	struct position *anfang;
-	struct position *next;
 }person;
 
 //Highscore-Element

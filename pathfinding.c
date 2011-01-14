@@ -41,6 +41,7 @@ void aStar( dataStore *data, position *end) {
 	pfNode *tmp_element;
 	
 	position start = data->player.p_pos;
+	positionListDelete(data);
 	position tmp_pos[4];
 	
 
@@ -111,6 +112,7 @@ void aStar( dataStore *data, position *end) {
 				//free(zeiger);
 				aStarListDelete(open);
 				aStarListDelete(closed);
+				//data->player.aStarEnd = *end;
 				return;
 			}
 			
@@ -163,9 +165,9 @@ void positionListDelete( dataStore *data) {
 			zeiger=zeiger1;
 		}
 		free(data->player.anfang);
-		free(data->player.next);
+		
 		data->player.anfang=NULL;
-		data->player.next=NULL;
+		
 	}
 }
 
