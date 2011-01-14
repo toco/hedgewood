@@ -4,7 +4,7 @@
 #include "graphicUpdate.h"
 #define field_pic "./pictures/textur2.1.png"
 #define start_pic "./pictures/startzonetest.png"
-#define person_pic "./pictures/person.bmp"
+#define person_pic "./pictures/person.png"
 
 
 int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
