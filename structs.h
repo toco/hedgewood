@@ -81,5 +81,9 @@ typedef struct myButton{
 	int (*function)(SDL_Surface *screen, dataStore *data);
 }myButton;
 
+typedef struct menuDataStore
+{
+	myButton *buttons;
+}menuDataStore;
 
 #endif

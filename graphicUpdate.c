@@ -3,7 +3,7 @@
 
 #include "graphicUpdate.h"
 #define field_pic "./pictures/textur2.1.png"
-#define start_pic "./pictures/startzone.bmp"
+#define start_pic "./pictures/startzonetest.png"
 #define person_pic "./pictures/person.bmp"
 
 
@@ -113,6 +113,9 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 							
 							break;
 						case SDLK_ESCAPE:
+							ingameMenuStart(l_screen, data);
+							updateGraphics(l_screen, data);
+							break;
 						case SDLK_q:
 							done = 1;
 							break;
