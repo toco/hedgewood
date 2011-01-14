@@ -1,7 +1,7 @@
 /*X 1)  	Füge das Startquadrat der offenen Liste hinzu.
 	2)  	Wiederhole das Folgende:
 	X	a) 	Suche in der offenen Liste nach dem Quadrat mit dem niedrigsten F-Wert. Wir bezeichnen dieses Quadrat im Folgenden als das aktuelle Quadrat.
-		b) 	Verschiebe es in die geschlossene Liste.
+	X	b) 	Verschiebe es in die geschlossene Liste.
 		c) 	Für jedes der 8 an das aktuelle Quadrat angrenzenden Quadrate:
 
 
@@ -15,21 +15,34 @@
 		* kein Zielquadrat gefunden werden konnte und die offene Liste leer ist; in diesem Fall gibt es keinen Pfad.
 
 	3)  Sichere den Pfad. Der Pfad erschließt sich, indem Du vom Zielquadrat aus Quadrat für Quadrat rückwärts schreitend das Startquadrat erreichst.
+	 * 
+		Der Schlüssel dazu, welche Quadrate für den Pfad in Frage kommen, ist folgende Gleichung:
+
+		F = G + H
+
+		wobei
+
+		* G = Die Bewegungskosten, um vom Startpunkt A zu einem gegebenen Quadrat des Gitters unter Verwendung des dafür ermittelten Pfades zu gelangen.
+		* H = Die geschätzten Kosten, um von dem gegebenen Quadrat zum Zielpunkt B zu gelangen. Dies wird oft heuristisch genannt, was ein bisschen verwirrend sein kann. Der Grund, warum dies so genannt wird, ist, dass diese Kosten auf Vermutung beruhen, denn tatsächlich kennen wir die wirkliche Entfernung erst, wenn wir den Pfad dorthin gefunden und auf dem Weg liegende Hindernisse (Wände, Wasser, etc.) berücksichtigt haben. In diesem Artikel wird ein möglicher Weg gezeigt, wie H ermittelt werden kann; es gibt aber viele weitere, die in anderen Web-Artikeln beschrieben sind.
 */
 
 #include "SDLincludes.h"
 #include "SDLfunctions.h"
 #include "pathfinding.h"
 
-void aStar(struct dataStore *data,struct position *end) {
 
-	int suchen=1,i,open_length,f_min;
+void aStar( dataStore *data, position *end) {
+
+	int suchen=1,i,j,aStarVal;
 	pfNode *open=NULL;
 	pfNode *closed=NULL ;
 	pfNode *zeiger=NULL;
-	pfNode *tmp=NULL;
-
-	struct position start = data->player.p_pos;
+	//pfNode *tmp=NULL;
+	pfNode *tmp_element=NULL;
+	
+	position start = data->player.p_pos;
+	position tmp_pos[4];
+	
 
 	if ((zeiger = calloc(1,sizeof(struct pfNode)))==NULL) {
 		printf("MEM::pathfinding::35");
@@ -45,46 +58,64 @@ void aStar(struct dataStore *data,struct position *end) {
 	open=zeiger;
 
 	while(suchen) {
-		//sucht den kleinsten F-Wert (erster Fund wird Ausgegeben)
-		tmp=open;
-		zeiger=open;
-		while(tmp->list!=NULL) {
-			if(tmp->list->F < tmp->F )zeiger=tmp;
-			tmp=tmp->list;
-		}
-		tmp=zeiger->list;
-		zeiger->list=zeiger->list->list;
+		zeiger=aStarSearchF(open);
+		if(DBPATH)printf("tmp 58 x: %d y: %d\n",zeiger->n_pos.x,zeiger->n_pos.y);
+		aStarListAdd(closed,zeiger,pfNode_list);
+		if(DBPATH)printf("closed 61 x: %d y: %d\n",closed->n_pos.x,closed->n_pos.y);
 		
-		if(closed == NULL) {
-
-			if((closed =calloc(1,sizeof(struct pfNode))) == NULL) {
-				printf("MEM::pathfinding::58");
-				return;
-			}
-			closed = tmp;
-			closed->list=NULL;
-			if(DBPATH)printf("Position next first x: %d y: %d\n",data->player.next->x,data->player.next->y);
-		} else {
-			zeiger= closed;
-			if((tmp->list=calloc(1,sizeof(struct pfNode))) == NULL) {
-				printf("MEM::pathfinding::67");
-				return;
-			}
-			closed=tmp;
-			closed->list=zeiger;
-
-			free(zeiger);
-			free(tmp);
+		for(i=-1;i<2;i=i+2){
+			tmp_pos[i+1].x=zeiger->n_pos.x;
+			tmp_pos[i+1].y=zeiger->n_pos.y+i;
+			tmp_pos[i+2].x=zeiger->n_pos.x-i;
+			tmp_pos[i+2].y=zeiger->n_pos.y;
+			if(tmp_pos[i+1].y<0)tmp_pos[i+1].y=0;
+			if(tmp_pos[i+1].y>23)tmp_pos[i+1].y=23;
+			if(tmp_pos[i+2].x>15)tmp_pos[i+2].x=15;
+			if(tmp_pos[i+2].x<0)tmp_pos[i+2].x=0;
 		}
 		
-
+		for(int i=0; i<4; i++){
+			tmp_element->n_pos=tmp_pos[i] ;
+			aStarVal=(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].aStarValue);
+			
+			if((aStarListSearchBool(closed,tmp_element)==NULL) &&  !(aStarVal<0)){
+				if(aStarListSearchBool(open,tmp_element)==NULL){
+					tmp_element->last=zeiger;
+					tmp_element->G=tmp_element->last->G+aStarVal;
+					tmp_element->H=aStarManhatten(tmp_element->n_pos,*end);
+					tmp_element->F=tmp_element->G+tmp_element->H;
+					aStarListAdd(open,tmp_element,pfNode_list);
+				}
+				else{
+					tmp_element = aStarListSearchBool(open,tmp_element);
+					j=zeiger->G+aStarVal;
+					if(tmp_element->G > j){
+						tmp_element->G = j;
+						tmp_element->F=tmp_element->G+tmp_element->H;
+						tmp_element->last=zeiger;
+					}
+				}
+			}
+			if(aStarManhatten(tmp_element->n_pos,*end)==0){
+				suchen=0;
+				while(tmp_element->last!=NULL){
+					positionListAdd(data,&tmp_element->n_pos);
+					tmp_element=tmp_element->last;
+				}
+				free(zeiger);
+				return;
+			}
+			
+		}
+		
 	}
-	suchen=0;
+	
+	
 
 }
 
 //Fuegt hinten an die Liste das Element pos_add an.
-void positionListAdd(struct dataStore *data, struct position *pos_add) {
+void positionListAdd( dataStore *data,  position *pos_add) {
 
 	struct position *zeiger=NULL;
 
@@ -94,22 +125,22 @@ void positionListAdd(struct dataStore *data, struct position *pos_add) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
 		}
-		if((data->player.next =calloc(1,sizeof(struct position))) == NULL) {
+		/*if((data->player.next =calloc(1,sizeof(struct position))) == NULL) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
-		}
+		}*/
 		memcpy(data->player.anfang,pos_add,sizeof(struct position));
 		data->player.anfang->next=NULL;
-		data->player.next=data->player.anfang;
+		//data->player.next=data->player.anfang;
 		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.next->x,data->player.next->y);
+		
 	} else {
 		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);
 		if((zeiger=calloc(1,sizeof(struct position))) == NULL) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
 		}
-
-		if((data->player.next->next =calloc(1,sizeof(struct position))) == NULL) {
+		/*if((data->player.next->next =calloc(1,sizeof(struct position))) == NULL) {
 			printf("MEM::pathfinding::42\n");
 			return;
 		}
@@ -118,15 +149,19 @@ void positionListAdd(struct dataStore *data, struct position *pos_add) {
 		if(DEBUG)printf("data->player.next->next x: %d y: %d\n",data->player.next->next->x,data->player.next->next->y);
 		data->player.next = data->player.next->next;
 		data->player.next->next=NULL;
-
+		*/
+		memcpy(zeiger,data->player.anfang,sizeof(struct position));
+		memcpy(data->player.anfang,pos_add,sizeof(struct position));
+		data->player.anfang->next=zeiger;
+		
 		free(zeiger);
 
 	}
-	printf("Position added x: %d y: %d\n",data->player.next->x,data->player.next->y);
+	//printf("Position added x: %d y: %d\n",data->player.next->x,data->player.next->y);
 	printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
 
-void positionListDelete(struct dataStore *data) {
+void positionListDelete( dataStore *data) {
 	struct position *zeiger, *zeiger1;
 
 	if(data->player.anfang != NULL) {
@@ -145,7 +180,7 @@ void positionListDelete(struct dataStore *data) {
 }
 
 //liest die obere Position des Stacks und entfernt diesen
-struct position *positionListRead(struct dataStore *data) {
+ position *positionListRead( dataStore *data) {
 	printdb("Start ListRead\n");
 
 	struct position *result,*tmp;
@@ -175,4 +210,98 @@ struct position *positionListRead(struct dataStore *data) {
 	return result;
 
 
+}
+
+//stack==1 -> list
+//stack==2 -> last
+
+pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack) {
+	
+	if(stack==pfNode_list) {
+		if(list == NULL) {
+			if((list =calloc(1,sizeof(struct pfNode))) == NULL) {
+				printf("MEM::pathfinding::173");
+				return list;
+			}
+			list=node_add;
+			list->list=NULL;
+			if(DBPATH)printf("Node added to list x: %d y: %d\n",list->n_pos.x,list->n_pos.y);
+			return list;
+		} else {
+			if((node_add->list=calloc(1,sizeof(struct pfNode))) == NULL) {
+				printf("MEM::pathfinding::183");
+				return list;
+			}
+			node_add->list=list;
+			if(DBPATH)printf("Node added to list x: %d y: %d\n",node_add->n_pos.x,node_add->n_pos.y);
+			return node_add;
+		}
+	}
+	else if(stack==pfNode_last) {
+		if(list == NULL) {
+			if((list =calloc(1,sizeof(struct pfNode))) == NULL) {
+				printf("MEM::pathfinding::173");
+				return list;
+			}
+			list=node_add;
+			list->last=NULL;
+			if(DBPATH)printf("Node added to list x: %d y: %d\n",list->n_pos.x,list->n_pos.y);
+			
+			return list;
+		} else {
+			if((node_add->last=calloc(1,sizeof(struct pfNode))) == NULL) {
+				printf("MEM::pathfinding::183");
+				return list;
+			}
+			node_add->last=list;
+			if(DBPATH)printf("Node added to list x: %d y: %d\n",node_add->n_pos.x,node_add->n_pos.y);
+			return node_add;
+		}
+	}
+	return list;
+}
+
+//sucht den kleinsten F-Wert (erster Fund wird Ausgegeben)
+pfNode *aStarSearchF(pfNode *list){
+	pfNode *result=list,*tmp=list;
+	
+	if(DBPATH)printf("Search F Start x: %d y: %d\n",result->n_pos.x,result->n_pos.y);
+	if(result->list!=NULL){
+		
+		while(result->list!=NULL) {
+			if(result->list->F < result->F ){
+				tmp=result;
+				if(DBPATH)printf("Search F tmp min x: %d y: %d\n",tmp->list->n_pos.x,tmp->list->n_pos.y);
+			}
+			result=result->list;
+		}
+		result=tmp;
+	}
+	else return result;
+	result=result->list;
+	if(DBPATH)printf("Search F min x: %d y: %d\n",result->n_pos.x,result->n_pos.y);
+	tmp->list=tmp->list->list;
+	
+	return result;
+}
+
+pfNode *aStarListSearchBool(pfNode *list,pfNode *element){
+	pfNode *tmp=list;
+	while(tmp!=NULL) {
+		if(tmp->n_pos.x != element->n_pos.x || tmp->n_pos.y != element->n_pos.y){
+			tmp=tmp->list;
+		}
+		else return tmp;
+	}
+	return NULL;
+}
+
+int aStarManhatten(position start, position end){
+	int x=0,y=0;
+	x=end.x-start.x;
+	y=end.y-start.y;
+	if(x<0)x*=(-1);
+	if(y<0)y*=(-1);
+	
+	return (x+y);
 }

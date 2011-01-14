@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	printf("%s %d",argv[0],argc);
 
 
-	struct dataStore *test = malloc(sizeof(dataStore));
+	dataStore *test = malloc(sizeof(dataStore));
 	
 	highscoreTestdata(test);
 	

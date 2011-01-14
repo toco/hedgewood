@@ -86,7 +86,9 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 						if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						data->player.p_pos.x=mouse_pos->x;
 						data->player.p_pos.y=mouse_pos->y+=data->verticalScroll;
-						positionListAdd(data,mouse_pos);
+						if(DBPATH) aStar(data,mouse_pos);
+						else positionListAdd(data,mouse_pos);
+						
 						if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 						verticalScrollPos(data);
 						updateGraphics(l_screen, data);

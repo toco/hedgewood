@@ -1,3 +1,6 @@
+#ifndef PATHFINDING_H
+#define PATHFINDING_H
+
 #include "SDLfunctions.h"
 #include "structs.h"
 #include <stdio.h>
@@ -5,8 +8,15 @@
 #include <string.h>
 #include <math.h>
 
+#define pfNode_list 1
+#define pfNode_last 2
 
-void aStar(struct dataStore *data,struct position *end);
-void positionListAdd(struct dataStore *data, struct position *pos_add);
-void positionListDelete(struct dataStore *data);
-struct position *positionListRead(struct dataStore *data);
+void aStar( dataStore *data, position *end);
+void positionListAdd( dataStore *data,  position *pos_add);
+void positionListDelete( dataStore *data);
+position *positionListRead( dataStore *data);
+pfNode *aStarListAdd( pfNode *list,pfNode *node_add,int stack);
+pfNode *aStarSearchF(pfNode *list);
+pfNode *aStarListSearchBool(pfNode *list,pfNode *element);
+int aStarManhatten(position start, position end);
+#endif

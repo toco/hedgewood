@@ -1,9 +1,10 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-struct field{
+typedef struct field{
     int visible;
     int currency;
+	//-1 := nicht begehbar
 	int aStarValue;
 	//0 := Verdeckt
 	//1 := Bach
@@ -13,20 +14,21 @@ struct field{
 	//5 := harter Busch
 	//-1 := Startzone
     int type;
-};
+}field;
 
-struct position{
+typedef struct position{
     int x;
     int y;
     struct position *next;
-};
+}position;
 
 //Rucksack für Süßigkeiten/Währung
-struct backpack{
+typedef struct backpack{
     int maxVolume;
     int currentVolume;
-};
-struct person{
+}backpack;
+
+typedef struct person{
     struct position p_pos;
     struct backpack bp;
 	/* 0: UP
@@ -39,7 +41,7 @@ struct person{
     int currentEnergy;
 	struct position *anfang;
 	struct position *next;
-};
+}person;
 
 //Highscore-Element
 typedef struct highscoreElement
@@ -52,7 +54,7 @@ typedef struct highscoreElement
 typedef struct dataStore{
     //pointer auf 2D Array welches das Spielfeld enthält
 	//Zeile 0-1 sind der Startbereich
-    struct field hedgewood[24][16];
+    field hedgewood[24][16];
     struct person player;
     //Aktuell oberste sichtbar Zeile im Array
     int verticalScroll;

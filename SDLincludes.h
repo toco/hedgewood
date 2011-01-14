@@ -46,8 +46,8 @@
 #define WINDOWHEIGTH 600
 #define WINDOWBPP 32
 
-#define DEBUG 0
-#define DBPATH 1
+#define DEBUG 1
+#define DBPATH 0
 
 
 #endif

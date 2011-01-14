@@ -19,6 +19,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
+CPRECOMPILER = -save-temps
 
 Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o
@@ -47,9 +48,31 @@ pathfinding.o: pathfinding.c pathfinding.h SDLincludes.h SDLfunctions.o structs.
 
 
 hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c hedgewoodIO.h hedgewoodIO.c
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c hedgewoodIO.c hedgewoodIO.h 
+	
+#gcc `sdl-config --cflags --libs` -lSDL_gfx -Wall -Wextra -o Hedgewood main.c
+
 
 # Aufruf des Targets "clean" löscht  alle nicht mehr benötigten Dateien
 clean: 
 	rm *.o # lösche alle Objektdateien 
 	rm *.gch # lösche precompiled header
+
+cleanall:
+	rm *.s # lösche precompiled header
+	rm *.i # lösche precompiled header
+	
+preprocessor:
+
+	$(CC) $(SDLFLAGS) $(CFLAGS)  -c $(CPRECOMPILER) main.c
+
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) SDLfunctions.c 
+
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) menu.c 
+	
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) about.c 
+
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) highscore.c 
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) graphicUpdate.c 
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) pathfinding.c 
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) hedgewoodIO.c 
