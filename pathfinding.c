@@ -132,7 +132,7 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 		memcpy(data->player.anfang,pos_add,sizeof(struct position));
 		data->player.anfang->next=NULL;
 		//data->player.next=data->player.anfang;
-		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.next->x,data->player.next->y);
+		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 		
 	} else {
 		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);
@@ -194,14 +194,12 @@ void positionListDelete( dataStore *data) {
 			printf("MEM::pathfinding::42\n");
 			return NULL;
 		}
-		if((tmp =calloc(1,sizeof(struct position))) == NULL) {
+		/*if((tmp =calloc(1,sizeof(struct position))) == NULL) {
 			printf("MEM::pathfinding::42\n");
 			return NULL;
-		}
+		}*/
 		memcpy(result,data->player.anfang,sizeof(struct position));
-		tmp=data->player.anfang->next;
-		free(data->player.anfang);
-		data->player.anfang=tmp;
+		data->player.anfang=data->player.anfang->next;
 		//free(tmp);
 
 	}
