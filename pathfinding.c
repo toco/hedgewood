@@ -36,9 +36,9 @@ void aStar( dataStore *data, position *end) {
 	int suchen=1,i,j,aStarVal;
 	pfNode *open=NULL;
 	pfNode *closed=NULL ;
-	pfNode *zeiger=NULL;
+	pfNode *zeiger;
 	//pfNode *tmp=NULL;
-	pfNode *tmp_element=NULL;
+	pfNode *tmp_element;
 	
 	position start = data->player.p_pos;
 	position tmp_pos[4];
@@ -48,19 +48,21 @@ void aStar( dataStore *data, position *end) {
 		printf("MEM::pathfinding::35");
 		return;
 	}
-
+	
 	zeiger->n_pos=start;
-	zeiger->F=0;
+	/*macht calloc schon
+	 * zeiger->F=0;
 	zeiger->G=0;
 	zeiger->H=0;
 	zeiger->last=NULL;
-	zeiger->list=NULL;
+	zeiger->list=NULL;*/
 	open=zeiger;
 
 	while(suchen) {
 		zeiger=aStarSearchF(open);
 		if(DBPATH)printf("tmp 58 x: %d y: %d\n",zeiger->n_pos.x,zeiger->n_pos.y);
-		aStarListAdd(closed,zeiger,pfNode_list);
+		closed=aStarListAdd(closed,zeiger,pfNode_list);
+		open=aStarListRemove(open,zeiger,pfNode_list);
 		if(DBPATH)printf("closed 61 x: %d y: %d\n",closed->n_pos.x,closed->n_pos.y);
 		
 		for(i=-1;i<2;i=i+2){
@@ -69,12 +71,16 @@ void aStar( dataStore *data, position *end) {
 			tmp_pos[i+2].x=zeiger->n_pos.x-i;
 			tmp_pos[i+2].y=zeiger->n_pos.y;
 			if(tmp_pos[i+1].y<0)tmp_pos[i+1].y=0;
-			if(tmp_pos[i+1].y>23)tmp_pos[i+1].y=23;
-			if(tmp_pos[i+2].x>15)tmp_pos[i+2].x=15;
+			if(tmp_pos[i+1].y>(FIELDSIZE_Y-1))tmp_pos[i+1].y=(FIELDSIZE_Y-1);
+			if(tmp_pos[i+2].x>(FIELDSIZE_X-1))tmp_pos[i+2].x=(FIELDSIZE_X-1);
 			if(tmp_pos[i+2].x<0)tmp_pos[i+2].x=0;
 		}
 		
 		for(i=0; i<4; i++){
+			if ((tmp_element = calloc(1,sizeof(struct pfNode)))==NULL) {
+				printf("MEM::pathfinding::81");
+				return;
+			}
 			tmp_element->n_pos=tmp_pos[i] ;
 			aStarVal=(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].aStarValue);
 			
@@ -84,7 +90,7 @@ void aStar( dataStore *data, position *end) {
 					tmp_element->G=tmp_element->last->G+aStarVal;
 					tmp_element->H=aStarManhatten(tmp_element->n_pos,*end);
 					tmp_element->F=tmp_element->G+tmp_element->H;
-					aStarListAdd(open,tmp_element,pfNode_list);
+					open=aStarListAdd(open,tmp_element,pfNode_list);
 				}
 				else{
 					tmp_element = aStarListSearchBool(open,tmp_element);
@@ -102,7 +108,9 @@ void aStar( dataStore *data, position *end) {
 					positionListAdd(data,&tmp_element->n_pos);
 					tmp_element=tmp_element->last;
 				}
-				free(zeiger);
+				//free(zeiger);
+				aStarListDelete(open);
+				aStarListDelete(closed);
 				return;
 			}
 			
@@ -110,8 +118,6 @@ void aStar( dataStore *data, position *end) {
 		
 	}
 	
-	
-
 }
 
 //Fuegt hinten an die Liste das Element pos_add an.
@@ -125,10 +131,7 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
 		}
-		/*if((data->player.next =calloc(1,sizeof(struct positiřon))) == NULL) {
-			printf("Kein Speicherplatz vorhanden fuer position\n");
-			return;
-		}*/
+		
 		memcpy(data->player.anfang,pos_add,sizeof(struct position));
 		data->player.anfang->next=NULL;
 		//data->player.next=data->player.anfang;
@@ -140,25 +143,12 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 			printf("Kein Speicherplatz vorhanden fuer position\n");
 			return;
 		}
-		/*if((data->player.next->next =calloc(1,sizeof(struct position))) == NULL) {
-			printf("MEM::pathfinding::42\n");
-			return;
-		}
-		memcpy(data->player.next->next,pos_add,sizeof(struct position));
-		if(DEBUG)printf("data->player.next x: %d y: %d\n",data->player.next->x,data->player.next->y);
-		if(DEBUG)printf("data->player.next->next x: %d y: %d\n",data->player.next->next->x,data->player.next->next->y);
-		data->player.next = data->player.next->next;
-		data->player.next->next=NULL;
-		*/
 		memcpy(zeiger,data->player.anfang,sizeof(struct position));
 		memcpy(data->player.anfang,pos_add,sizeof(struct position));
 		data->player.anfang->next=zeiger;
-		
-		free(zeiger);
-
 	}
-	//printf("Position added x: %d y: %d\n",data->player.next->x,data->player.next->y);
-	printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
+	
+	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
 
 void positionListDelete( dataStore *data) {
@@ -183,7 +173,7 @@ void positionListDelete( dataStore *data) {
  position *positionListRead( dataStore *data) {
 	printdb("Start ListRead\n");
 
-	struct position *result,*tmp;
+	struct position *result;
 
 	if(data->player.anfang==NULL) {
 		printf("Die Liste ist Leer\n");
@@ -217,12 +207,12 @@ pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack) {
 	
 	if(stack==pfNode_list) {
 		if(list == NULL) {
-			if((list =calloc(1,sizeof(struct pfNode))) == NULL) {
+			/*if((list =calloc(1,sizeof(struct pfNode))) == NULL) {
 				printf("MEM::pathfinding::173");
 				return list;
-			}
+			}*/
 			list=node_add;
-			list->list=NULL;
+			//list->list=NULL;
 			if(DBPATH)printf("Node added to list x: %d y: %d\n",list->n_pos.x,list->n_pos.y);
 			return list;
 		} else {
@@ -301,5 +291,67 @@ int aStarManhatten(position start, position end){
 	if(x<0)x*=(-1);
 	if(y<0)y*=(-1);
 	
-	return (x+y);
+	return ((x+y)*AVGASTAR);
+}
+
+pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack){
+	pfNode *tmp=list;
+	
+	if(tmp!=NULL){
+		if(stack==pfNode_list) {
+			if(tmp->list!=NULL){
+				while(tmp->list!=NULL) {
+					if(tmp->list->n_pos.x != node_remove->n_pos.x || tmp->list->n_pos.y != node_remove->n_pos.y){
+						tmp=tmp->list;
+					}
+					else{
+						tmp->list=tmp->list->list;
+						return list;
+					}
+				}
+			}
+			else{
+				if(tmp->n_pos.x == node_remove->n_pos.x && tmp->n_pos.y == node_remove->n_pos.y){
+					
+					return NULL;					
+				}
+			}
+		}
+		else if(stack==pfNode_last) {
+			if(tmp->last!=NULL){
+				while(tmp->last!=NULL) {
+					if(tmp->last->n_pos.x != node_remove->n_pos.x || tmp->last->n_pos.y != node_remove->n_pos.y){
+						tmp=tmp->last;
+					}
+					else{
+						tmp->last=tmp->last->last;
+						return list;
+					}
+				}
+			}
+			else{
+				if(tmp->n_pos.x == node_remove->n_pos.x && tmp->n_pos.y == node_remove->n_pos.y){
+					return NULL;					
+				}
+			}
+		}
+	}
+	
+	return list;
+}
+
+void aStarListDelete(pfNode *list) {
+	printf("\nDelete List\n\n");
+	struct pfNode *zeiger, *zeiger1;
+
+	if(list != NULL) {
+
+		zeiger=list->list;
+		while(zeiger != NULL) {
+			zeiger1=zeiger->list;
+			free(zeiger);
+			zeiger=zeiger1;
+		}
+		free(list);		
+	}
 }

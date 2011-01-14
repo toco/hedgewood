@@ -67,7 +67,7 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	return 1;
 }
 					
-void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
+void graphicLoop(SDL_Surface *l_screen,dataStore *data){
 	int done=0;
 	SDL_Event event;
 	struct position *mouse_pos=NULL,*tmp=NULL;
@@ -84,13 +84,12 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 						printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 						mouse_pos=pixelToGrid(mouse_pos);
 						if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
-						data->player.p_pos.x=mouse_pos->x;
-						data->player.p_pos.y=mouse_pos->y+=data->verticalScroll;
+						
+						mouse_pos->y+=data->verticalScroll;
 						if(DBPATH) aStar(data,mouse_pos);
 						else positionListAdd(data,mouse_pos);
 						
 						if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
-						verticalScrollPos(data);
 						updateGraphics(l_screen, data);
 						free(mouse_pos);
 						break;
@@ -99,14 +98,17 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 					/* Any keypress quits the app... */
 						switch( event.key.keysym.sym )
 					{
-						case SDLK_o:
+						case SDLK_r:
 							if((tmp =calloc(1,sizeof(struct position))) == NULL) {
-								printf("MEM::pathfinding::42\n");
+								printf("MEM::graphicUpdate::104\n");
 								return;
 							}
 							tmp=positionListRead(data);
 							if(tmp!=NULL){
 								printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
+								data->player.p_pos=(*tmp);
+								verticalScrollPos(data);
+								updateGraphics(l_screen,data);
 								free(tmp);
 							};
 							
@@ -130,11 +132,12 @@ void graphicLoop(SDL_Surface *l_screen, struct dataStore *data){
 			}
 }
 
-struct position *pixelToGrid(struct position *l_pos){
+struct position *pixelToGrid(position *l_pos){
 	int gridsize=50;
 	struct position *pos=malloc(sizeof(struct position));
 	pos->x=(l_pos->x)/gridsize;
 	pos->y=(l_pos->y)/gridsize;
+	pos->next=NULL;
 	return pos;
 }
 struct position *gridToPixel(struct position *l_pos){

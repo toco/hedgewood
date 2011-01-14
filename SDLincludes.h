@@ -46,8 +46,13 @@
 #define WINDOWHEIGTH 600
 #define WINDOWBPP 32
 
-#define DEBUG 1
-#define DBPATH 0
+#define DEBUG 0
+#define DBPATH 1
+
+#define AVGASTAR 25
+#define FIELDSIZE_X 16
+#define FIELDSIZE_Y 24
+#define FIELDSIZE_FIELD 50
 
 
 #endif
