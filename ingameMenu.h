@@ -9,7 +9,9 @@
 
 #ifndef INGAMEMENU_H
 #define INGAMEMENU_H
+#ifndef SDLINCLUDES_H
 #include "SDLincludes.h"
+#endif
 #include "SDLfunctions.h"
 #include "structs.h"
 

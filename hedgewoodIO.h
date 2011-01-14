@@ -12,7 +12,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef SDLINCLUDES_H
 #include "SDLincludes.h"
+#endif
 #include "structs.h"
 
 
