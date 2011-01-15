@@ -67,72 +67,85 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	return 1;
 }
 					
-void graphicLoop(SDL_Surface *l_screen,dataStore *data){
-	int done=0;
+void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
+	int done=0,i=0;
 	SDL_Event event;
 	position home;
 	home.x=7;
 	home.y=1;
 	struct position *mouse_pos=NULL,*tmp=NULL;
-			
-			while (!done) {
-				/* Check for events */
-				while ( SDL_PollEvent(&event) ) {
-					switch (event.type) {
-						
-					case SDL_MOUSEBUTTONDOWN:
-						mouse_pos=calloc(1,sizeof(struct position));
-						SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
-							
-						printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
-						mouse_pos=pixelToGrid(mouse_pos);
-						if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
-						
-						mouse_pos->y+=data->verticalScroll;
-						if(DBPATH) aStar(data,mouse_pos);
-						else positionListAdd(data,mouse_pos);
-						
-						if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
-						updateGraphics(l_screen, data);
-						free(mouse_pos);
-						break;
-						
-					case SDL_KEYDOWN:
-					/* Any keypress quits the app... */
-						switch( event.key.keysym.sym )
-					{
-						case SDLK_r:
-							if((tmp =calloc(1,sizeof(struct position))) == NULL) {
-								printf("MEM::graphicUpdate::104\n");
-								return;
+	while (!done) {
+		/* Check for events */
+		while ( SDL_PollEvent(&event) ) {
+			switch (event.type) {
+			case SDL_MOUSEBUTTONDOWN:
+				mouse_pos=calloc(1,sizeof(struct position));
+				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
+				printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+				mouse_pos=pixelToGrid(mouse_pos);
+				if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+				mouse_pos->y+=data->verticalScroll;
+				if(DBPATH) aStar(data,mouse_pos);
+				else positionListAdd(data,mouse_pos);
+				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
+				updateGraphics(l_screen, data);
+				free(mouse_pos);
+				break;
+			case SDL_KEYDOWN:
+				/* Any keypress quits the app... */
+				switch( event.key.keysym.sym ) {
+				case SDLK_r:
+					if((tmp =calloc(1,sizeof(struct position))) == NULL) {
+						printf("MEM::graphicUpdate::104\n");
+						return;
+					}
+					i=1;
+					SDL_Delay(250);
+					while(tmp!=NULL&&i) {
+						while ( SDL_PollEvent(&event) ) {
+							switch (event.type) {
+							case SDL_KEYDOWN:
+								switch( event.key.keysym.sym ) {
+								case SDLK_r:
+									i=0;
+									break;
+								default:
+									break;
+								}
+							default:
+								break;
 							}
-							tmp=positionListRead(data);
-							if(tmp!=NULL){
+							
+						}
+						tmp=positionListRead(data);
+						if(tmp!=NULL) {
 								printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
 								headPositionUpdate(data,tmp);
 								updateGraphics(l_screen,data);
-								free(tmp);
-							};
-							break;
-						case SDLK_h:
-							aStar(data,&home);
-							break;
-						case SDLK_ESCAPE:
-							ingameMenuStart(l_screen, data);
-							updateGraphics(l_screen, data);
-							break;
-						case SDLK_q:
-							done = 1;
-							break;
-						default:
-							break;
-					}	
-						break;
-					default:
-						break;
+								SDL_Delay(250);
+						}
 					}
+					free(tmp);
+					break;
+				case SDLK_h:
+					aStar(data,&home);
+					break;
+				case SDLK_ESCAPE:
+					ingameMenuStart(l_screen, data);
+					updateGraphics(l_screen, data);
+					break;
+				case SDLK_q:
+					done = 1;
+					break;
+				default:
+					break;
 				}
+				break;
+			default:
+				break;
 			}
+		}
+	}
 }
 
 struct position *pixelToGrid(position *l_pos){

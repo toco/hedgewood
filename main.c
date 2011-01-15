@@ -112,7 +112,7 @@ void createRandomField(dataStore *test)
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
-	test->player.vision=4;
+	test->player.vision=2;
 	test->verticalScroll=0;
 }
 void highscoreTestdata(dataStore *store)
