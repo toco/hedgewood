@@ -69,7 +69,18 @@ void createRandomField(dataStore *test)
 	int i,j,k=0;
 	
 	/* testdata for updateGrapics */
-	for(i=0;i<2;i++){
+	for(i=0;i<1;i++){
+		for(j=0;j<16;j++){
+			test->hedgewood[i][j].visible=1;
+			test->hedgewood[i][j].type=-1;
+			if (j==0||j==15)
+				test->hedgewood[i][j].aStarValue=1;
+
+			else
+				test->hedgewood[i][j].aStarValue=-1;
+		}
+	}
+	for(i=1;i<2;i++){
 		for(j=0;j<16;j++){
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=-1;
