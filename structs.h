@@ -57,7 +57,7 @@ typedef struct highscoreElement
 typedef struct dataStore{
     //pointer auf 2D Array welches das Spielfeld enthält
 	//Zeile 0-1 sind der Startbereich
-    field hedgewood[24][16];
+    field hedgewood[FIELDSIZE_Y][FIELDSIZE_X];
     struct person player;
     //Aktuell oberste sichtbar Zeile im Array
     int verticalScroll;

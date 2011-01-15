@@ -44,6 +44,8 @@ SDL_Surface* initSDL()
 		SDL_Quit();
 		exit(2);
 	}
+	
+	SDL_WM_SetCaption(GAMENAME, NULL );
 
 	
 	return screen;
