@@ -39,11 +39,11 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 			if(startzone){
 //				if(DEBUG)printf("Startzone\n");
 				src.x = 50*i;
-				src.y = 50*j;
+				src.y = 50*(j+scrollposition);
 			}
 			else{
 //				if(DEBUG)printf("Field\n");
-				src.x = 50*data->hedgewood[j+scrollposition][i].type;
+				src.x = 50*data->hedgewood[j+scrollposition][i].type*data->hedgewood[j+scrollposition][i].visible;
 				src.y = 0;
 			}
 			

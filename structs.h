@@ -6,6 +6,7 @@ typedef struct field{
     int currency;
 	//-1 := nicht begehbar
 	int aStarValue;
+
     int type;
 	//0 := Verdeckt			nicht begehbar
 	//1 := linker Zaun		nicht begehbar
@@ -41,6 +42,7 @@ typedef struct person{
 	int heading;
     int maxEnergy;
     int currentEnergy;
+	int vision;
 	struct position *anfang;
 }person;
 

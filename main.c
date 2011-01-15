@@ -31,15 +31,15 @@ void makeTestData(dataStore *test)
 		}
 	}
 	for(i=2;i<24;i++){
-		test->hedgewood[i][0].visible=1;
+		test->hedgewood[i][0].visible=0;
 		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
-		test->hedgewood[i][15].visible=1;
+		test->hedgewood[i][15].visible=0;
 		test->hedgewood[i][15].type=2;
 		test->hedgewood[i][15].aStarValue=-1;
 	}
 	for(i=1;i<15;i++){
-		test->hedgewood[23][i].visible=1;
+		test->hedgewood[23][i].visible=0;
 		test->hedgewood[23][i].type=3;
 		test->hedgewood[23][i].aStarValue=-1;
 		
@@ -48,7 +48,7 @@ void makeTestData(dataStore *test)
 	for(i=2;i<23;i++){
 		k=0;
 		for(j=1;j<15;j++){
-			test->hedgewood[i][j].visible=1;
+			test->hedgewood[i][j].visible=0;
 			test->hedgewood[i][j].type=(k%4)+4;
 			test->hedgewood[i][j].aStarValue=((k%4)+1)*10;
 			k++;
@@ -59,6 +59,7 @@ void makeTestData(dataStore *test)
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
+	test->player.vision=1;
 	test->verticalScroll=0;
 	
 }
