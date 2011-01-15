@@ -21,6 +21,7 @@ void makeTestData(dataStore *test)
 
 {
 	int i,j,k=0;
+	
 
 	/* testdata for updateGrapics */
 	for(i=0;i<2;i++){
@@ -66,8 +67,8 @@ void makeTestData(dataStore *test)
 
 void createRandomField(dataStore *test)
 {
-	int i,j,k=0;
-	
+	int i,j,k=0,r;
+	double fortschritt,sand,mittel,leicht,schwer,tmp;
 	/* testdata for updateGrapics */
 	for(i=0;i<2;i++){
 		for(j=0;j<16;j++){
@@ -89,22 +90,55 @@ void createRandomField(dataStore *test)
 		test->hedgewood[FIELDSIZE_Y-1][i].type=3;
 		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 	}
-	srand (2);
+	
+	srand (1);
 	for(i=2;i<FIELDSIZE_Y-1;i++){
+		fortschritt = (double)i/(double)FIELDSIZE_Y;
 		for(j=1;j<FIELDSIZE_X-1;j++){
-			k=rand()%4+4;
+			
+			leicht = 0.8 - fortschritt*2;
+			sand = 0.2 -fortschritt/10;
+			if (leicht > 0.30) {
+				
+				mittel = 1 - leicht -sand;
+				schwer=0;
+				
+			} else if(leicht >=0 && leicht <=0.3) {
+
+				mittel = 1- leicht -sand;
+				schwer=0;				
+			} else if(leicht <0 && leicht >=-0.95){
+				
+				mittel = 0.95 +leicht ;
+				schwer = 1 - mittel -sand;
+				if(schwer<0){
+					mittel+=schwer;
+					schwer = 1 - mittel -sand;
+				}
+				leicht=0.05;
+			}
+			else{
+				schwer=1-sand -0.1;
+				mittel=0.05;
+				leicht=0.05;
+			}
+			tmp=sand+leicht+mittel+schwer;
+			r=rand()%100+1;
 			if(i==2)test->hedgewood[i][j].visible=1;
 			else test->hedgewood[i][j].visible=0;
-			test->hedgewood[i][j].type=(k%4)+4;
-			if (k==4)
-				k=1;
-			else if(k==5)
-				k=10;
-			else if(k==6)
-				k=20;
-			else if(k==7)
-				k=30;
-			test->hedgewood[i][j].aStarValue=k;
+			
+			
+			if (r<sand*100)
+				k=4;
+			else if(r>sand*100&&r<sand*100+leicht*100)
+				k=5;
+			else if(r>sand*100+leicht*100&&r<sand*100+leicht*100+mittel*100)
+				k=6;
+			else{
+				k=7;
+			}
+			test->hedgewood[i][j].type=k;
+			test->hedgewood[i][j].aStarValue=(k-4)*10+1;
 		}
 	}
 	test->player.p_pos.x=7;
@@ -112,7 +146,7 @@ void createRandomField(dataStore *test)
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
-	test->player.vision=2;
+	test->player.vision=6;
 	test->player.maxEnergy=1000;
 	test->player.currentEnergy=1000; 
 	test->verticalScroll=0;
@@ -159,3 +193,5 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
+
+
