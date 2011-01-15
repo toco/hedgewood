@@ -6,15 +6,17 @@ typedef struct field{
     int currency;
 	//-1 := nicht begehbar
 	int aStarValue;
-	
-	//0 := Verdeckt
-	//1 := Bach
-	//2 := Sand
-	//3 := leichter Busch
-	//4 := mittel Busch
-	//5 := harter Busch
-	//-1 := Startzone
+
     int type;
+	//0 := Verdeckt			nicht begehbar
+	//1 := linker Zaun		nicht begehbar
+	//2 := rechter Zaun		nicht begehbar
+	//3 := Bach				nicht begehbar
+	//4 := Sand				sStarValue 1
+	//5 := leichter Busch	sStarValue 10
+	//6 := mittlerer Busch	sStarValue 20
+	//7 := fester Busch		sStarValue 30
+	//-1 := Startzone		sStarValue 0
 }field;
 
 typedef struct position{
