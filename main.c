@@ -94,13 +94,13 @@ void createRandomField(dataStore *test)
 			k=rand()%4+4;
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=(k%4)+4;
-			if (k=4)
+			if (k==4)
 				k=1;
-			else if(k=5)
+			else if(k==5)
 				k=10;
-			else if(k=6)
+			else if(k==6)
 				k=20;
-			else if(k=7)
+			else if(k==7)
 				k=30;
 			test->hedgewood[i][j].aStarValue=k;
 		}

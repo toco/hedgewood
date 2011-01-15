@@ -151,7 +151,7 @@ int drawButton (SDL_Surface *destinationSurface, myButton *button)
 
 	SDL_Surface *message;
 	TTF_Font *font = buttonFont();
-	SDL_Color textColor = { 255, 255, 255,NULL};
+	SDL_Color textColor = { 255, 255, 255,0};
 	if (!(message = TTF_RenderText_Blended( font, button->name, textColor )))
 	{
 		printf("%s\n",TTF_GetError());

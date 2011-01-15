@@ -84,9 +84,7 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
-	
-	int windowed = 1;
-	
+		
 	done = 0;
 	while ( !done ) {
 		
@@ -116,7 +114,7 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 								quitSDL();
 								exit(0);
 							}
-
+							
 						}
 					}
 					break;
@@ -124,10 +122,6 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 					/* Any keypress quits the app... */
 					switch( event.key.keysym.sym )
 				{
-					case SDLK_f:
-						windowed = toggleFullscreen(screen, windowed);
-						setupMenu(screen,menuData);
-						break;
 						
 					case SDLK_ESCAPE:
 					case SDLK_q:
