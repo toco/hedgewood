@@ -44,14 +44,14 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 	buttons[ LOADGAME_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ LOADGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
 	buttons[ LOADGAME_BUTTON ].name="Load Game";
-	buttons[ LOADGAME_BUTTON ].function=NULL;
+	buttons[ LOADGAME_BUTTON ].function=loadGame;
 	
 	buttons[ QUIT_BUTTON ].rect.y=388;
 	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
 	buttons[ QUIT_BUTTON ].name="Quit";
-	buttons[ QUIT_BUTTON ].function=loadGame;
+	buttons[ QUIT_BUTTON ].function=NULL;
 	
 	displayIngameMenu(screen, data, menuData);
 	ingameMenuLoop(screen, data, menuData);
