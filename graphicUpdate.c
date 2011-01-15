@@ -7,9 +7,10 @@
 #define person_pic "./pictures/person.png"
 
 
-int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
+int updateGraphics(SDL_Surface *l_screen,dataStore *data){
 
 	int i,j,scrollposition=data->verticalScroll,startzone=0;
+	float energy;
 	SDL_Surface *image_start=NULL,*image_field=NULL,*image_person=NULL;
 	SDL_Rect src, dst;
 
@@ -60,7 +61,18 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	dst.x = FIELDSIZE_FIELD*data->player.p_pos.x;
 	dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition);
 	dst.w = dst.h = FIELDSIZE_FIELD;
+	
 	SDL_BlitSurface(image_person, &src, l_screen, &dst);
+	
+	src.x=dst.x = 25;
+	src.y=dst.y = 25;
+	dst.w = 200;
+	src.h=dst.h = 25;
+	energy=200*(((float)data->player.currentEnergy)/((float)data->player.maxEnergy));
+	src.w = energy;
+	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 64, 0, 0,255));
+	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255, 64, 64,150));
+	
     SDL_Flip(l_screen);
 	SDL_FreeSurface(image_person);
 			
@@ -68,7 +80,7 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 }
 					
 void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
-	int done=0,i=0;
+	int done=0,i=0,aVal;
 	SDL_Event event;
 	position home;
 	home.x=7;
@@ -121,8 +133,12 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 						if(tmp!=NULL) {
 								printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
 								headPositionUpdate(data,tmp);
+								aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
+								SDL_Delay(aVal*30+100);
+								data->player.currentEnergy-=aVal;
+								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=4;
+								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=1;
 								updateGraphics(l_screen,data);
-								SDL_Delay(250);
 						}
 					}
 					free(tmp);
