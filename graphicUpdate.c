@@ -155,7 +155,7 @@ void verticalScrollPos(struct dataStore *data){
 	else verticalScroll=12;
 
 	data->verticalScroll=verticalScroll;
-	printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
+	if(DEBUG)printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }
 
 void headPositionUpdate(dataStore *data,position *newPos){
