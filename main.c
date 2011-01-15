@@ -93,7 +93,8 @@ void createRandomField(dataStore *test)
 	for(i=2;i<23;i++){
 		for(j=1;j<15;j++){
 			k=rand()%4+4;
-			test->hedgewood[i][j].visible=1;
+			if(i==2)test->hedgewood[i][j].visible=1;
+			else test->hedgewood[i][j].visible=0;
 			test->hedgewood[i][j].type=(k%4)+4;
 			if (k==4)
 				k=1;

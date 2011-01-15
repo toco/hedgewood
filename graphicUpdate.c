@@ -160,14 +160,22 @@ void verticalScrollPos(struct dataStore *data){
 
 void headPositionUpdate(dataStore *data,position *newPos){
 	position old=data->player.p_pos,n_pos=(*newPos);
-	
-	int x=0,y=0;
+	int x=0,y=0,vis=data->player.vision,i,j;
 	x=old.x-n_pos.x;
 	y=old.y-n_pos.y;
 	if(x<0)data->player.heading=1;
 	if(x>0)data->player.heading=3;
 	if(y<0)data->player.heading=2;
 	if(y>0)data->player.heading=0;
+	for(i=-1; i<=1;i++) {
+		for(j=-1; j<=1;j++) {
+		if(y>0 && i<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+		if(x<0 && j>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+		if(y<0 && i>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+		if(x>0 && j<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+		}
+	}
+	
 	data->player.p_pos=n_pos;
 	verticalScrollPos(data);
 }
