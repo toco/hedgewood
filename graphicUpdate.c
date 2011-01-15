@@ -26,24 +26,24 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 				exit(1);
 	}
 	
-	src.w =src.h = 50;	
-	dst.w = dst.h = 50;
+	src.w =src.h = FIELDSIZE_FIELD;	
+	dst.w = dst.h = FIELDSIZE_FIELD;
 	for(j=0;j<12;j++){
-		dst.y = 50*j;
+		dst.y = FIELDSIZE_FIELD*j;
 		if(data->hedgewood[j+scrollposition][1].type==-1)startzone=1;
 		else startzone=0;
 		
 		for(i=0;i<16;i++){
-			dst.x = 50*i;
+			dst.x = FIELDSIZE_FIELD*i;
 			
 			if(startzone){
 //				if(DEBUG)printf("Startzone\n");
-				src.x = 50*i;
-				src.y = 50*(j+scrollposition);
+				src.x = FIELDSIZE_FIELD*i;
+				src.y = FIELDSIZE_FIELD*(j+scrollposition);
 			}
 			else{
 //				if(DEBUG)printf("Field\n");
-				src.x = 50*data->hedgewood[j+scrollposition][i].type*data->hedgewood[j+scrollposition][i].visible;
+				src.x = FIELDSIZE_FIELD*data->hedgewood[j+scrollposition][i].type*data->hedgewood[j+scrollposition][i].visible;
 				src.y = 0;
 			}
 			
@@ -54,12 +54,12 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 	}
 	SDL_FreeSurface(image_start);
 	SDL_FreeSurface(image_field);
-	src.x = 50*data->player.heading;
+	src.x = FIELDSIZE_FIELD*data->player.heading;
 	src.y = 0;
-	src.w =src.h = 50;
-	dst.x = 50*data->player.p_pos.x;
-	dst.y = 50*(data->player.p_pos.y-scrollposition);
-	dst.w = dst.h = 50;
+	src.w =src.h = FIELDSIZE_FIELD;
+	dst.x = FIELDSIZE_FIELD*data->player.p_pos.x;
+	dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition);
+	dst.w = dst.h = FIELDSIZE_FIELD;
 	SDL_BlitSurface(image_person, &src, l_screen, &dst);
     SDL_Flip(l_screen);
 	SDL_FreeSurface(image_person);
@@ -70,6 +70,9 @@ int updateGraphics(SDL_Surface *l_screen, struct dataStore *data){
 void graphicLoop(SDL_Surface *l_screen,dataStore *data){
 	int done=0;
 	SDL_Event event;
+	position home;
+	home.x=7;
+	home.y=1;
 	struct position *mouse_pos=NULL,*tmp=NULL;
 			
 			while (!done) {
@@ -110,8 +113,9 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data){
 								updateGraphics(l_screen,data);
 								free(tmp);
 							};
-							
-							
+							break;
+						case SDLK_h:
+							aStar(data,&home);
 							break;
 						case SDLK_ESCAPE:
 							ingameMenuStart(l_screen, data);
@@ -132,18 +136,17 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data){
 }
 
 struct position *pixelToGrid(position *l_pos){
-	int gridsize=50;
+
 	struct position *pos=malloc(sizeof(struct position));
-	pos->x=(l_pos->x)/gridsize;
-	pos->y=(l_pos->y)/gridsize;
+	pos->x=(l_pos->x)/FIELDSIZE_FIELD;
+	pos->y=(l_pos->y)/FIELDSIZE_FIELD;
 	pos->next=NULL;
 	return pos;
 }
 struct position *gridToPixel(struct position *l_pos){
-	int gridsize=50;
 	struct position *pos=malloc(sizeof(struct position));
-	pos->x=(l_pos->x)*gridsize+25;
-	pos->y=(l_pos->y)*gridsize+25;
+	pos->x=(l_pos->x)*FIELDSIZE_FIELD+25;
+	pos->y=(l_pos->y)*FIELDSIZE_FIELD+25;
 	return pos;
 }
 
@@ -151,8 +154,8 @@ void verticalScrollPos(struct dataStore *data){
 	int verticalScroll,verticalPos=data->player.p_pos.y;
 	
 	if(verticalPos<7)verticalScroll=0;
-	else if (verticalPos>6 && verticalPos<19 )verticalScroll=verticalPos-6;
-	else verticalScroll=12;
+	else if (verticalPos>6 && verticalPos<FIELDSIZE_Y-5 )verticalScroll=verticalPos-6;
+	else verticalScroll=FIELDSIZE_Y-12;
 
 	data->verticalScroll=verticalScroll;
 	if(DEBUG)printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
@@ -167,8 +170,8 @@ void headPositionUpdate(dataStore *data,position *newPos){
 	if(x>0)data->player.heading=3;
 	if(y<0)data->player.heading=2;
 	if(y>0)data->player.heading=0;
-	for(i=-1; i<=1;i++) {
-		for(j=-1; j<=1;j++) {
+	for(i=-vis; i<=vis;i++) {
+		for(j=-vis; j<=vis;j++) {
 		if(y>0 && i<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
 		if(x<0 && j>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
 		if(y<0 && i>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;

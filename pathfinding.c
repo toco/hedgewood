@@ -72,7 +72,7 @@ void aStar( dataStore *data, position *end) {
 					}
 					tmp_element->n_pos=tmp_pos[i] ;
 					if(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].visible==1)aStarVal=(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].aStarValue);
-					else aStarVal=AVGASTAR;
+					else aStarVal=AVGASTAR*3;
 					if((aStarListSearchBool(closed,tmp_element)==NULL) &&  !(aStarVal<0)) {
 						if(aStarListSearchBool(open,tmp_element)==NULL) {
 							tmp_element->last=zeiger;

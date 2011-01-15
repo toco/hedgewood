@@ -51,7 +51,7 @@
 
 #define AVGASTAR 5
 #define FIELDSIZE_X 16
-#define FIELDSIZE_Y 24
+#define FIELDSIZE_Y 100
 #define FIELDSIZE_FIELD 50
 
 
