@@ -33,11 +33,13 @@
 
 void aStar( dataStore *data, position *end) {
 
+	if(data->hedgewood[end->y][end->x].aStarValue<0)return;
+	else
+	{
 	int suchen=1,i,j,aStarVal;
 	pfNode *open=NULL;
 	pfNode *closed=NULL ;
 	pfNode *zeiger;
-	//pfNode *tmp=NULL;
 	pfNode *tmp_element;
 	
 	position start = data->player.p_pos;
@@ -51,12 +53,6 @@ void aStar( dataStore *data, position *end) {
 	}
 	
 	zeiger->n_pos=start;
-	/*macht calloc schon
-	 * zeiger->F=0;
-	zeiger->G=0;
-	zeiger->H=0;
-	zeiger->last=NULL;
-	zeiger->list=NULL;*/
 	open=zeiger;
 
 	while(suchen) {
@@ -83,7 +79,8 @@ void aStar( dataStore *data, position *end) {
 				return;
 			}
 			tmp_element->n_pos=tmp_pos[i] ;
-			aStarVal=(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].aStarValue);
+			if(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].visible==1)aStarVal=(data->hedgewood[tmp_pos[i].y][tmp_pos[i].x].aStarValue);
+			else aStarVal=AVGASTAR;
 			
 			if((aStarListSearchBool(closed,tmp_element)==NULL) &&  !(aStarVal<0)){
 				if(aStarListSearchBool(open,tmp_element)==NULL){
@@ -116,6 +113,8 @@ void aStar( dataStore *data, position *end) {
 			
 		}
 		
+	}
+	
 	}
 	
 }
