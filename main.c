@@ -102,36 +102,32 @@ void createRandomField(dataStore *test)
 		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 	}
 	
-	srand (1);
+	srand (356745667);
 	for(i=2;i<FIELDSIZE_Y-1;i++){
 		fortschritt = (double)i/(double)FIELDSIZE_Y;
 		for(j=1;j<FIELDSIZE_X-1;j++){
 			
-			leicht = 0.8 - fortschritt*2;
-			sand = 0.2 -fortschritt/10;
-			if (leicht > 0.30) {
-				
-				mittel = 1 - leicht -sand;
-				schwer=0;
-				
-			} else if(leicht >=0 && leicht <=0.3) {
-
-				mittel = 1- leicht -sand;
-				schwer=0;				
-			} else if(leicht <0 && leicht >=-0.95){
-				
-				mittel = 0.95 +leicht ;
-				schwer = 1 - mittel -sand;
-				if(schwer<0){
-					mittel+=schwer;
-					schwer = 1 - mittel -sand;
+			sand = 0.2 - fortschritt / 10;
+			if (fortschritt < 0.5) {
+				leicht = 1 - fortschritt * 2;
+				if (leicht < 0.05) leicht = 0.05;
+				mittel = 1 - leicht;
+				if (mittel > sand) {
+					mittel-= sand;
+				} else {
+					leicht -= sand;
 				}
-				leicht=0.05;
-			}
-			else{
-				schwer=1-sand -0.1;
-				mittel=0.05;
-				leicht=0.05;
+				schwer = 0;
+			} else {
+				leicht = 0.05;
+				mittel = 0.95 - (fortschritt-0.5)*2;
+				if (mittel < 0.05) mittel = 0.05;
+				schwer = 1 - mittel;
+				if (schwer > sand) {
+					schwer -= sand;
+				} else {
+					mittel -= sand;
+				}
 			}
 			tmp=sand+leicht+mittel+schwer;
 			r=rand()%100+1;
@@ -141,9 +137,9 @@ void createRandomField(dataStore *test)
 			
 			if (r<sand*100)
 				k=4;
-			else if(r>sand*100&&r<sand*100+leicht*100)
+			else if(r<sand*100+leicht*100)
 				k=5;
-			else if(r>sand*100+leicht*100&&r<sand*100+leicht*100+mittel*100)
+			else if(r<sand*100+leicht*100+mittel*100)
 				k=6;
 			else{
 				k=7;

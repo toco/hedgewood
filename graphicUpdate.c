@@ -201,10 +201,12 @@ void headPositionUpdate(dataStore *data,position *newPos){
 	if(y>0)data->player.heading=0;
 	for(i=-vis; i<=vis;i++) {
 		for(j=-vis; j<=vis;j++) {
-		if(y>0 && i<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
-		if(x<0 && j>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
-		if(y<0 && i>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
-		if(x>0 && j<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+			if(n_pos.y+i>0&&n_pos.y+i<FIELDSIZE_Y &&n_pos.x+i>0&&n_pos.x+i<FIELDSIZE_X){
+				if(y>0 && i<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+				else if(x<0 && j>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+				else if(y<0 && i>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+				else if(x>0 && j<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
+			} 
 		}
 	}
 	
