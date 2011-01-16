@@ -16,6 +16,7 @@
 
 
 #include "main.h"
+#include <time.h>
 
 void makeTestData(dataStore *test)
 
@@ -80,21 +81,29 @@ void createRandomField(dataStore *test)
 		test->hedgewood[i][0].visible=1;
 		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
-		test->hedgewood[i][15].visible=1;
-		test->hedgewood[i][15].type=2;
-		test->hedgewood[i][15].aStarValue=-1;
+		test->hedgewood[i][FIELDSIZE_X-1].visible=1;
+		test->hedgewood[i][FIELDSIZE_X-1].type=2;
+		test->hedgewood[i][FIELDSIZE_X-1].aStarValue=-1;
 	}
 	for(i=1;i<15;i++){
-		test->hedgewood[23][i].visible=1;
-		test->hedgewood[23][i].type=3;
-		test->hedgewood[23][i].aStarValue=-1;
+		test->hedgewood[FIELDSIZE_Y-1][i].visible=1;
+		test->hedgewood[FIELDSIZE_Y-1][i].type=3;
+		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 	}
-	srand (1);
-	for(i=2;i<23;i++){
-		for(j=1;j<15;j++){
-			k=rand()%4+4;
-			test->hedgewood[i][j].visible=1;
-			test->hedgewood[i][j].type=(k%4)+4;
+	srand (time(NULL));
+	for(i=2;FIELDSIZE_Y-1;i++){
+		for(j=1;j<FIELDSIZE_X-1;j++){
+			k=rand()%100+i;
+			test->hedgewood[i][j].visible=0;
+			if (k>=65)
+				k=7;
+			else if(k>=32 && k<65)
+				k=6;
+			else if(k<32)
+				k=5;
+			
+			}
+			test->hedgewood[i][j].type=k;
 			if (k==4)
 				k=1;
 			else if(k==5)
@@ -105,14 +114,20 @@ void createRandomField(dataStore *test)
 				k=30;
 			test->hedgewood[i][j].aStarValue=k;
 		}
-	}
+		
+
+	
+	
 	test->player.p_pos.x=7;
 	test->player.p_pos.y=1;
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
 	test->verticalScroll=0;
-}
+	
+
+	}
+
 void highscoreTestdata(dataStore *store)
 {
 	char *test = "nobody";
