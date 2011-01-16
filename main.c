@@ -97,18 +97,14 @@ void createRandomField(dataStore *test)
 		test->hedgewood[i][FIELDSIZE_X-1].type=2;
 		test->hedgewood[i][FIELDSIZE_X-1].aStarValue=-1;
 	}
-<<<<<<< HEAD
-	for(i=1;i<15;i++){
-=======
+
 	for(i=1;i<FIELDSIZE_X-1;i++){
->>>>>>> 016f0dd05a20d1e42879df35261b24d3cc2963cf
 		test->hedgewood[FIELDSIZE_Y-1][i].visible=1;
 		test->hedgewood[FIELDSIZE_Y-1][i].type=3;
 		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 	}
-<<<<<<< HEAD
 	srand (time(NULL));
-	for(i=2;FIELDSIZE_Y-1;i++){
+	for(i=2;i<FIELDSIZE_Y-1;i++){
 		for(j=1;j<FIELDSIZE_X-1;j++){
 			k=rand()%100+i;
 			test->hedgewood[i][j].visible=0;
@@ -130,55 +126,7 @@ void createRandomField(dataStore *test)
 			else if(k==7)
 				k=30;
 			test->hedgewood[i][j].aStarValue=k;
-=======
-	
-	srand (356745667);
-	for(i=2;i<FIELDSIZE_Y-1;i++){
-		fortschritt = (double)i/(double)FIELDSIZE_Y;
-		for(j=1;j<FIELDSIZE_X-1;j++){
-			
-			sand = 0.2 - fortschritt / 10;
-			if (fortschritt < 0.5) {
-				leicht = 1 - fortschritt * 2;
-				if (leicht < 0.05) leicht = 0.05;
-				mittel = 1 - leicht;
-				if (mittel > sand) {
-					mittel-= sand;
-				} else {
-					leicht -= sand;
-				}
-				schwer = 0;
-			} else {
-				leicht = 0.05;
-				mittel = 0.95 - (fortschritt-0.5)*2;
-				if (mittel < 0.05) mittel = 0.05;
-				schwer = 1 - mittel;
-				if (schwer > sand) {
-					schwer -= sand;
-				} else {
-					mittel -= sand;
-				}
-			}
-			tmp=sand+leicht+mittel+schwer;
-			r=rand()%100+1;
-			if(i==2)test->hedgewood[i][j].visible=1;
-			else test->hedgewood[i][j].visible=0;
-			
-			
-			if (r<sand*100)
-				k=4;
-			else if(r<sand*100+leicht*100)
-				k=5;
-			else if(r<sand*100+leicht*100+mittel*100)
-				k=6;
-			else{
-				k=7;
-			}
-			test->hedgewood[i][j].type=k;
-			test->hedgewood[i][j].aStarValue=(k-4)*10+1;
->>>>>>> 016f0dd05a20d1e42879df35261b24d3cc2963cf
-		}
-		
+	}
 
 	
 	
