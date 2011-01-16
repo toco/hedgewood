@@ -118,13 +118,15 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 	
 	int windowed = 1;
 	
+	unsigned int startTime, stopTime, diffTime;
+	unsigned int innerStartTime, innerStopTime;
+
 	done = 0;
 	while ( !done ) {
-
+		startTime = SDL_GetTicks();
 		/* Check for events */
 		while ( SDL_PollEvent(&event) ) {
-
-			
+			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
 					
 				case SDL_MOUSEMOTION:
@@ -169,8 +171,19 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 				default:
 					break;
 		}
+			
+			innerStopTime = SDL_GetTicks();
+			diffTime=(innerStopTime-innerStartTime);
+			//25 Frames per second (40 Milliseconds per frame)
+			if (40>diffTime) 
+				SDL_Delay(40-diffTime);
+		}
+		stopTime = SDL_GetTicks();
+		diffTime = (stopTime-startTime);
+		//25 Frames per second (40 Milliseconds per frame)
+		if (40>diffTime) 
+			SDL_Delay(40-diffTime);
 
-		}		
 	}
 	return 0;
 }

@@ -22,6 +22,7 @@ void makeTestData(dataStore *test)
 
 {
 	int i,j,k=0;
+	
 
 	/* testdata for updateGrapics */
 	for(i=0;i<2;i++){
@@ -31,16 +32,16 @@ void makeTestData(dataStore *test)
 			test->hedgewood[i][j].aStarValue=1;
 		}
 	}
-	for(i=2;i<24;i++){
-		test->hedgewood[i][0].visible=0;
+	for(i=2;i<FIELDSIZE_Y;i++){
+		test->hedgewood[i][0].visible=1;
 		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
-		test->hedgewood[i][15].visible=0;
-		test->hedgewood[i][15].type=2;
-		test->hedgewood[i][15].aStarValue=-1;
+		test->hedgewood[i][FIELDSIZE_X-1].visible=1;
+		test->hedgewood[i][FIELDSIZE_X-1].type=2;
+		test->hedgewood[i][FIELDSIZE_X-1].aStarValue=-1;
 	}
 	for(i=1;i<15;i++){
-		test->hedgewood[23][i].visible=0;
+		test->hedgewood[23][i].visible=1;
 		test->hedgewood[23][i].type=3;
 		test->hedgewood[23][i].aStarValue=-1;
 		
@@ -67,17 +68,28 @@ void makeTestData(dataStore *test)
 
 void createRandomField(dataStore *test)
 {
-	int i,j,k=0;
-	
+	int i,j,k=0,r;
+	double fortschritt,sand,mittel,leicht,schwer,tmp;
 	/* testdata for updateGrapics */
-	for(i=0;i<2;i++){
+	for(i=0;i<1;i++){
+		for(j=0;j<16;j++){
+			test->hedgewood[i][j].visible=1;
+			test->hedgewood[i][j].type=-1;
+			if (j==0||j==15)
+				test->hedgewood[i][j].aStarValue=1;
+
+			else
+				test->hedgewood[i][j].aStarValue=-1;
+		}
+	}
+	for(i=1;i<2;i++){
 		for(j=0;j<16;j++){
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=-1;
 			test->hedgewood[i][j].aStarValue=1;
 		}
 	}
-	for(i=2;i<24;i++){
+	for(i=2;i<FIELDSIZE_Y-1;i++){
 		test->hedgewood[i][0].visible=1;
 		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
@@ -85,11 +97,16 @@ void createRandomField(dataStore *test)
 		test->hedgewood[i][FIELDSIZE_X-1].type=2;
 		test->hedgewood[i][FIELDSIZE_X-1].aStarValue=-1;
 	}
+<<<<<<< HEAD
 	for(i=1;i<15;i++){
+=======
+	for(i=1;i<FIELDSIZE_X-1;i++){
+>>>>>>> 016f0dd05a20d1e42879df35261b24d3cc2963cf
 		test->hedgewood[FIELDSIZE_Y-1][i].visible=1;
 		test->hedgewood[FIELDSIZE_Y-1][i].type=3;
 		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 	}
+<<<<<<< HEAD
 	srand (time(NULL));
 	for(i=2;FIELDSIZE_Y-1;i++){
 		for(j=1;j<FIELDSIZE_X-1;j++){
@@ -113,6 +130,53 @@ void createRandomField(dataStore *test)
 			else if(k==7)
 				k=30;
 			test->hedgewood[i][j].aStarValue=k;
+=======
+	
+	srand (356745667);
+	for(i=2;i<FIELDSIZE_Y-1;i++){
+		fortschritt = (double)i/(double)FIELDSIZE_Y;
+		for(j=1;j<FIELDSIZE_X-1;j++){
+			
+			sand = 0.2 - fortschritt / 10;
+			if (fortschritt < 0.5) {
+				leicht = 1 - fortschritt * 2;
+				if (leicht < 0.05) leicht = 0.05;
+				mittel = 1 - leicht;
+				if (mittel > sand) {
+					mittel-= sand;
+				} else {
+					leicht -= sand;
+				}
+				schwer = 0;
+			} else {
+				leicht = 0.05;
+				mittel = 0.95 - (fortschritt-0.5)*2;
+				if (mittel < 0.05) mittel = 0.05;
+				schwer = 1 - mittel;
+				if (schwer > sand) {
+					schwer -= sand;
+				} else {
+					mittel -= sand;
+				}
+			}
+			tmp=sand+leicht+mittel+schwer;
+			r=rand()%100+1;
+			if(i==2)test->hedgewood[i][j].visible=1;
+			else test->hedgewood[i][j].visible=0;
+			
+			
+			if (r<sand*100)
+				k=4;
+			else if(r<sand*100+leicht*100)
+				k=5;
+			else if(r<sand*100+leicht*100+mittel*100)
+				k=6;
+			else{
+				k=7;
+			}
+			test->hedgewood[i][j].type=k;
+			test->hedgewood[i][j].aStarValue=(k-4)*10+1;
+>>>>>>> 016f0dd05a20d1e42879df35261b24d3cc2963cf
 		}
 		
 
@@ -123,6 +187,9 @@ void createRandomField(dataStore *test)
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
+	test->player.vision=6;
+	test->player.maxEnergy=1000;
+	test->player.currentEnergy=1000; 
 	test->verticalScroll=0;
 	
 
@@ -158,6 +225,7 @@ int main(int argc, char *argv[])
 	saveDataStore(test);
 
 /* just for testing*/
+	
  
 	//makeTestData(test);
 	createRandomField(test);
@@ -170,3 +238,5 @@ int main(int argc, char *argv[])
 	
 	return 0;
 }
+
+

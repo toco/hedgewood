@@ -25,6 +25,7 @@ int saveDataStore(dataStore *data)
 		printf("Error opening File: %s \n",GAMEDATA_PATH);
 	}
 	
+	
 	/*Highscore*/
 	fprintf(dataFile, "!#highscore\n");
 	int i;
@@ -32,6 +33,11 @@ int saveDataStore(dataStore *data)
 		fprintf(dataFile,"%s\t%d\n",data->highscore[i].name,data->highscore[i].points);
 	}
 	
+	/*Person*/
+	fprintf(dataFile, "!#person\n");
+	fprintf(dataFile, "%d\t%d\t%d\t%d\t%d\t\%d\t%d\t%d\n",data->player.p_pos.x,data->player.p_pos.y,data->player.bp.maxVolume,data->player.bp.currentVolume,data->player.heading,data->player.maxEnergy,data->player.currentEnergy,data->player.vision);
+
+	/*fieldArray*/
 	fprintf(dataFile, "!#fieldArray\n");
 	int x,y;
 	for (y=0; y<FIELDSIZE_Y; y++) {
@@ -39,7 +45,7 @@ int saveDataStore(dataStore *data)
 			fprintf(dataFile,"%d\t%d\t%d\t%d\t%d\t%d\n",y,x,data->hedgewood[y][x].visible,data->hedgewood[y][x].currency,data->hedgewood[y][x].aStarValue,data->hedgewood[y][x].type);
 		}
 	}
-	
+
 	fclose(dataFile);
 	printf("Successfully written Game-Data\n");
 	return 1;
@@ -56,9 +62,10 @@ int readDataStore(dataStore *data)
 	}
 	char read[300];
 	memset(read, '\0', sizeof(char)*300);
-	int highscore=0;
-	int fieldArray = 0;
-	int linecounter = 0;
+	int importHighscore=0;
+	int importPerson=0;
+	int importFieldArray=0;
+	int linecounter=0;
 	int tabPos,tabPosOld;
 	int x,y;
 	char *tab = "\t";
@@ -72,29 +79,97 @@ int readDataStore(dataStore *data)
 		memset(tmp, '\0', sizeof(char)*100);
 
 		if (!strcmp(read,"!#highscore\n")) {
-			highscore=1;
-			fieldArray = 0;
-			linecounter = 0;
+			importHighscore=1;
+			importPerson=0;
+			importFieldArray=0;
+			linecounter=0;
 			printf("Import highscore\n");
+			continue;
+		}
+		else if (!strcmp(read,"!#person\n"))
+		{
+			importHighscore=0;
+			importPerson=1;
+			importFieldArray=0;
+			printf("Import person\n");
 			continue;
 		}
 		else if (!strcmp(read,"!#fieldArray\n"))
 		{
-			highscore=0;
-			fieldArray=1;
+			importHighscore=0;
+			importPerson=0;
+			importFieldArray=1;
 			printf("Import fieldArray\n");
 			continue;
 		}
 
-		
-		if (highscore==1&&linecounter<10) {
+		/*Import Highscore*/
+		if (importHighscore==1&&linecounter<10) {
 			tabPos = strcspn(read,tab);
 			strncpy(tmp,read,tabPos);
 			strcpy(data->highscore[linecounter].name, tmp);
 			data->highscore[linecounter].points=atoi(&read[tabPos]);
 			linecounter++;
 		}
-		else if(fieldArray==1)
+		/*Import Person*/
+		else if(importPerson==1)
+		{
+			readPtr=&read[0];
+			tabPos=0;
+			/*p_pos x*/
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.p_pos.x=atoi(tmp);
+			/*p_pos y*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.p_pos.y=atoi(tmp);
+			/*maxVolume backpack*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.bp.maxVolume=atoi(tmp);
+			/*currentVolume backpack*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.bp.currentVolume=atoi(tmp);
+			/*heading*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.heading=atoi(tmp);
+			/*maxEnergy*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.maxEnergy=atoi(tmp);
+			/*currentEnergy*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.currentEnergy=atoi(tmp);
+			/*vison*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,newLine);
+			strncpy(tmp,readPtr,tabPos);
+			data->player.vision=atoi(tmp);
+			
+		}
+		else if(importFieldArray==1)
 		{
 			readPtr=&read[0];
 			tabPos=0;
