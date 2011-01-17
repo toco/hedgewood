@@ -27,6 +27,7 @@
 #include "menu.h"
 #include "graphicUpdate.h"
 #include "hedgewoodIO.h"
+#include "gameloop.h"
 
 
 #endif
