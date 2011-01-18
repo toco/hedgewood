@@ -118,8 +118,8 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 	
 	int windowed = 1;
 	
-	unsigned int startTime, stopTime, diffTime;
-	unsigned int innerStartTime, innerStopTime;
+	Uint32 startTime, stopTime, diffTime;
+	Uint32 innerStartTime, innerStopTime;
 
 	done = 0;
 	while ( !done ) {
@@ -175,14 +175,14 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 			innerStopTime = SDL_GetTicks();
 			diffTime=(innerStopTime-innerStartTime);
 			//25 Frames per second (40 Milliseconds per frame)
-			if (40>diffTime) 
-				SDL_Delay(40-diffTime);
+			if (4>diffTime) 
+				SDL_Delay(4-diffTime);
 		}
 		stopTime = SDL_GetTicks();
 		diffTime = (stopTime-startTime);
 		//25 Frames per second (40 Milliseconds per frame)
-		if (40>diffTime) 
-			SDL_Delay(40-diffTime);
+		if (4>diffTime) 
+			SDL_Delay(4-diffTime);
 
 	}
 	return 0;

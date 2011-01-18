@@ -20,9 +20,15 @@ void createRandomField(dataStore *ingame) {
 	}
 	for(i=1; i<FIELDSIZE_X-1; i++) {
 		ingame->hedgewood[FIELDSIZE_Y-1][i].visible=1;
-		ingame->hedgewood[FIELDSIZE_Y-1][i].type=3;
+		ingame->hedgewood[FIELDSIZE_Y-1][i].type=4;
 		ingame->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 	}
+	ingame->hedgewood[FIELDSIZE_Y-1][0].visible=1;
+	ingame->hedgewood[FIELDSIZE_Y-1][0].type=3;
+	ingame->hedgewood[FIELDSIZE_Y-1][0].aStarValue=-1;
+	ingame->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].visible=1;
+	ingame->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].type=5;
+	ingame->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].aStarValue=-1;
 	srand (10);
 	//(unsigned) time(NULL)
 	for(i=2; i<FIELDSIZE_Y-1; i++) {
@@ -33,20 +39,20 @@ void createRandomField(dataStore *ingame) {
 			else ingame->hedgewood[i][j].visible=1;
 			
 			if (k>=100)
-				k=7;
+				k=9;
 			else if(k>=50 && k<100)
-				k=6;
+				k=8;
 			else if(k<50)
-				k=5;
+				k=7;
 		
 		ingame->hedgewood[i][j].type=k;
 		if (k==4)
 			k=1;
-		else if(k==5)
-			k=10;
-		else if(k==6)
-			k=20;
 		else if(k==7)
+			k=10;
+		else if(k==8)
+			k=20;
+		else if(k==9)
 			k=30;
 		ingame->hedgewood[i][j].aStarValue=k;
 		}
@@ -69,6 +75,7 @@ int gameloop(dataStore *ingame,SDL_Surface *screen) {
 	home.x=7;
 	home.y=1;
 	struct position *mouse_pos=NULL,*tmp=NULL;
+	updateGraphics(screen,ingame);
 	while (!done) {
 		while ( SDL_PollEvent(&event) ) {
 			switch (event.type) {
@@ -125,7 +132,7 @@ int gameloop(dataStore *ingame,SDL_Surface *screen) {
 						aVal=ingame->hedgewood[ingame->player.p_pos.y][ingame->player.p_pos.x].aStarValue;
 						SDL_Delay(aVal*30+100);
 						ingame->player.currentEnergy-=aVal;
-						ingame->hedgewood[ingame->player.p_pos.y][ingame->player.p_pos.x].type=4;
+						ingame->hedgewood[ingame->player.p_pos.y][ingame->player.p_pos.x].type=6;
 						ingame->hedgewood[ingame->player.p_pos.y][ingame->player.p_pos.x].aStarValue=1;
 						updateGraphics(screen,ingame);
 					}

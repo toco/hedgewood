@@ -47,7 +47,7 @@
 #define WINDOWBPP 32
 
 #define DEBUG 0
-#define DBPATH 1
+#define DBPATH 0
 
 #define AVGASTAR 5
 #define FIELDSIZE_X 16
