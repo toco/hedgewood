@@ -153,7 +153,7 @@ void positionListDelete( dataStore *data) {
 			free(zeiger);
 			zeiger=zeiger1;
 		}
-		free(data->player.anfang);
+		free(data->player.anfang);http://www.c-plusplus.de/forum/39344
 		
 		data->player.anfang=NULL;
 		

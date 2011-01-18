@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
  
 	//makeTestData(test);
 //	createRandomField(test);
-	updateGraphics(screen,test);
+	//updateGraphics(screen,test);
 //	graphicLoop(screen,test);
 	gameloop(test,screen);
 
