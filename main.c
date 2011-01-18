@@ -16,6 +16,7 @@
 
 
 #include "main.h"
+#include <time.h>
 
 void makeTestData(dataStore *test)
 
@@ -65,6 +66,7 @@ void makeTestData(dataStore *test)
 	
 }
 
+<<<<<<< HEAD
 void createRandomField(dataStore *test)
 {
 	int i,j,k=0,r;
@@ -158,6 +160,9 @@ void createRandomField(dataStore *test)
 	test->player.currentEnergy=1000; 
 	test->verticalScroll=0;
 }
+=======
+
+>>>>>>> torbentest
 void highscoreTestdata(dataStore *store)
 {
 	char *test = "nobody";
@@ -171,6 +176,7 @@ void highscoreTestdata(dataStore *store)
 
 int main(int argc, char *argv[])
 {
+	
 	printf("%s %d",argv[0],argc);
 
 
@@ -191,9 +197,10 @@ int main(int argc, char *argv[])
 	
  
 	//makeTestData(test);
-	createRandomField(test);
-	updateGraphics(screen,test);
-	graphicLoop(screen,test);
+//	createRandomField(test);
+	//updateGraphics(screen,test);
+//	graphicLoop(screen,test);
+	gameloop(test,screen);
 
 
 	quitSDL();
