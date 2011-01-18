@@ -153,7 +153,7 @@ void createRandomField(dataStore *test)
 	test->player.p_pos.next=NULL;
 	test->player.heading=0;
 	test->player.anfang=NULL;
-	test->player.vision=6;
+	test->player.vision=1;
 	test->player.maxEnergy=1000;
 	test->player.currentEnergy=1000; 
 	test->verticalScroll=0;
