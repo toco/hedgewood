@@ -35,7 +35,7 @@ int saveDataStore(dataStore *data)
 	
 	/*Person*/
 	fprintf(dataFile, "!#person\n");
-	fprintf(dataFile, "%d\t%d\t%d\t%d\t%d\t\%d\t%d\t%d\n",data->player.p_pos.x,data->player.p_pos.y,data->player.bp.maxVolume,data->player.bp.currentVolume,data->player.heading,data->player.maxEnergy,data->player.currentEnergy,data->player.vision);
+	fprintf(dataFile, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",data->player.p_pos.x,data->player.p_pos.y,data->player.bp.maxVolume,data->player.bp.currentVolume,data->player.heading,data->player.maxEnergy,data->player.currentEnergy,data->player.vision);
 
 	/*fieldArray*/
 	fprintf(dataFile, "!#fieldArray\n");
