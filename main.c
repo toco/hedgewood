@@ -22,7 +22,6 @@ void makeTestData(dataStore *test)
 
 {
 	int i,j,k=0;
-	
 
 	/* testdata for updateGrapics */
 	for(i=0;i<2;i++){
