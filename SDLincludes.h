@@ -46,6 +46,9 @@
 #define WINDOWHEIGTH 600
 #define WINDOWBPP 32
 
+//250 Frames per second (4 Milliseconds per frame)
+#define MS_FRAMETIME 4
+
 #define DEBUG 0
 #define DBPATH 0
 

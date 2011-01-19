@@ -78,16 +78,20 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 	TTF_CloseFont(font);
 
 //	SDL_FreeSurface(message);
+	unsigned int startTime, stopTime, diffTime;
+	unsigned int innerStartTime, innerStopTime;
+	
 	done = 0;
 	while ( !done ) {
-		
+		startTime = SDL_GetTicks();
 		/* Check for events */
 		while ( SDL_PollEvent(&event) ) {
+			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
 					
 				case SDL_MOUSEMOTION:
 					break;
-				case SDL_MOUSEBUTTONDOWN:
+				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
 					if (isButtonClicked(&button, mouseX, mouseY)) {
@@ -118,7 +122,18 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 				default:
 					break;
 			}
+			innerStopTime = SDL_GetTicks();
+			diffTime=(innerStopTime-innerStartTime);
+			//25 Frames per second (40 Milliseconds per frame)
+			if (MS_FRAMETIME>diffTime) 
+				SDL_Delay(MS_FRAMETIME-diffTime);
 		}
+		stopTime = SDL_GetTicks();
+		diffTime = (stopTime-startTime);
+		//25 Frames per second (40 Milliseconds per frame)
+		if (MS_FRAMETIME>diffTime) 
+			SDL_Delay(MS_FRAMETIME-diffTime);
+		
 	}
 	return 0;
 }
