@@ -43,7 +43,7 @@ int startGame( SDL_Surface *screen, dataStore *data)
 	
 	return 0;
 }
-int menuQuit(SDL_Surface __unused *screen, dataStore __unused *data)
+int menuQuit(SDL_Surface __attribute__((unused)) *screen, dataStore __attribute__((unused)) *data)
 {
 	printf("Quit");
 	return 0;

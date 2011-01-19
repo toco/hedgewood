@@ -160,13 +160,13 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 	
 }
 
-int saveGame(SDL_Surface __unused *screen, dataStore *data)
+int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Save Game\n");
 	saveDataStore(data);
 	return 0;
 }
-int loadGame(SDL_Surface __unused *screen, dataStore *data)
+int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Load Game\n");
 	readDataStore(data);
