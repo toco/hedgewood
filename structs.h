@@ -87,6 +87,7 @@ typedef struct myButton{
 typedef struct menuDataStore
 {
 	myButton *buttons;
+	int buttonCount;
 }menuDataStore;
 
 #endif

@@ -21,8 +21,8 @@ CFLAGS = -g -Wall -Wextra -std=c99 -pedantic
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
 CPRECOMPILER = -save-temps
 
-Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o
+Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o
 
 main.o: main.c main.h SDLincludes.h structs.h hedgewoodIO.o gameloop.o
 	$(CC) $(SDLFLAGS) $(CFLAGS)  -c main.c hedgewoodIO.o gameloop.o
@@ -50,11 +50,15 @@ pathfinding.o: pathfinding.c pathfinding.h SDLincludes.h SDLfunctions.o structs.
 hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c hedgewoodIO.h hedgewoodIO.c
 	
-ingameMenu.o: ingameMenu.h ingameMenu.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c ingameMenu.c SDLfunctions.o hedgewoodIO.o
+ingameMenu.o: ingameMenu.h ingameMenu.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c ingameMenu.c SDLfunctions.o hedgewoodIO.o popUp.p
 	
 gameloop.o: gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
+
+popUp.o: popUp.c popUp.h SDLfunctions.o structs.h
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c popUp.c SDLfunctions.o
+
 
 # Aufruf des Targets "clean" löscht  alle nicht mehr benötigten Dateien
 clean: 

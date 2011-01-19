@@ -16,6 +16,7 @@
 #include "structs.h"
 
 #include "hedgewoodIO.h"
+#include "popUp.h"
 
 #define CONTINUE_BUTTON 0
 #define SAVEGAME_BUTTON 1

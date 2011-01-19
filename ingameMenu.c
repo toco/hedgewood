@@ -65,10 +65,10 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 {
 	/*Background */
-	int width = 400, height = 350;
-	SDL_Rect background = {screen->clip_rect.w/2-width/2,screen->clip_rect.h/2-height/2,width,height};
+//	int width = 400, height = 350;
+//	SDL_Rect background = {screen->clip_rect.w/2-width/2,screen->clip_rect.h/2-height/2,width,height};
 	
-	SDL_FillRect( screen, &background, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 	
 	int buttonID;
 	
@@ -163,12 +163,19 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Save Game\n");
-	saveDataStore(data);
+	if (saveDataStore(data))
+	{
+		
+	}
+	popUp(screen, "Successfully saved game!", "OK", NULL);
+	
 	return 0;
 }
 int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Load Game\n");
 	readDataStore(data);
+	popUp(screen, "Successfully loaded game!", "OK", NULL);
+	
 	return 0;
 }

@@ -34,6 +34,8 @@ SDL_Surface* initSDL()
 		exit(1);
 	}
 	
+	
+	
 
 	/* Set 640x480 video mode */
 	screen=SDL_SetVideoMode(WINDOWWIDTH,WINDOWHEIGTH, video_bpp, videoflags);
