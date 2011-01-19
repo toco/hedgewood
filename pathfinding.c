@@ -32,7 +32,7 @@
 
 
 void aStar( dataStore *data, position *end) {
-	if(data->hedgewood[end->y][end->x].aStarValue<0)return;
+	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue<0)return;
 	else {
 		int suchen=1,i,j,aStarVal;
 		pfNode *open=NULL;
@@ -116,6 +116,7 @@ void aStar( dataStore *data, position *end) {
 void positionListAdd(dataStore *data,  position *pos_add) {
 
 	struct position *zeiger=NULL;
+	pos_add->next=NULL;
 
 	if(data->player.anfang == NULL) {
 
@@ -144,6 +145,14 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 
 void positionListDelete( dataStore *data) {
 	struct position *zeiger, *zeiger1;
+	if((zeiger=calloc(1,sizeof(struct position))) == NULL) {
+			printf("Kein Speicherplatz vorhanden fuer position\n");
+			return;
+	}
+	if((zeiger1=calloc(1,sizeof(struct position))) == NULL) {
+			printf("Kein Speicherplatz vorhanden fuer position\n");
+			return;
+	}
 
 	if(data->player.anfang != NULL) {
 
@@ -156,7 +165,8 @@ void positionListDelete( dataStore *data) {
 		free(data->player.anfang);
 		
 		data->player.anfang=NULL;
-		
+		free(zeiger1);
+		free(zeiger);
 	}
 }
 

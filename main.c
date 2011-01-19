@@ -120,7 +120,7 @@ void highscoreTestdata(dataStore *store) {
 }
 int main(int argc, char *argv[]) {
 	printf("%s %d",argv[0],argc);
-	dataStore *test = malloc(sizeof(dataStore));
+	dataStore *test = calloc(1,sizeof(dataStore));
 	highscoreTestdata(test);
 	SDL_Surface* screen=initSDL();
 	readDataStore(test);
