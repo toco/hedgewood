@@ -65,7 +65,7 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	return 1;
 }
 void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
-	clock_t startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=1000;
+	clock_t startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=500;
 	clock_t innerStartTime, innerStopTime;
 	printf("Clocks: %d\n",(int)CLOCKS_PER_SEC);
 	int done=0,i=0,aVal,motionPath=0,runPath=0;
@@ -161,6 +161,7 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 					break;
 				case SDLK_h:
 					aStar(data,&home);
+					runPath=1;
 					break;
 				case SDLK_p:
 					aStarPathPrint(data,l_screen);
@@ -188,7 +189,8 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 		if((mouseTime + mousetimewait)< mT && lastmouse!=0) {
 			motionPath=1;
 		}
-		if(motionPath) {
+		if(motionPath || runPath) {
+			if(motionPath){
 			lastmouse->y+=data->verticalScroll;
 			aStar(data,lastmouse);
 			if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
@@ -197,6 +199,7 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 			free(lastmouse);
 			lastmouse=NULL;
 			motionPath=0;
+			}
 			if(runPath) {
 				if((tmp =calloc(1,sizeof(struct position))) == NULL) {
 					printf("MEM::graphicUpdate::104\n");
@@ -207,6 +210,9 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 				while(tmp!=NULL&&i) {
 					while ( SDL_PollEvent(&event) ) {
 						switch (event.type) {
+						case SDL_MOUSEBUTTONUP:
+						i=0;
+						break;
 						case SDL_KEYDOWN:
 							switch( event.key.keysym.sym ) {
 							case SDLK_r:
