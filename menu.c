@@ -131,7 +131,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 					
 				case SDL_MOUSEMOTION:
 					break;
-				case SDL_MOUSEBUTTONDOWN:
+				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
 					

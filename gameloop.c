@@ -94,8 +94,8 @@ int gameloop(dataStore *ingame,SDL_Surface *screen) {
 				default:
 					break;
 				}
-			case SDL_MOUSEBUTTONDOWN:
-				mouse_pos=calloc(1,sizeof(struct position));
+			case SDL_MOUSEBUTTONDOWN:				
+			mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 				mouse_pos=pixelToGrid(mouse_pos);

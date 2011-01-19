@@ -98,7 +98,7 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 		while ( SDL_PollEvent(&event) ) {
 			innerStartTime = clock();
 			switch (event.type) {
-			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
