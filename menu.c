@@ -43,7 +43,7 @@ int startGame( SDL_Surface *screen, dataStore *data)
 	
 	return 0;
 }
-int menuQuit(SDL_Surface *screen, dataStore *data)
+int menuQuit(SDL_Surface __attribute__((unused)) *screen, dataStore __attribute__((unused)) *data)
 {
 	printf("Quit");
 	return 0;
@@ -118,8 +118,8 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 	
 	int windowed = 1;
 	
-	unsigned int startTime, stopTime, diffTime;
-	unsigned int innerStartTime, innerStopTime;
+	Uint32 startTime, stopTime, diffTime;
+	Uint32 innerStartTime, innerStopTime;
 
 	done = 0;
 	while ( !done ) {
@@ -131,7 +131,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 					
 				case SDL_MOUSEMOTION:
 					break;
-				case SDL_MOUSEBUTTONDOWN:
+				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
 					
@@ -175,14 +175,14 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 			innerStopTime = SDL_GetTicks();
 			diffTime=(innerStopTime-innerStartTime);
 			//25 Frames per second (40 Milliseconds per frame)
-			if (40>diffTime) 
-				SDL_Delay(40-diffTime);
+			if (MS_FRAMETIME>diffTime) 
+				SDL_Delay(MS_FRAMETIME-diffTime);
 		}
 		stopTime = SDL_GetTicks();
 		diffTime = (stopTime-startTime);
 		//25 Frames per second (40 Milliseconds per frame)
-		if (40>diffTime) 
-			SDL_Delay(40-diffTime);
+		if (MS_FRAMETIME>diffTime) 
+			SDL_Delay(MS_FRAMETIME-diffTime);
 
 	}
 	return 0;

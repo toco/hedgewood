@@ -100,7 +100,7 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 					
 				case SDL_MOUSEMOTION:
 					break;
-				case SDL_MOUSEBUTTONDOWN:
+				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
 					
@@ -146,27 +146,27 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 			innerStopTime = SDL_GetTicks();
 			diffTime=(innerStopTime-innerStartTime);
 			//25 Frames per second (40 Milliseconds per frame)
-			if (40>diffTime) 
-				SDL_Delay(40-diffTime);
+			if (MS_FRAMETIME>diffTime) 
+				SDL_Delay(MS_FRAMETIME-diffTime);
 		}
 		stopTime = SDL_GetTicks();
 		diffTime = (stopTime-startTime);
 		//25 Frames per second (40 Milliseconds per frame)
-		if (40>diffTime) 
-			SDL_Delay(40-diffTime);
+		if (MS_FRAMETIME>diffTime) 
+			SDL_Delay(MS_FRAMETIME-diffTime);
 		
 	}
 	return 0;
 	
 }
 
-int saveGame(SDL_Surface *screen, dataStore *data)
+int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Save Game\n");
 	saveDataStore(data);
 	return 0;
 }
-int loadGame(SDL_Surface *screen, dataStore *data)
+int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Load Game\n");
 	readDataStore(data);

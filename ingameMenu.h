@@ -28,7 +28,7 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data);
 int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuData);
 int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData);
 
-int saveGame(SDL_Surface *screen, dataStore *data);
-int loadGame(SDL_Surface *screen, dataStore *data);
+int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data);
+int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data);
 
 #endif

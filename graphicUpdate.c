@@ -2,9 +2,10 @@
 
 
 #include "graphicUpdate.h"
-#define field_pic "./pictures/textur2.1.png"
+#define field_pic "./pictures/textur5.png"
 #define start_pic "./pictures/startzonetest.png"
 #define person_pic "./pictures/person.png"
+#define kreis_pic "./pictures/kreis.png"
 
 
 int updateGraphics(SDL_Surface *l_screen,dataStore *data){
@@ -15,15 +16,15 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data){
 	SDL_Rect src, dst;
 
 	if ((image_start =load_image(start_pic))== NULL) {
-				printf("Can't load image red: %s\n", SDL_GetError());
+				printf("Can't load image start: %s\n", SDL_GetError());
 				exit(1);
 	}
 	if ((image_field=load_image(field_pic)) == NULL) {
-				printf("Can't load image red: %s\n", SDL_GetError());
+				printf("Can't load image field: %s\n", SDL_GetError());
 				exit(1);
 	}
 	if ((image_person=load_image(person_pic)) == NULL) {
-				printf("Can't load image red: %s\n", SDL_GetError());
+				printf("Can't load image person: %s\n", SDL_GetError());
 				exit(1);
 	}
 	
@@ -75,12 +76,17 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data){
 	
     SDL_Flip(l_screen);
 	SDL_FreeSurface(image_person);
-			
+	aStarPathPrint(data,l_screen);		
 	return 1;
 }
 					
 void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
+	clock_t startTime, stopTime, diffTime;
+	clock_t innerStartTime, innerStopTime;
+	printf("Clocks: %d\n",(int)CLOCKS_PER_SEC);
+	
 	int done=0,i=0,aVal;
+	
 	SDL_Event event;
 	position home;
 	home.x=7;
@@ -88,20 +94,22 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 	struct position *mouse_pos=NULL,*tmp=NULL;
 	while (!done) {
 		/* Check for events */
+		startTime = clock();
 		while ( SDL_PollEvent(&event) ) {
+			innerStartTime = clock();
 			switch (event.type) {
-			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 				mouse_pos=pixelToGrid(mouse_pos);
 				if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 				mouse_pos->y+=data->verticalScroll;
-				if(DBPATH) aStar(data,mouse_pos);
-				else positionListAdd(data,mouse_pos);
+				aStar(data,mouse_pos);
 				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 				updateGraphics(l_screen, data);
 				free(mouse_pos);
+				aStarPathPrint(data,l_screen);
 				break;
 			case SDL_KEYDOWN:
 				/* Any keypress quits the app... */
@@ -136,7 +144,7 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 								aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
 								SDL_Delay(aVal*30+100);
 								data->player.currentEnergy-=aVal;
-								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=4;
+								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
 								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=1;
 								updateGraphics(l_screen,data);
 						}
@@ -145,6 +153,9 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 					break;
 				case SDLK_h:
 					aStar(data,&home);
+					break;
+				case SDLK_p:
+					aStarPathPrint(data,l_screen);
 					break;
 				case SDLK_ESCAPE:
 					ingameMenuStart(l_screen, data);
@@ -156,11 +167,26 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 				default:
 					break;
 				}
+				
 				break;
 			default:
 				break;
 			}
+			innerStopTime = clock();
+			diffTime=1000*(innerStopTime-innerStartTime)/CLOCKS_PER_SEC;
+			//25 Frames per second (40 Milliseconds per frame)
+			if (4>diffTime)
+				SDL_Delay(4-diffTime);
+				
 		}
+		stopTime = clock();
+		diffTime = 1000*(stopTime-startTime)/CLOCKS_PER_SEC;
+		//25 Frames per second (40 Milliseconds per frame)
+		if (4>diffTime)
+			
+			SDL_Delay(4-diffTime);	
+	
+		
 	}
 }
 
@@ -172,10 +198,10 @@ struct position *pixelToGrid(position *l_pos){
 	pos->next=NULL;
 	return pos;
 }
-struct position *gridToPixel(struct position *l_pos){
+struct position *gridToPixel(struct position *l_pos,dataStore *data){
 	struct position *pos=malloc(sizeof(struct position));
-	pos->x=(l_pos->x)*FIELDSIZE_FIELD+25;
-	pos->y=(l_pos->y)*FIELDSIZE_FIELD+25;
+	pos->x=(l_pos->x)*FIELDSIZE_FIELD;
+	pos->y=(l_pos->y-data->verticalScroll)*FIELDSIZE_FIELD;
 	return pos;
 }
 
@@ -212,4 +238,32 @@ void headPositionUpdate(dataStore *data,position *newPos){
 	
 	data->player.p_pos=n_pos;
 	verticalScrollPos(data);
+}
+
+void aStarPathPrint(dataStore *data,SDL_Surface *l_screen){
+	
+	SDL_Surface *kreis=NULL;
+	SDL_Rect  src,dst;
+
+	if ((kreis =load_image(kreis_pic))== NULL) {
+				printf("Can't load image start: %s\n", SDL_GetError());
+				exit(1);
+	}
+	position *tmp=data->player.anfang,*tmpPixel;
+	src.w=src.h=dst.w=dst.h=FIELDSIZE_FIELD;
+	while(tmp!=NULL){
+		tmpPixel=gridToPixel(tmp,data);
+		dst.x=tmpPixel->x;
+		dst.y=tmpPixel->y;
+		if(tmp->next==NULL)src.x=50;
+		else src.x=0;
+		src.y=0;
+		if(dst.y>=0)SDL_BlitSurface(kreis, &src, l_screen, &dst);
+		free(tmpPixel);
+		tmp=tmp->next;
+	}
+	SDL_Flip(l_screen);
+	SDL_FreeSurface(kreis);
+	
+	
 }
