@@ -145,14 +145,14 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 
 void positionListDelete( dataStore *data) {
 	struct position *zeiger, *zeiger1;
-	if((zeiger=calloc(1,sizeof(struct position))) == NULL) {
-			printf("Kein Speicherplatz vorhanden fuer position\n");
-			return;
-	}
-	if((zeiger1=calloc(1,sizeof(struct position))) == NULL) {
-			printf("Kein Speicherplatz vorhanden fuer position\n");
-			return;
-	}
+//	if((zeiger=calloc(1,sizeof(struct position))) == NULL) {
+//			printf("Kein Speicherplatz vorhanden fuer position\n");
+//			return;
+//	}
+//	if((zeiger1=calloc(1,sizeof(struct position))) == NULL) {
+//			printf("Kein Speicherplatz vorhanden fuer position\n");
+//			return;
+//	}
 
 	if(data->player.anfang != NULL) {
 
@@ -165,8 +165,8 @@ void positionListDelete( dataStore *data) {
 		free(data->player.anfang);
 		
 		data->player.anfang=NULL;
-		free(zeiger1);
-		free(zeiger);
+//		free(zeiger1);
+//		free(zeiger);
 	}
 }
 

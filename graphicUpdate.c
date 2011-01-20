@@ -59,9 +59,10 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	src.w = energy;
 	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 64, 0, 0,255));
 	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255, 64, 64,150));
-	SDL_Flip(l_screen);
 	SDL_FreeSurface(image_person);
 	aStarPathPrint(data,l_screen);
+	SDL_Flip(l_screen);
+
 	return 1;
 }
 void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
