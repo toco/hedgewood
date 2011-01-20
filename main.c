@@ -24,9 +24,10 @@ void makeTestData(dataStore *test) {
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=-1;
 			if(j==0||j==15||i==0)test->hedgewood[i][j].aStarValue=-1;
-			else test->hedgewood[i][j].aStarValue=0;
-			test->hedgewood[i][j].aStarValue=1;
+			else {
+			test->hedgewood[i][j].aStarValue=0;
 			test->hedgewood[i][j].currency=0;
+			}
 		}
 	}
 	for(i=4; i<FIELDSIZE_Y-1; i++) {
