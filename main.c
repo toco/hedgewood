@@ -20,45 +20,43 @@ void makeTestData(dataStore *test)
 	int i,j,k=0,r;
 	double fortschritt,sand,mittel,leicht,schwer,tmp;
 	/* testdata for updateGrapics */
-	for(i=0; i<1; i++) {
+	for(i=0; i<4; i++) {
 		for(j=0; j<16; j++) {
 			test->hedgewood[i][j].visible=1;
 			test->hedgewood[i][j].type=-1;
-			if (j==0||j==15)
-				test->hedgewood[i][j].aStarValue=1;
-			else
-				test->hedgewood[i][j].aStarValue=-1;
-		}
-	}
-	for(i=1; i<2; i++) {
-		for(j=0; j<16; j++) {
-			test->hedgewood[i][j].visible=1;
-			test->hedgewood[i][j].type=-1;
+			if(j==0||j==15||i==0)test->hedgewood[i][j].aStarValue=-1;
+			else test->hedgewood[i][j].aStarValue=0;
 			test->hedgewood[i][j].aStarValue=1;
+			test->hedgewood[i][j].currency=0;
 		}
 	}
-	for(i=2; i<FIELDSIZE_Y-1; i++) {
+	for(i=4; i<FIELDSIZE_Y-1; i++) {
 		test->hedgewood[i][0].visible=1;
 		test->hedgewood[i][0].type=1;
 		test->hedgewood[i][0].aStarValue=-1;
+		test->hedgewood[i][0].currency=0;
 		test->hedgewood[i][FIELDSIZE_X-1].visible=1;
 		test->hedgewood[i][FIELDSIZE_X-1].type=2;
 		test->hedgewood[i][FIELDSIZE_X-1].aStarValue=-1;
+		test->hedgewood[i][FIELDSIZE_X-1].currency=0;
 	}
 	for(i=1; i<FIELDSIZE_X-1; i++) {
 		test->hedgewood[FIELDSIZE_Y-1][i].visible=1;
 		test->hedgewood[FIELDSIZE_Y-1][i].type=3;
 		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
+		test->hedgewood[FIELDSIZE_Y-1][i].currency=0;
 	}
 	test->hedgewood[FIELDSIZE_Y-1][0].visible=1;
 	test->hedgewood[FIELDSIZE_Y-1][0].type=3;
 	test->hedgewood[FIELDSIZE_Y-1][0].aStarValue=-1;
+	test->hedgewood[FIELDSIZE_Y-1][0].currency=0;
 	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].visible=1;
 	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].type=5;
 	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].aStarValue=-1;
+	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].currency=0;
 	
-	srand (356745667);
-	for(i=2; i<FIELDSIZE_Y-1; i++) {
+	srand (time(0));
+	for(i=4; i<FIELDSIZE_Y-1; i++) {
 		fortschritt = (double)i/(double)FIELDSIZE_Y;
 		for(j=1; j<FIELDSIZE_X-1; j++) {
 			sand = 0.2 - fortschritt / 10;
@@ -97,7 +95,10 @@ void makeTestData(dataStore *test)
 				k=9;
 			}
 			test->hedgewood[i][j].type=k;
-			test->hedgewood[i][j].aStarValue=(k-6)*10+1;
+			test->hedgewood[i][j].aStarValue=(k-6)*10+2;
+			if(r>50)test->hedgewood[i][j].currency=(k-6)*10;
+			else test->hedgewood[i][j].currency=0;
+			
 		}
 	}
 	test->player.p_pos.x=7;
@@ -109,6 +110,9 @@ void makeTestData(dataStore *test)
 	test->player.maxEnergy=1000;
 	test->player.currentEnergy=1000;
 	test->verticalScroll=0;
+	test->player.bp.currentVolume=0;
+	test->player.bp.maxVolume=400;
+	test->player.candystash=0;
 }
 void highscoreTestdata(dataStore *store) {
 	char *test = "nobody";

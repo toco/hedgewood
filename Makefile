@@ -16,7 +16,7 @@
 CC = gcc 
 # Fuer Kompilerflags wird meistens die Konstante CFLAGS definiert
 #CFLAGS = -Wall -Wextra -ansi -pedantic -DPARAUSGABE -O3 -mtune=core2 -march=core2 
-CFLAGS = -g -Wall -Wextra -std=c99 -pedantic
+CFLAGS = -g -pg -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
 CPRECOMPILER = -save-temps
@@ -45,7 +45,6 @@ graphicUpdate.o: graphicUpdate.c graphicUpdate.h pathfinding.o structs.h ingameM
 	
 pathfinding.o: pathfinding.c pathfinding.h SDLincludes.h SDLfunctions.o structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c pathfinding.c SDLfunctions.o
-
 
 hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c hedgewoodIO.h hedgewoodIO.c

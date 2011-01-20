@@ -24,7 +24,7 @@ SDL_Surface* initSDL()
 	Uint32 initflags = SDL_INIT_VIDEO;  /* See documentation for details */
 	SDL_Surface *screen;
 	Uint8  video_bpp = WINDOWBPP;
-	Uint32 videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+	Uint32 videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_HWPALETTE;
 
 	
 	/* Initialize the SDL library */
@@ -37,7 +37,7 @@ SDL_Surface* initSDL()
 	
 	
 
-	/* Set 640x480 video mode */
+	/* Set 800x600 video mode */
 	screen=SDL_SetVideoMode(WINDOWWIDTH,WINDOWHEIGTH, video_bpp, videoflags);
 
 	if (screen == NULL) {
@@ -46,7 +46,6 @@ SDL_Surface* initSDL()
 		SDL_Quit();
 		exit(2);
 	}
-	
 	SDL_WM_SetCaption(GAMENAME, NULL );
 
 	
@@ -73,7 +72,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
     if( windowed)
     {
         //Set the screen to fullscreen
-        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_FULLSCREEN ); /* | SDL_RESIZABLE */
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE | SDL_FULLSCREEN ); /* | SDL_RESIZABLE */
 		
         //If there's an error
         if( screen == NULL )
@@ -89,7 +88,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
     else if( windowed == 0 )
     {
         //Window the screen
-        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE); /* | SDL_RESIZABLE */
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE); /* | SDL_RESIZABLE */
 		
         //If there's an error
         if( screen == NULL )
