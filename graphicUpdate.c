@@ -92,7 +92,7 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	
 	for(i=0;i<3;i+=2){
 	   /*Draw Text */
-        char text[1];
+        char text[50];
 		sprintf(text,"%d IN STASH",(data->player.candystash));
 		
         SDL_Surface *message;
@@ -114,7 +114,7 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	}
 	for(i=0;i<3;i+=2){
 	   /*Draw Text */
-        char text[1];
+        char text[50];
 		sprintf(text,"%d von %d",data->player.bp.currentVolume,data->player.bp.maxVolume);
 		
         SDL_Surface *message;
