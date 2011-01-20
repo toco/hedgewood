@@ -20,7 +20,7 @@
 
 int inHighscore(int points, dataStore *data)
 {
-	if (points>data->highscore[9])
+	if (points>data->highscore[9].points)
 		return 1;
 	else
 		return 0;
