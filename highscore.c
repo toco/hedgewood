@@ -18,6 +18,14 @@
 
 #include "highscore.h"
 
+int inHighscore(int points, dataStore *data)
+{
+	if (points>data->highscore[9].points)
+		return 1;
+	else
+		return 0;
+}
+
 
 int displayHighscore(SDL_Surface *screen, dataStore *data)
 {
