@@ -30,11 +30,9 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 		for(i=0; i<16; i++) {
 			dst.x = FIELDSIZE_FIELD*i;
 			if(startzone) {
-//				if(DEBUG)printf("Startzone\n");
 				src.x = FIELDSIZE_FIELD*i;
 				src.y = FIELDSIZE_FIELD*(j+scrollposition);
 			} else {
-//				if(DEBUG)printf("Field\n");
 				src.x = FIELDSIZE_FIELD*data->hedgewood[j+scrollposition][i].type*data->hedgewood[j+scrollposition][i].visible;
 				src.y = 0;
 			}
@@ -125,40 +123,6 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 				/* Any keypress quits the app... */
 				switch( event.key.keysym.sym ) {
 				case SDLK_r:
-				/*	if((tmp =calloc(1,sizeof(struct position))) == NULL) {
-						printf("MEM::graphicUpdate::104\n");
-						return;
-					}
-					i=1;
-					SDL_Delay(250);
-					while(tmp!=NULL&&i) {
-						while ( SDL_PollEvent(&event) ) {
-							switch (event.type) {
-							case SDL_KEYDOWN:
-								switch( event.key.keysym.sym ) {
-								case SDLK_r:
-									i=0;
-									break;
-								default:
-									break;
-								}
-							default:
-								break;
-							}
-						}
-						tmp=positionListRead(data);
-						if(tmp!=NULL) {
-							printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
-							headPositionUpdate(data,tmp);
-							aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
-							SDL_Delay(aVal*30+100);
-							data->player.currentEnergy-=aVal;
-							data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
-							data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=1;
-							updateGraphics(l_screen,data);
-						}
-					}
-					free(tmp);*/
 					break;
 				case SDLK_h:
 					aStar(data,&home);
@@ -202,12 +166,9 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 			motionPath=0;
 			}
 			if(runPath) {
-				if((tmp =calloc(1,sizeof(struct position))) == NULL) {
-					printf("MEM::graphicUpdate::104\n");
-					return;
-				}
 				i=1;
 				SDL_Delay(250);
+				tmp=data->player.anfang;
 				while(tmp!=NULL&&i) {
 					while ( SDL_PollEvent(&event) ) {
 						switch (event.type) {
@@ -238,7 +199,7 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 						updateGraphics(l_screen,data);
 					}
 				}
-				free(tmp);
+				
 				runPath=0;
 			}
 		}
@@ -255,12 +216,7 @@ position *pixelToGrid(position *l_pos) {
 	pos->next=NULL;
 	return pos;
 }
-position *gridToPixel( position *l_pos,dataStore *data) {
-	position *pos=calloc(1,sizeof( position));
-	pos->x=(l_pos->x)*FIELDSIZE_FIELD;
-	pos->y=(l_pos->y-data->verticalScroll)*FIELDSIZE_FIELD;
-	return pos;
-}
+
 void verticalScrollPos( dataStore *data) {
 	int verticalScroll,verticalPos=data->player.p_pos.y;
 	if(verticalPos<7)verticalScroll=0;
@@ -298,17 +254,16 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 		printf("Can't load image start: %s\n", SDL_GetError());
 		exit(1);
 	}
-	position *tmp=data->player.anfang,*tmpPixel;
+	position *tmp=data->player.anfang; 
 	src.w=src.h=dst.w=dst.h=FIELDSIZE_FIELD;
 	while(tmp!=NULL) {
-		tmpPixel=gridToPixel(tmp,data);
-		dst.x=tmpPixel->x;
-		dst.y=tmpPixel->y;
+		
+		dst.x=tmp->x*FIELDSIZE_FIELD;
+		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD;
 		if(tmp->next==NULL)src.x=50;
 		else src.x=0;
 		src.y=0;
 		if(dst.y>=0)SDL_BlitSurface(kreis, &src, l_screen, &dst);
-		free(tmpPixel);
 		tmp=tmp->next;
 	}
 	SDL_Flip(l_screen);
