@@ -4,9 +4,13 @@
 typedef struct field{
     int visible;
     int currency;
-	//-1 := nicht begehbar
+	//1-10 wenig
+	//11-20 mittel
+	//21-30 viel		
+	
 	int aStarValue;
-
+	//-1 := nicht begehbar
+	
     int type;
 	//0 := Verdeckt			nicht begehbar
 	//1 := linker Zaun		nicht begehbar
@@ -39,6 +43,7 @@ typedef struct person{
 	 * 2: DOWN
 	 * 3: LEFT
 	 */
+	int candystash;
 	int heading;
     int maxEnergy;
     int currentEnergy;

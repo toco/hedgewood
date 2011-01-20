@@ -4,11 +4,12 @@
 #define start_pic "./pictures/startzonetest.png"
 #define person_pic "./pictures/person.png"
 #define kreis_pic "./pictures/kreis.png"
+#define candy_pic "./pictures/zuckerstangen.png"
 int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	int i,j,scrollposition=data->verticalScroll,startzone=0;
 	float energy;
-	SDL_Surface *image_start=NULL,*image_field=NULL,*image_person=NULL;
-	SDL_Rect src, dst;
+	SDL_Surface *image_start=NULL,*image_field=NULL,*image_person=NULL,*image_candy=NULL;
+	SDL_Rect src, dst, src2;
 	if ((image_start =load_image(start_pic))== NULL) {
 		printf("Can't load image start: %s\n", SDL_GetError());
 		exit(1);
@@ -18,6 +19,10 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 		exit(1);
 	}
 	if ((image_person=load_image(person_pic)) == NULL) {
+		printf("Can't load image person: %s\n", SDL_GetError());
+		exit(1);
+	}
+	if ((image_candy=load_image(candy_pic)) == NULL) {
 		printf("Can't load image person: %s\n", SDL_GetError());
 		exit(1);
 	}
@@ -37,11 +42,21 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 				src.y = 0;
 			}
 			if(startzone)SDL_BlitSurface(image_start, &src, l_screen, &dst);
-			else SDL_BlitSurface(image_field, &src, l_screen, &dst);
+			else {
+				SDL_BlitSurface(image_field, &src, l_screen, &dst);
+				//print candy
+				if(data->hedgewood[j+scrollposition][i].currency > 0 && src.x>0) {
+					src2=src;
+					src2.x=50*((data->hedgewood[j+scrollposition][i].currency-1)/10);
+					SDL_BlitSurface(image_candy, &src2, l_screen, &dst);
+				}
+			}
 		}
 	}
 	SDL_FreeSurface(image_start);
 	SDL_FreeSurface(image_field);
+	SDL_FreeSurface(image_candy);
+	//print Person
 	src.x = FIELDSIZE_FIELD*data->player.heading;
 	src.y = 0;
 	src.w =src.h = FIELDSIZE_FIELD;
@@ -49,25 +64,87 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition);
 	dst.w = dst.h = FIELDSIZE_FIELD;
 	SDL_BlitSurface(image_person, &src, l_screen, &dst);
-	src.x=dst.x = 25;
-	src.y=dst.y = 25;
-	dst.w = 200;
-	src.h=dst.h = 25;
+	//print energy bar
+	src.x= 25;
+	dst.x = 23;
+	src.y=25;
+	dst.y = 23;
+	dst.w = 204;
+	src.h=25;
+	dst.h = 29;
 	energy=200*(((float)data->player.currentEnergy)/((float)data->player.maxEnergy));
 	src.w = energy;
-	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 64, 0, 0,255));
-	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255, 64, 64,150));
+	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 0,0, 0,255));
+	dst.x = 573;
+	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 0,0, 0,255));
+	dst.x = 25;
+	dst.y += 2;
+	dst.w -= 4;
+	dst.h -= 4;
+	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 255, 115, 0,255));
+	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255,201, 0,255));
+	//print candy bar
+	src.x=dst.x = 575;
+	energy=200*(((float)data->player.bp.currentVolume)/((float)data->player.bp.maxVolume));
+	src.w = energy;
+	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 160, 32, 64,255));
+	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255, 128, 192,255));
+	
+	for(i=0;i<3;i+=2){
+	   /*Draw Text */
+        char text[1];
+		sprintf(text,"%d IN STASH",(data->player.candystash));
+		
+        SDL_Surface *message;
+        TTF_Font *font = arialFont(20);
+        SDL_Color textColor = { 255*i, 255*i, 255*i,0};
+        if (!(message = TTF_RenderText_Blended( font, text, textColor )))
+        {
+                printf("%s\n",TTF_GetError());
+                return 1;
+        }
+        TTF_CloseFont(font);
+        SDL_Rect textRect = {275-i,22-i,0,0};
+        if(0!=SDL_BlitSurface( message, NULL, l_screen, &textRect))
+        {
+                printf("%s\n",SDL_GetError());
+                return 1;
+        }
+        SDL_FreeSurface(message);
+	}
+	for(i=0;i<3;i+=2){
+	   /*Draw Text */
+        char text[1];
+		sprintf(text,"%d von %d",data->player.bp.currentVolume,data->player.bp.maxVolume);
+		
+        SDL_Surface *message;
+        TTF_Font *font = arialFont(10);
+        SDL_Color textColor = { 255*i, 255*i, 255*i,0};
+        if (!(message = TTF_RenderText_Blended( font, text, textColor )))
+        {
+                printf("%s\n",TTF_GetError());
+                return 1;
+        }
+        TTF_CloseFont(font);
+        SDL_Rect textRect = {687-i,29-i,0,0};
+        if(0!=SDL_BlitSurface( message, NULL, l_screen, &textRect))
+        {
+                printf("%s\n",SDL_GetError());
+                return 1;
+        }
+        SDL_FreeSurface(message);
+	}
+	//end
 	SDL_FreeSurface(image_person);
 	aStarPathPrint(data,l_screen);
 	SDL_Flip(l_screen);
-
 	return 1;
 }
 void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 	clock_t startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=500;
 	clock_t innerStartTime, innerStopTime;
 	printf("Clocks: %d\n",(int)CLOCKS_PER_SEC);
-	int done=0,i=0,aVal,motionPath=0,runPath=0;
+	int done=0,i=0,aVal,motionPath=0,runPath=0,drawPath=0;
 	SDL_Event event;
 	position home,*lastmouse=NULL;
 	home.x=7;
@@ -84,15 +161,18 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				mouse_pos=pixelToGrid(mouse_pos);
 				if(lastmouse!=NULL) {
-					if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)mouseTime=SDL_GetTicks();
+					if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)mouseTime=SDL_GetTicks(),drawPath=1;
 					else {
-						mT=SDL_GetTicks();
-						if((mouseTime + mousetimewait)< mT) {
-							motionPath=1;
+						if(drawPath) {
+							mT=SDL_GetTicks();
+							if((mouseTime + mousetimewait)< mT) {
+								motionPath=1;
+							}
 						}
 					}
 				} else {
 					mouseTime = SDL_GetTicks();
+					drawPath=1;
 					if((lastmouse=calloc(1,sizeof(position))) == NULL) {
 						printf("Kein Speicherplatz vorhanden fuer position\n");
 						return;
@@ -120,7 +200,6 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 				runPath=1;
 				break;
 			case SDL_KEYDOWN:
-				/* Any keypress quits the app... */
 				switch( event.key.keysym.sym ) {
 				case SDLK_r:
 					break;
@@ -155,15 +234,16 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 			motionPath=1;
 		}
 		if(motionPath || runPath) {
-			if(motionPath){
-			lastmouse->y+=data->verticalScroll;
-			aStar(data,lastmouse);
-			if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
-			updateGraphics(l_screen, data);
-			aStarPathPrint(data,l_screen);
-			free(lastmouse);
-			lastmouse=NULL;
-			motionPath=0;
+			if(motionPath) {
+				lastmouse->y+=data->verticalScroll;
+				aStar(data,lastmouse);
+				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
+				updateGraphics(l_screen, data);
+				aStarPathPrint(data,l_screen);
+				free(lastmouse);
+				lastmouse=NULL;
+				motionPath=0;
+				drawPath=0;
 			}
 			if(runPath) {
 				i=1;
@@ -173,8 +253,8 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 					while ( SDL_PollEvent(&event) ) {
 						switch (event.type) {
 						case SDL_MOUSEBUTTONUP:
-						i=0;
-						break;
+							i=0;
+							break;
 						case SDL_KEYDOWN:
 							switch( event.key.keysym.sym ) {
 							case SDLK_r:
@@ -193,13 +273,16 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 						headPositionUpdate(data,tmp);
 						aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
 						SDL_Delay(aVal*30+100);
+						if(aVal>0){
 						data->player.currentEnergy-=aVal;
 						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
-						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=1;
+						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=2;
+						data->player.bp.currentVolume+=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency;
+						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency=0;
+						}
 						updateGraphics(l_screen,data);
 					}
 				}
-				
 				runPath=0;
 			}
 		}
@@ -216,7 +299,6 @@ position *pixelToGrid(position *l_pos) {
 	pos->next=NULL;
 	return pos;
 }
-
 void verticalScrollPos( dataStore *data) {
 	int verticalScroll,verticalPos=data->player.p_pos.y;
 	if(verticalPos<7)verticalScroll=0;
@@ -244,6 +326,14 @@ void headPositionUpdate(dataStore *data,position *newPos) {
 			}
 		}
 	}
+	if(n_pos.y==2){
+		if(n_pos.x==7)data->player.currentEnergy=data->player.maxEnergy;
+		else if(n_pos.x==13){
+		data->player.candystash+=data->player.bp.currentVolume;
+		data->player.bp.currentVolume=0;
+		printf("CANDYSTASH: %d\n",data->player.candystash);
+		}	
+	}
 	data->player.p_pos=n_pos;
 	verticalScrollPos(data);
 }
@@ -254,10 +344,9 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 		printf("Can't load image start: %s\n", SDL_GetError());
 		exit(1);
 	}
-	position *tmp=data->player.anfang; 
+	position *tmp=data->player.anfang;
 	src.w=src.h=dst.w=dst.h=FIELDSIZE_FIELD;
 	while(tmp!=NULL) {
-		
 		dst.x=tmp->x*FIELDSIZE_FIELD;
 		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD;
 		if(tmp->next==NULL)src.x=50;

@@ -93,7 +93,6 @@ void aStar( dataStore *data, position *end) {
 					zeiger=zeiger->last;
 				}
 				aStarListDelete(open);
-				//aStarListDelete(closed);
 				return;
 			}
 		}
@@ -104,22 +103,11 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 	struct position *zeiger=NULL;
 	pos_add->next=NULL;
 	if(data->player.anfang == NULL) {
-		/*	if((data->player.anfang =calloc(1,sizeof(position))) == NULL) {
-				printf("Kein Speicherplatz vorhanden fuer position\n");
-				return;
-			}
-			memcpy(data->player.anfang,pos_add,sizeof(struct position));*/
 		data->player.anfang=pos_add;
 		data->player.anfang->next=NULL;
 		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 	} else {
-		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);
-		/*	if((zeiger=calloc(1,sizeof(struct position))) == NULL) {
-				printf("Kein Speicherplatz vorhanden fuer position\n");
-				return;
-			}
-			memcpy(zeiger,data->player.anfang,sizeof(struct position));
-			memcpy(,sizeof(struct position));*/
+		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);		
 		zeiger=data->player.anfang;
 		data->player.anfang=pos_add;
 		data->player.anfang->next=zeiger;
