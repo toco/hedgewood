@@ -17,7 +17,7 @@
 #include <time.h>
 void makeTestData(dataStore *test)
 {
-	int i,j,k=0,r;
+	int i,j,k=0,r,r_currency;
 	double fortschritt,sand,mittel,leicht,schwer,tmp;
 	/* testdata for updateGrapics */
 	for(i=0; i<4; i++) {
@@ -96,8 +96,19 @@ void makeTestData(dataStore *test)
 			}
 			test->hedgewood[i][j].type=k;
 			test->hedgewood[i][j].aStarValue=(k-6)*10+2;
-			if(r>50)test->hedgewood[i][j].currency=(k-6)*10;
-			else test->hedgewood[i][j].currency=0;
+			if (r<=50)
+				r_currency=0;                                
+		else if (r<=60)
+				r_currency=1;
+		else if (r_currency<=70)
+				r_currency=3;
+		else if (r<=80)
+				r_currency=6;
+		else if (r<=90)
+				r_currency=7;
+		else 
+			r_currency= 10;                            
+		test->hedgewood[i][j].currency=(k-6)*r_currency;
 			
 		}
 	}
