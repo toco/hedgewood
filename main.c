@@ -15,8 +15,7 @@
  */
 #include "main.h"
 #include <time.h>
-void makeTestData(dataStore *test)
-{
+void makeTestData(dataStore *test) {
 	int i,j,k=0,r,r_currency;
 	double fortschritt,sand,mittel,leicht,schwer,tmp;
 	/* testdata for updateGrapics */
@@ -42,7 +41,7 @@ void makeTestData(dataStore *test)
 	}
 	for(i=1; i<FIELDSIZE_X-1; i++) {
 		test->hedgewood[FIELDSIZE_Y-1][i].visible=1;
-		test->hedgewood[FIELDSIZE_Y-1][i].type=3;
+		test->hedgewood[FIELDSIZE_Y-1][i].type=4;
 		test->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 		test->hedgewood[FIELDSIZE_Y-1][i].currency=0;
 	}
@@ -54,7 +53,6 @@ void makeTestData(dataStore *test)
 	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].type=5;
 	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].aStarValue=-1;
 	test->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].currency=0;
-	
 	srand (time(0));
 	for(i=4; i<FIELDSIZE_Y-1; i++) {
 		fortschritt = (double)i/(double)FIELDSIZE_Y;
@@ -83,7 +81,7 @@ void makeTestData(dataStore *test)
 			}
 			tmp=sand+leicht+mittel+schwer;
 			r=rand()%100+1;
-			if(i==2)test->hedgewood[i][j].visible=1;
+			if(i==4)test->hedgewood[i][j].visible=1;
 			else test->hedgewood[i][j].visible=0;
 			if (r<sand*100)
 				k=6;
@@ -97,19 +95,18 @@ void makeTestData(dataStore *test)
 			test->hedgewood[i][j].type=k;
 			test->hedgewood[i][j].aStarValue=(k-6)*10+2;
 			if (r<=50)
-				r_currency=0;                                
-		else if (r<=60)
-				r_currency=1;
-		else if (r_currency<=70)
-				r_currency=3;
-		else if (r<=80)
+				r_currency=0;
+			else if (r<=60)
 				r_currency=6;
-		else if (r<=90)
+			else if (r_currency<=70)
 				r_currency=7;
-		else 
-			r_currency= 10;                            
-		test->hedgewood[i][j].currency=(k-6)*r_currency;
-			
+			else if (r<=80)
+				r_currency=8;
+			else if (r<=90)
+				r_currency=9;
+			else
+				r_currency= 10;
+			test->hedgewood[i][j].currency=(k-6)*r_currency;
 		}
 	}
 	test->player.p_pos.x=7;
