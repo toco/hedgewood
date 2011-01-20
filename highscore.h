@@ -15,7 +15,10 @@
 #include "structs.h"
 #include "SDLfunctions.h"
 
-
+/*returns 1 if points are higher than the last rank in highscore*/
+int inHighscore(int points, dataStore *data);
+/*Displays the Highscore fullscreen*/
+/*needs redraw when returned*/
 int displayHighscore(SDL_Surface *screen, dataStore *data);
 
 
