@@ -20,17 +20,18 @@
 #include "SDLincludes.h"
 #include "SDLfunctions.h"
 #include "pathfinding.h"
+
 void aStar( dataStore *data, position *end) {
 	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue<0)return;
 	else {
 		int suchen=1,i,j,aStarVal;
-		pfNode *open=NULL;
-		pfNode *closed=NULL ;
-		pfNode *zeiger=NULL;
-		pfNode *tmp_element=NULL;
+		pfNode *open=NULL,*closed=NULL,*zeiger=NULL,*tmp_element=NULL;
 		position start = data->player.p_pos;
+		
 		positionListDelete(data);
+		
 		position tmp_pos[4];
+		
 		if ((zeiger = calloc(1,sizeof(struct pfNode)))==NULL) {
 			printf("MEM::pathfinding::35");
 			return;
@@ -98,6 +99,7 @@ void aStar( dataStore *data, position *end) {
 		}
 	}
 }
+
 //Fuegt hinten an die Liste das Element pos_add an.
 void positionListAdd(dataStore *data,  position *pos_add) {
 	struct position *zeiger=NULL;
@@ -114,6 +116,7 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 	}
 	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
+
 void positionListDelete( dataStore *data) {
 	struct position *zeiger, *zeiger1;
 	if(data->player.anfang != NULL) {
@@ -126,6 +129,7 @@ void positionListDelete( dataStore *data) {
 		data->player.anfang=NULL;
 	}
 }
+
 //liest die obere Position des Stacks und entfernt diesen
 position *positionListRead( dataStore *data) {
 	printdb("Start ListRead\n");
@@ -142,6 +146,7 @@ position *positionListRead( dataStore *data) {
 	if(DEBUG)if(data->player.anfang!=NULL)printf("Position read end x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 	return result;
 }
+
 //stack==1 -> list
 //stack==2 -> last
 pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack) {
@@ -169,6 +174,7 @@ pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack) {
 	}
 	return list;
 }
+
 //sucht den kleinsten F-Wert (erster Fund wird Ausgegeben)
 pfNode *aStarSearchF(pfNode *list) {
 	pfNode *result=list,*tmp=list;
@@ -181,6 +187,7 @@ pfNode *aStarSearchF(pfNode *list) {
 	}
 	return result;
 }
+
 pfNode *aStarListSearchBool(pfNode *list,pfNode *element) {
 	pfNode *tmp=list;
 	while(tmp!=NULL) {
@@ -190,6 +197,7 @@ pfNode *aStarListSearchBool(pfNode *list,pfNode *element) {
 	}
 	return NULL;
 }
+
 int aStarManhatten(position start, position end) {
 	int x=0,y=0;
 	x=end.x-start.x;
@@ -198,6 +206,7 @@ int aStarManhatten(position start, position end) {
 	if(y<0)y*=(-1);
 	return ((x+y)*AVGASTAR);
 }
+
 pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack) {
 	pfNode *tmp=list,*tmp2=NULL;
 	if(tmp!=NULL) {
@@ -228,6 +237,7 @@ pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack) {
 	}
 	return list;
 }
+
 void aStarListDelete(pfNode *list) {
 	struct pfNode *zeiger, *zeiger1;
 	if(list != NULL) {

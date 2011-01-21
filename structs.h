@@ -48,6 +48,7 @@ typedef struct person{
     int maxEnergy;
     int currentEnergy;
 	int vision;
+	float cutSpeed;
 	struct position *anfang;
 }person;
 

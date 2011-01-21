@@ -110,6 +110,7 @@ void createRandomField(dataStore *data) {
 	data->player.candystash=0;
 	data->home.x=7;
 	data->home.y=2;
+	data->player.cutSpeed=1.0;
 	
 }
 
@@ -131,6 +132,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
 			case SDL_MOUSEMOTION:
+			//Prüft ob sich die Maus aus dem 50x50 Feld bewegt hat
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				mouse_pos=pixelToGrid(mouse_pos);
@@ -154,8 +156,10 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				}
 				memcpy(lastmouse,mouse_pos,sizeof(position));
 				free(mouse_pos);
+				
 				break;
 			case SDL_MOUSEBUTTONUP:
+			
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				if(DEBUG)printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
@@ -180,9 +184,6 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				case SDLK_h:
 					aStar(data,&(data->home));
 					runPath=1;
-					break;
-				case SDLK_p:
-					aStarPathPrint(data,screen);
 					break;
 				case SDLK_ESCAPE:
 					ingameMenuStart(screen, data);
@@ -220,9 +221,9 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 			}
 			if(runPath) {
 				i=1;
-				SDL_Delay(250);
-				tmp=data->player.anfang;
+				tmp=data->player.anfang;				
 				while(tmp!=NULL&&i) {
+					//Schleife um die Laufbewegung Abzubrechen
 					while ( SDL_PollEvent(&event) ) {
 						switch (event.type) {
 						case SDL_MOUSEBUTTONUP:
@@ -245,17 +246,26 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 						printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
 						headPositionUpdate(data,tmp);
 						aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
-						SDL_Delay(aVal*30+100);
+						SDL_Delay((aVal*60/data->player.cutSpeed)+100);
+						
 						if(aVal>0){
-						data->player.currentEnergy-=aVal;
-						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
-						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=2;
-						data->player.bp.currentVolume+=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency;
-						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency=0;
+							data->player.currentEnergy-=aVal;
+							if(data->player.currentEnergy<0){
+								printf("YOU ARE DEAD\n NEW GAME\n");
+								return 1;
+							}
+							else {
+								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
+								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=2;
+								data->player.bp.currentVolume+=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency;
+								if(data->player.bp.currentVolume > data->player.bp.maxVolume) data->player.bp.currentVolume=data->player.bp.maxVolume;
+								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency=0;
+							}
 						}
+						
 						GraphicUpdate(screen,data);
 					}
-				}
+				}				
 				runPath=0;
 			}
 		}
