@@ -12,4 +12,4 @@
 
 
 int gameloop(dataStore *ingame,SDL_Surface *screen);
-void createRandomField(dataStore *ingame);
+void createRandomField(dataStore *data);

@@ -68,6 +68,8 @@ typedef struct dataStore{
     int verticalScroll;
 	//Highscore-Array max. 10 Einträge
 	highscoreElement highscore[10];
+	position home;
+	
 }dataStore;
 
 typedef struct pfNode{
