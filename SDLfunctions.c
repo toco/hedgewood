@@ -150,21 +150,40 @@ TTF_Font *arialFont(int size)
 }
 int drawButton (SDL_Surface *destinationSurface, myButton *button)
 {
+	SDL_Rect buttonBorder = button->rect;
+	buttonBorder.h++;
+	buttonBorder.w++;
+	buttonBorder.x--;
+	buttonBorder.y--;
+	SDL_FillRect(destinationSurface, &buttonBorder, SDL_MapRGB( destinationSurface->format, 0xFF, 0xFF, 0xFF ));
+
 	SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x00, 0x00, 0xFF ));
 
 	SDL_Surface *message;
 	TTF_Font *font = buttonFont();
+	SDL_Color blackTextColor = { 0, 0, 0,0};
+	if (!(message = TTF_RenderText_Blended( font, button->name, blackTextColor )))
+	{
+		printf("%s\n",TTF_GetError());
+		return 1;
+	}
+	SDL_Rect textBlack = {button->rect.x+button->rect.w/2-message->w/2+2,button->rect.y+button->rect.h/2-message->h/2+2,0,0};
+	if(0!=SDL_BlitSurface( message, NULL, destinationSurface, &textBlack))
+	{
+		printf("%s\n",SDL_GetError());
+		return 1;
+	}
+	
 	SDL_Color textColor = { 255, 255, 255,0};
 	if (!(message = TTF_RenderText_Blended( font, button->name, textColor )))
 	{
 		printf("%s\n",TTF_GetError());
 		return 1;
 	}
-	TTF_CloseFont(font);
 	SDL_Rect text = {button->rect.x+button->rect.w/2-message->w/2,button->rect.y+button->rect.h/2-message->h/2,0,0};
-	if(0==SDL_BlitSurface( message, NULL, destinationSurface, &text))
-		return 0;
-	else {
+	TTF_CloseFont(font);
+	if(0!=SDL_BlitSurface( message, NULL, destinationSurface, &text))
+	{
 		printf("%s\n",SDL_GetError());
 		return 1;
 	}

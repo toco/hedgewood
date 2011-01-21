@@ -16,7 +16,7 @@
 CC = gcc 
 # Fuer Kompilerflags wird meistens die Konstante CFLAGS definiert
 #CFLAGS = -Wall -Wextra -ansi -pedantic -DPARAUSGABE -O3 -mtune=core2 -march=core2 
-CFLAGS = -g -pg -Wall -Wextra -std=c99 -pedantic
+CFLAGS = -g -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
 CPRECOMPILER = -save-temps
