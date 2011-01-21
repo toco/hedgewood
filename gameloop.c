@@ -208,7 +208,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 		if((mouseTime + mousetimewait)< mT && lastmouse!=0) {
 			motionPath=1;
 		}
-		if(motionPath || runPath) {
+		if((motionPath || runPath) && !done) {
 			if(motionPath) {
 				lastmouse->y+=data->verticalScroll;
 				aStar(data,lastmouse);
