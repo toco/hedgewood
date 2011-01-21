@@ -1,9 +1,13 @@
 #include "SDLincludes.h"
 #include "graphicUpdate.h"
-
+#define field_pic "./pictures/textur5.png"
+#define start_pic "./pictures/startzonetest.png"
+#define person_pic "./pictures/person.png"
+#define kreis_pic "./pictures/kreis.png"
+#define candy_pic "./pictures/zuckerstangen.png"
 
 int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
-	int i,j,scrollposition=data->verticalScroll,startzone=0;
+	int i,j,scrollposition=data->verticalScroll,hSpos=data->horizontalScroll,startzone=0;
 	float energy;
 	SDL_Surface *image_start=NULL,*image_field=NULL,*image_person=NULL,*image_candy=NULL;
 	SDL_Rect src, dst, src2;
@@ -27,24 +31,25 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	dst.w = dst.h = FIELDSIZE_FIELD;
 	for(j=0; j<12; j++) {
 		dst.y = FIELDSIZE_FIELD*j;
-		if(data->hedgewood[j+scrollposition][1].type==-1)startzone=1;
-		else startzone=0;
+		
 		for(i=0; i<16; i++) {
+			if(data->hedgewood[j+scrollposition][i+hSpos].type==-1)startzone=1;
+			else startzone=0;
 			dst.x = FIELDSIZE_FIELD*i;
 			if(startzone) {
-				src.x = FIELDSIZE_FIELD*i;
+				src.x = FIELDSIZE_FIELD*(i+hSpos);
 				src.y = FIELDSIZE_FIELD*(j+scrollposition);
 			} else {
-				src.x = FIELDSIZE_FIELD*data->hedgewood[j+scrollposition][i].type*data->hedgewood[j+scrollposition][i].visible;
+				src.x = FIELDSIZE_FIELD*data->hedgewood[j+scrollposition][i+hSpos].type*data->hedgewood[j+scrollposition][i+hSpos].visible;
 				src.y = 0;
 			}
 			if(startzone)SDL_BlitSurface(image_start, &src, l_screen, &dst);
 			else {
 				SDL_BlitSurface(image_field, &src, l_screen, &dst);
 				//print candy
-				if(data->hedgewood[j+scrollposition][i].currency > 0 && src.x>0) {
+				if(data->hedgewood[j+scrollposition][i+hSpos].currency > 0 && src.x>0) {
 					src2=src;
-					src2.x=50*((data->hedgewood[j+scrollposition][i].currency-1)/10);
+					src2.x=50*((data->hedgewood[j+scrollposition][i+hSpos].currency-1)/10);
 					SDL_BlitSurface(image_candy, &src2, l_screen, &dst);
 				}
 			}
@@ -57,7 +62,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	src.x = FIELDSIZE_FIELD*data->player.heading;
 	src.y = 0;
 	src.w =src.h = FIELDSIZE_FIELD;
-	dst.x = FIELDSIZE_FIELD*data->player.p_pos.x;
+	dst.x = FIELDSIZE_FIELD*(data->player.p_pos.x-hSpos);
 	dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition);
 	dst.w = dst.h = FIELDSIZE_FIELD;
 	SDL_BlitSurface(image_person, &src, l_screen, &dst);
@@ -145,11 +150,16 @@ position *pixelToGrid(position *l_pos) {
 	return pos;
 }
 void verticalScrollPos( dataStore *data) {
-	int verticalScroll,verticalPos=data->player.p_pos.y;
+	int verticalScroll,verticalPos=data->player.p_pos.y,hScroll,hPos=data->player.p_pos.x;
 	if(verticalPos<7)verticalScroll=0;
 	else if (verticalPos>6 && verticalPos<FIELDSIZE_Y-5 )verticalScroll=verticalPos-6;
 	else verticalScroll=FIELDSIZE_Y-12;
 	data->verticalScroll=verticalScroll;
+	if(hPos<9)hScroll=0;
+	else if (hPos>8 && hPos<FIELDSIZE_X-7 )hScroll=hPos-8;
+	else hScroll=FIELDSIZE_X-16;
+	data->horizontalScroll=hScroll;
+	
 	if(DEBUG)printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }
 void headPositionUpdate(dataStore *data,position *newPos) {
@@ -192,7 +202,7 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 	position *tmp=data->player.anfang;
 	src.w=src.h=dst.w=dst.h=FIELDSIZE_FIELD;
 	while(tmp!=NULL) {
-		dst.x=tmp->x*FIELDSIZE_FIELD;
+		dst.x=(tmp->x-data->horizontalScroll)*FIELDSIZE_FIELD;
 		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD;
 		if(tmp->next==NULL)src.x=50;
 		else src.x=0;

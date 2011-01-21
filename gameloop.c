@@ -5,18 +5,7 @@ void createRandomField(dataStore *data) {
 	int i,j,k=0,r,r_currency;
 	double fortschritt,sand,mittel,leicht,schwer,tmp;
 
-	for(i=0; i<4; i++) {
-		for(j=0; j<16; j++) {
-			data->hedgewood[i][j].visible=1;
-			data->hedgewood[i][j].type=-1;
-			if(j==0||j==15||i==0)data->hedgewood[i][j].aStarValue=-1;
-			else {
-			data->hedgewood[i][j].aStarValue=0;
-			data->hedgewood[i][j].currency=0;
-			}
-		}
-	}
-	for(i=4; i<FIELDSIZE_Y-1; i++) {
+	for(i=0; i<FIELDSIZE_Y-1; i++) {
 		data->hedgewood[i][0].visible=1;
 		data->hedgewood[i][0].type=1;
 		data->hedgewood[i][0].aStarValue=-1;
@@ -32,6 +21,12 @@ void createRandomField(dataStore *data) {
 		data->hedgewood[FIELDSIZE_Y-1][i].aStarValue=-1;
 		data->hedgewood[FIELDSIZE_Y-1][i].currency=0;
 	}
+	for(i=0; i<FIELDSIZE_X-1; i++) {
+		data->hedgewood[0][i].visible=1;
+		data->hedgewood[0][i].type=4;
+		data->hedgewood[0][i].aStarValue=-1;
+		data->hedgewood[0][i].currency=0;
+	}
 	data->hedgewood[FIELDSIZE_Y-1][0].visible=1;
 	data->hedgewood[FIELDSIZE_Y-1][0].type=3;
 	data->hedgewood[FIELDSIZE_Y-1][0].aStarValue=-1;
@@ -41,7 +36,7 @@ void createRandomField(dataStore *data) {
 	data->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].aStarValue=-1;
 	data->hedgewood[FIELDSIZE_Y-1][FIELDSIZE_X-1].currency=0;
 	srand (time(0));
-	for(i=4; i<FIELDSIZE_Y-1; i++) {
+	for(i=1; i<FIELDSIZE_Y-1; i++) {
 		fortschritt = (double)i/(double)FIELDSIZE_Y;
 		for(j=1; j<FIELDSIZE_X-1; j++) {
 			sand = 0.2 - fortschritt / 10;
@@ -68,7 +63,7 @@ void createRandomField(dataStore *data) {
 			}
 			tmp=sand+leicht+mittel+schwer;
 			r=rand()%100+1;
-			if(i==4)data->hedgewood[i][j].visible=1;
+			if((i==4 && j<16)||(i<5 && j==16))data->hedgewood[i][j].visible=1;
 			else data->hedgewood[i][j].visible=0;
 			if (r<sand*100)
 				k=6;
@@ -96,21 +91,32 @@ void createRandomField(dataStore *data) {
 			data->hedgewood[i][j].currency=(k-6)*r_currency;
 		}
 	}
+	for(i=0; i<4; i++) {
+		for(j=0; j<16; j++) {
+			data->hedgewood[i][j].visible=1;
+			data->hedgewood[i][j].type=-1;
+			if(j==0||j==FIELDSIZE_X-1||i==0)data->hedgewood[i][j].aStarValue=-1;
+			else data->hedgewood[i][j].aStarValue=0;
+			data->hedgewood[i][j].currency=0;
+			
+		}
+	}
 	data->player.p_pos.x=7;
-	data->player.p_pos.y=1;
+	data->player.p_pos.y=2;
 	data->player.p_pos.next=NULL;
-	data->player.heading=0;
+	data->player.heading=2;
 	data->player.anfang=NULL;
-	data->player.vision=1;
+	data->player.vision=4;
 	data->player.maxEnergy=1000;
 	data->player.currentEnergy=1000;
 	data->verticalScroll=0;
+	data->horizontalScroll=0;
 	data->player.bp.currentVolume=0;
 	data->player.bp.maxVolume=400;
 	data->player.candystash=0;
 	data->home.x=7;
 	data->home.y=2;
-	data->player.cutSpeed=1.0;
+	data->player.cutSpeed=5.0;
 	
 }
 
@@ -211,6 +217,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 		if((motionPath || runPath) && !done) {
 			if(motionPath) {
 				lastmouse->y+=data->verticalScroll;
+				lastmouse->x+=data->horizontalScroll;
 				aStar(data,lastmouse);
 				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 				GraphicUpdate(screen, data);

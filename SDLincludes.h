@@ -30,12 +30,6 @@
 #include "/usr/include/SDL/SDL_ttf.h"
 #endif
 
-#define field_pic "./pictures/textur5.png"
-#define start_pic "./pictures/startzonetest.png"
-#define person_pic "./pictures/person.png"
-#define kreis_pic "./pictures/kreis.png"
-#define candy_pic "./pictures/zuckerstangen.png"
-
 #define GAMENAME "Hedgewood"
 
 #define GAMEDATA_PATH "Hedgewood.dataStore"
@@ -53,14 +47,14 @@
 #define WINDOWBPP 32
 
 //250 Frames per second (4 Milliseconds per frame)
-#define MS_FRAMETIME 10
+#define MS_FRAMETIME 5
 
 #define DEBUG 0
 #define DBPATH 0
 
 #define AVGASTAR 5
-#define FIELDSIZE_X 16
-#define FIELDSIZE_Y 100
+#define FIELDSIZE_X 200
+#define FIELDSIZE_Y 200
 #define FIELDSIZE_FIELD 50
 
 

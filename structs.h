@@ -67,6 +67,7 @@ typedef struct dataStore{
     struct person player;
     //Aktuell oberste sichtbar Zeile im Array
     int verticalScroll;
+	int horizontalScroll;
 	//Highscore-Array max. 10 Einträge
 	highscoreElement highscore[10];
 	position home;
