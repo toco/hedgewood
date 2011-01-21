@@ -24,14 +24,13 @@ void highscoreTestdata(dataStore *store) {
 	}
 }
 int main(int argc, char *argv[]) {
-	printf("%s %d",argv[0],argc);
+	printf("%s %d\n",argv[0],argc);
 	dataStore *test = calloc(1,sizeof(dataStore));
 	highscoreTestdata(test);
 	SDL_Surface* screen=initSDL();
 	readDataStore(test);
 	menuStart(screen, test);
-	saveDataStore(test);
-	gameloop(test,screen);
+//	saveDataStore(test);
 	quitSDL();
 	return 0;
 }

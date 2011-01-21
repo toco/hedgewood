@@ -31,13 +31,13 @@ main.o: main.c main.h SDLincludes.h structs.h hedgewoodIO.o gameloop.o
 SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c SDLfunctions.c SDLincludes.h
 
-menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o about.o highscore.o structs.h
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c menu.c SDLfunctions.o about.o highscore.o
+menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o about.o highscore.o structs.h gameloop.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c menu.c SDLfunctions.o about.o highscore.o gameloop.o
 	
 about.o: about.h about.c SDLfunctions.o SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c about.c SDLfunctions.o
 
-highscore.o: highscore.c highscore.h SDLfunctions.o SDLincludes.h
+highscore.o: highscore.c highscore.h SDLfunctions.o SDLincludes.h structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c highscore.c SDLfunctions.o
 
 graphicUpdate.o: graphicUpdate.c graphicUpdate.h pathfinding.o structs.h ingameMenu.o

@@ -20,6 +20,7 @@
 #include "highscore.h"
 #include "structs.h"
 #include "ingameMenu.h"
+#include "gameloop.h"
 
 #define STARTEN_BUTTON 0
 #define HIGHSCORE_BUTTON 1

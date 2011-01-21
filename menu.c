@@ -33,13 +33,11 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 
 int startGame( SDL_Surface *screen, dataStore *data)
 {
-	printf("Start ingame Menu\n");
 	
-	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
-	SDL_Flip(screen);
-	ingameMenuStart(screen, data);
+//	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+//	SDL_Flip(screen);
+	gameloop(data,screen);
 
-	printf("StartGame Clicked\n");
 	
 	return 0;
 }

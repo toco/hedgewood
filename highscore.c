@@ -18,8 +18,32 @@
 
 #include "highscore.h"
 
+int sortHighscore(dataStore *data)
+{
+	highscoreElement *highscore=data->highscore;
+	int i,n,temp,changed,steps=0;;
+	for (i=0; i<10; i++) {
+		changed=0;
+		for (n=1; n<10-i; n++) {
+			if (highscore[n-1].points>highscore[n].points) {
+				temp=highscore[n-1].points;
+				highscore[n-1].points=highscore[n].points;
+				highscore[n].points=temp;
+				changed++;
+			}
+			
+			steps++;
+		}
+		if (changed==0) {
+			break;
+		}
+	}
+	return 0;
+}
+
 int inHighscore(int points, dataStore *data)
 {
+	sortHighscore(data);
 	if (points>data->highscore[9].points)
 		return 1;
 	else
