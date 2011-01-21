@@ -137,7 +137,7 @@ int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
 	//end
 	SDL_FreeSurface(image_person);
 	aStarPathPrint(data,l_screen);
-	SDL_Flip(l_screen);
+	//SDL_Flip(l_screen);
 	return 1;
 }
 void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
