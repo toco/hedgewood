@@ -122,7 +122,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 	int done=0,i=0,aVal,motionPath=0,runPath=0,drawPath=0;
 	position *lastmouse=NULL,*mouse_pos=NULL,*tmp=NULL;
 	SDL_Event event;
-	
+	GraphicUpdate(screen,data);
 	
 	while (!done) {
 		/* Check for events */
@@ -186,7 +186,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 					break;
 				case SDLK_ESCAPE:
 					ingameMenuStart(screen, data);
-					updateGraphics(screen, data);
+					GraphicUpdate(screen, data);
 					break;
 				case SDLK_q:
 					done = 1;
@@ -211,7 +211,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				lastmouse->y+=data->verticalScroll;
 				aStar(data,lastmouse);
 				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
-				updateGraphics(screen, data);
+				GraphicUpdate(screen, data);
 				aStarPathPrint(data,screen);
 				free(lastmouse);
 				lastmouse=NULL;
@@ -253,7 +253,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 						data->player.bp.currentVolume+=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency;
 						data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency=0;
 						}
-						updateGraphics(screen,data);
+						GraphicUpdate(screen,data);
 					}
 				}
 				runPath=0;

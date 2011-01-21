@@ -30,6 +30,12 @@
 #include "/usr/include/SDL/SDL_ttf.h"
 #endif
 
+#define field_pic "./pictures/textur5.png"
+#define start_pic "./pictures/startzonetest.png"
+#define person_pic "./pictures/person.png"
+#define kreis_pic "./pictures/kreis.png"
+#define candy_pic "./pictures/zuckerstangen.png"
+
 #define GAMENAME "Hedgewood"
 
 #define GAMEDATA_PATH "Hedgewood.dataStore"

@@ -33,6 +33,5 @@ int main(int argc, char *argv[]) {
 	saveDataStore(test);
 	gameloop(test,screen);
 	quitSDL();
-//	free(test);
 	return 0;
 }

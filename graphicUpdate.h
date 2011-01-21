@@ -6,8 +6,8 @@
 #include "ingameMenu.h"
 #include <time.h>
 
-int updateGraphics(SDL_Surface *l_screen,  dataStore *data);
-void graphicLoop(SDL_Surface *l_screen, dataStore *data);
+int GraphicUpdate(SDL_Surface *l_screen,  dataStore *data);
+
  position *pixelToGrid(position *l_pos);
  position *gridToPixel( position *l_pos,dataStore *data);
 void verticalScrollPos( dataStore *data);

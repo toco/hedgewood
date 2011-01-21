@@ -188,7 +188,9 @@ int drawButton (SDL_Surface *destinationSurface, myButton *button)
 		return 1;
 	}
 	SDL_FreeSurface(message);
+	return 1;
 }
+
 int isButtonClicked(myButton *button, int x, int y)
 {
 	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h)

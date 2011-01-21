@@ -1,11 +1,8 @@
 #include "SDLincludes.h"
 #include "graphicUpdate.h"
-#define field_pic "./pictures/textur5.png"
-#define start_pic "./pictures/startzonetest.png"
-#define person_pic "./pictures/person.png"
-#define kreis_pic "./pictures/kreis.png"
-#define candy_pic "./pictures/zuckerstangen.png"
-int updateGraphics(SDL_Surface *l_screen,dataStore *data) {
+
+
+int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	int i,j,scrollposition=data->verticalScroll,startzone=0;
 	float energy;
 	SDL_Surface *image_start=NULL,*image_field=NULL,*image_person=NULL,*image_candy=NULL;
