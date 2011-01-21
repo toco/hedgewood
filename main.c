@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 	readDataStore(test);
 	menuStart(screen, test);
 	saveDataStore(test);
-	gameloop(test,screen);
+	while(gameloop(test,screen));
 	quitSDL();
 	return 0;
 }

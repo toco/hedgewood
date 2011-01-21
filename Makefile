@@ -52,7 +52,7 @@ hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
 ingameMenu.o: ingameMenu.h ingameMenu.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c ingameMenu.c SDLfunctions.o hedgewoodIO.o popUp.o
 	
-gameloop.o: gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
+gameloop.o: gameloop.c gameloop.h structs.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
 
 popUp.o: popUp.c popUp.h SDLfunctions.o structs.h
