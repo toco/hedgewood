@@ -186,8 +186,9 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 					runPath=1;
 					break;
 				case SDLK_ESCAPE:
-					ingameMenuStart(screen, data);
-					GraphicUpdate(screen, data);
+					done = ingameMenuStart(screen, data);
+					if (!done)
+						GraphicUpdate(screen, data);
 					break;
 				case SDLK_q:
 					done = 1;

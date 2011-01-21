@@ -18,6 +18,9 @@
 
 int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 {
+	
+	int rtnValue;
+	
 	menuDataStore *menuData = malloc(sizeof(menuDataStore));
 	menuData->buttons = malloc(sizeof(myButton)*INGAMEBUTTONCOUNT);
 	
@@ -50,15 +53,15 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
-	buttons[ QUIT_BUTTON ].name="Quit";
+	buttons[ QUIT_BUTTON ].name="Quit Game";
 	buttons[ QUIT_BUTTON ].function=NULL;
 	
 	displayIngameMenu(screen, data, menuData);
-	ingameMenuLoop(screen, data, menuData);
+	rtnValue = ingameMenuLoop(screen, data, menuData);
 	
 	free(menuData->buttons);
 	free(menuData);
-	return 0;
+	return rtnValue;
 }
 
 
@@ -115,8 +118,9 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 								done = 1;
 							}
 							else if(buttonID == QUIT_BUTTON){
-								quitSDL();
-								exit(0);
+//								quitSDL();
+//								exit(0);
+								return 1;
 							}
 							
 						}
