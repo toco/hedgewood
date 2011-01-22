@@ -23,9 +23,9 @@
 #include "structs.h"
 #endif
 
-#define WINDOWWIDTH 800
-#define WINDOWHEIGTH 600
-#define WINDOWBPP 32
+//#define WINDOWWIDTH 800
+//#define WINDOWHEIGTH 600
+//#define WINDOWBPP 32
 
 SDL_Surface* initSDL(dataStore *data);
 

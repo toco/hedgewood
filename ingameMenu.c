@@ -28,28 +28,29 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 	myButton *buttons = menuData->buttons;
 	
 	/*background from 150 to 450 */
-	buttons[ CONTINUE_BUTTON ].rect.y=162;
+	buttons[ CONTINUE_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
 	buttons[ CONTINUE_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ CONTINUE_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ CONTINUE_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[CONTINUE_BUTTON].rect.w/2;
 	buttons[ CONTINUE_BUTTON ].name="Continue";
 	buttons[ CONTINUE_BUTTON ].function=NULL;
 	
-	buttons[ SAVEGAME_BUTTON ].rect.y=238; 
+
+	buttons[ SAVEGAME_BUTTON ].rect.y=screen->clip_rect.h/2-25-BUTTONHEIGHT/2; 
 	buttons[ SAVEGAME_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ SAVEGAME_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ SAVEGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[SAVEGAME_BUTTON].rect.w/2;
 	buttons[ SAVEGAME_BUTTON ].name="Save Game";
 	buttons[ SAVEGAME_BUTTON ].function=saveGame;
 	
-	buttons[ LOADGAME_BUTTON ].rect.y=312;
+	buttons[ LOADGAME_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
 	buttons[ LOADGAME_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ LOADGAME_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ LOADGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
 	buttons[ LOADGAME_BUTTON ].name="Load Game";
 	buttons[ LOADGAME_BUTTON ].function=loadGame;
 	
-	buttons[ QUIT_BUTTON ].rect.y=388;
+	buttons[ QUIT_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
 	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;

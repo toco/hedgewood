@@ -34,11 +34,11 @@ int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color te
 			printf("%s\n",TTF_GetError());
 		apply_surface(100,yPos, lineSurface, screen, NULL);
 		
-		SDL_FreeSurface(lineSurface);
 		yPos+=lineSurface->h;
 		if (xMax<lineSurface->w) {
 			xMax=lineSurface->w;
 		}
+		SDL_FreeSurface(lineSurface);
 		line = strtok (NULL, " ,.-");
 	}
 
@@ -59,7 +59,7 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 
 	myButton button;
 	button.rect.x = screen->clip_rect.w/2-BUTTONWIDTH/2;
-	button.rect.y = 500;
+	button.rect.y = screen->clip_rect.h-BUTTONHEIGHT-100;
 	button.rect.w = BUTTONWIDTH;
 	button.rect.h = BUTTONHEIGHT;
 	button.name="Back";

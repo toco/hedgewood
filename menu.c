@@ -57,31 +57,31 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 #define BUTTONHEIGHT 50
 	
 	myButton *buttons = &(dataStore->buttons[0]);
-	buttons[ STARTEN_BUTTON ].rect.x=BUTTONX;
-	buttons[ STARTEN_BUTTON ].rect.y=100;
+	buttons[ STARTEN_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ STARTEN_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
 	buttons[ STARTEN_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ STARTEN_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ STARTEN_BUTTON ].name="Start Game";
 	buttons[ STARTEN_BUTTON ].function=startGame;
 
-	buttons[ HIGHSCORE_BUTTON ].rect.x=BUTTONX;
-	buttons[ HIGHSCORE_BUTTON ].rect.y=200;
+	buttons[ HIGHSCORE_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ HIGHSCORE_BUTTON ].rect.y=screen->clip_rect.h/2-25-BUTTONHEIGHT/2;
 	buttons[ HIGHSCORE_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ HIGHSCORE_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ HIGHSCORE_BUTTON ].name="Highscore";
 	buttons[ HIGHSCORE_BUTTON ].function=displayHighscore;
 
 	
-	buttons[ ABOUT_BUTTON ].rect.x=BUTTONX;
-	buttons[ ABOUT_BUTTON ].rect.y=300;
+	buttons[ ABOUT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ ABOUT_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
 	buttons[ ABOUT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ ABOUT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ ABOUT_BUTTON ].name="About/Help";
 	buttons[ ABOUT_BUTTON ].function=displayAbout;
 
 	
-	buttons[ QUIT_BUTTON ].rect.x=BUTTONX;
-	buttons[ QUIT_BUTTON ].rect.y=400;
+	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ QUIT_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
 	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ QUIT_BUTTON ].name="Quit";
