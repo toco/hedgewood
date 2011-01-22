@@ -74,8 +74,15 @@ void createRandomField(dataStore *data) {
 			else {
 				k=9;
 			}
-			data->hedgewood[i][j].type=k;
-			data->hedgewood[i][j].aStarValue=(k-6)*10+2;
+			r=rand()%100+1;
+			if(r<6){
+			data->hedgewood[i][j].type=4;
+			data->hedgewood[i][j].aStarValue=-1;			
+			}
+			else {
+				data->hedgewood[i][j].type=k;
+				data->hedgewood[i][j].aStarValue=(k-6)*10+2;
+			}
 			if (r<=50)
 				r_currency=0;
 			else if (r<=60)
@@ -129,7 +136,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 	
 	clock_t innerStartTime, innerStopTime, startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=500;
 	int done=0,i=0,aVal,motionPath=0,runPath=0,drawPath=0,mouseDown=0,ownpath=0;
-	position *lastmouse=NULL,*mouse_pos=NULL,*tmp=NULL;
+	position *lastmouse=NULL,*mouse_pos=NULL,*tmp=NULL,*lastpath=NULL;
 	SDL_Event event;
 	GraphicUpdate(screen,data);
 	
@@ -150,13 +157,15 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 					tmp=calloc(1,sizeof(struct position));
 					tmp->x=mouse_pos->x+data->horizontalScroll;
 					tmp->y=mouse_pos->y+data->verticalScroll;
-					if(data->player.anfang!=NULL){
+					if(data->player.anfang!=NULL&& data->hedgewood[tmp->y][tmp->x].aStarValue>-1 && aStarManhatten(*lastpath,*tmp)==AVGASTAR){
+						lastpath=tmp;
 					positionQListAdd(data,tmp);
 					ownpath++;
 					aStarPathPrint(data,screen);
 					}
 					else{
 						if(tmp->x==data->player.p_pos.x && tmp->y==data->player.p_pos.y){
+							lastpath=tmp;
 							positionQListAdd(data,tmp);
 							ownpath++;
 							aStarPathPrint(data,screen);
