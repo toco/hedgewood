@@ -14,6 +14,7 @@
 #include "SDLincludes.h"
 #include "structs.h"
 #include "SDLfunctions.h"
+#include "hedgewoodIO.h"
 
 /* to try to add an new highscore just use this function*/
 int addHighscore(SDL_Surface *screen ,dataStore *data, int points);
