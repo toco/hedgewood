@@ -150,6 +150,19 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 			//Prüft ob sich die Maus aus dem 50x50 Feld bewegt hat
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
+				if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y){
+					aStar(data,&(data->home));
+					GraphicUpdate(screen,data);
+					positionListDelete(data);
+					break;
+				}
+				else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y){
+					aStar(data,&(data->stash));
+					GraphicUpdate(screen,data);
+					positionListDelete(data);
+					break;
+				}
+				else{
 				mouse_pos=pixelToGrid(mouse_pos);
 			if(lastmouse!=NULL && mouseDown){
 				
@@ -161,14 +174,14 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 						lastpath=tmp;
 					positionQListAdd(data,tmp);
 					ownpath++;
-					aStarPathPrint(data,screen);
+					GraphicUpdate(screen,data);
 					}
 					else{
 						if(tmp->x==data->player.p_pos.x && tmp->y==data->player.p_pos.y){
 							lastpath=tmp;
 							positionQListAdd(data,tmp);
 							ownpath++;
-							aStarPathPrint(data,screen);
+							GraphicUpdate(screen,data);
 						}
 						else if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)printf("Die Startposition muss die Spielerposition sein\n");
 				  }	
@@ -194,6 +207,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				}
 				
 				memcpy(lastmouse,mouse_pos,sizeof(position));
+				}
 				free(mouse_pos);
 				
 				break;
