@@ -30,18 +30,29 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	dst.h = src.h = 70;
 	dst.w = src.w = FIELDSIZE_FIELD;
 	for(j=0; j<12; j++) {
-		dst.y = FIELDSIZE_FIELD*j;
+		if(j==0)dst.y = 0;
+		else dst.y = FIELDSIZE_FIELD*j-20;
 		
 		for(i=0; i<16; i++) {
 			if(data->hedgewood[j+scrollposition][i+hSpos].type==-1)startzone=1;
 			else startzone=0;
 			dst.x = FIELDSIZE_FIELD*i;
 			if(startzone) {
+				dst.y = FIELDSIZE_FIELD*j;
 				src.x = FIELDSIZE_FIELD*(i+hSpos);
 				src.y = FIELDSIZE_FIELD*(j+scrollposition);
 			} else {
 				src.x = FIELDSIZE_FIELD*data->hedgewood[j+scrollposition][i+hSpos].type*data->hedgewood[j+scrollposition][i+hSpos].visible;
-				src.y = 0;
+				if(j==0){					
+					src.y = 20;
+					dst.h = src.h = 50;
+				}
+				else{
+					dst.y = FIELDSIZE_FIELD*j-20;
+					src.y = 0;
+					dst.h = src.h = 70;
+				} 
+				
 			}
 			if(startzone)SDL_BlitSurface(image_start, &src, l_screen, &dst);
 			else {
@@ -53,20 +64,22 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 					SDL_BlitSurface(image_candy, &src2, l_screen, &dst);
 				}
 			}
+			//print person
+			if(data->player.p_pos.x==i+hSpos && data->player.p_pos.y==j+scrollposition){
+				src.x = FIELDSIZE_FIELD*data->player.heading;
+				src.y = 0;
+				dst.x = FIELDSIZE_FIELD*(data->player.p_pos.x-hSpos);
+				dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition)-20;
+				src.h = dst.h = 70;
+				SDL_BlitSurface(image_person, &src, l_screen, &dst);				
+			}			
 		}
 	}
 	SDL_FreeSurface(image_start);
 	SDL_FreeSurface(image_field);
 	SDL_FreeSurface(image_candy);
-	//print Person
-	src.x = FIELDSIZE_FIELD*data->player.heading;
-	src.y = 0;
-	src.w =dst.w = FIELDSIZE_FIELD;
-	dst.x = FIELDSIZE_FIELD*(data->player.p_pos.x-hSpos);
-	dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition);
-	src.h = dst.h = 70;
-	SDL_BlitSurface(image_person, &src, l_screen, &dst);
-	//print energy bar
+	aStarPathPrint(data,l_screen);
+//print energy bar
 	src.x= 25;
 	dst.x = 23;
 	src.y=25;
@@ -139,7 +152,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	//end
 	SDL_FreeSurface(image_person);
 	aStarPathPrint(data,l_screen);
-	//SDL_Flip(l_screen);
+	SDL_Flip(l_screen);
 	return 1;
 }
 position *pixelToGrid(position *l_pos) {
@@ -212,6 +225,6 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 		if(dst.y>=0)SDL_BlitSurface(kreis, &src, l_screen, &dst);
 		tmp=tmp->next;
 	}
-	SDL_Flip(l_screen);
+	//SDL_Flip(l_screen);
 	SDL_FreeSurface(kreis);
 }

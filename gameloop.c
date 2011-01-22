@@ -23,7 +23,7 @@ void createRandomField(dataStore *data) {
 	}
 	for(i=0; i<FIELDSIZE_X-1; i++) {
 		data->hedgewood[0][i].visible=1;
-		data->hedgewood[0][i].type=4;
+		data->hedgewood[0][i].type=8;
 		data->hedgewood[0][i].aStarValue=-1;
 		data->hedgewood[0][i].currency=0;
 	}
@@ -68,20 +68,21 @@ void createRandomField(dataStore *data) {
 			if (r<sand*100)
 				k=6;
 			else if(r<sand*100+leicht*100)
-				k=7;
-			else if(r<sand*100+leicht*100+mittel*100)
-				k=8;
-			else {
 				k=9;
+			else if(r<sand*100+leicht*100+mittel*100)
+				k=10;
+			else {
+				k=11;
 			}
 			r=rand()%100+1;
 			if(r<6){
-			data->hedgewood[i][j].type=4;
+			data->hedgewood[i][j].type=7;
 			data->hedgewood[i][j].aStarValue=-1;			
 			}
 			else {
 				data->hedgewood[i][j].type=k;
-				data->hedgewood[i][j].aStarValue=(k-6)*10+2;
+				if(k==6)data->hedgewood[i][j].aStarValue=2;
+				else data->hedgewood[i][j].aStarValue=(k-8)*10+1;
 			}
 			if (r<=50)
 				r_currency=0;
@@ -95,7 +96,9 @@ void createRandomField(dataStore *data) {
 				r_currency=9;
 			else
 				r_currency= 10;
-			data->hedgewood[i][j].currency=(k-6)*r_currency;
+			if(k==6)data->hedgewood[i][j].currency=0;
+			else data->hedgewood[i][j].currency=(k-8)*r_currency;
+			
 		}
 	}
 	for(i=0; i<4; i++) {
@@ -224,7 +227,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				mouseDown=0;				
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
-				if(DEBUG)printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+				printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 				if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y){
 					aStar(data,&(data->home));
 					runPath=1;
@@ -279,7 +282,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 			if (MS_FRAMETIME>diffTime)SDL_Delay(MS_FRAMETIME-diffTime);
 		}
 		mT=SDL_GetTicks();
-		if((mouseTime + mousetimewait)< mT && lastmouse!=0 && ownpath==0) {
+		if((mouseTime + mousetimewait)< mT && lastmouse!=NULL && ownpath==0 &&runPath==0) {
 			motionPath=1;
 		}
 		if((motionPath || runPath) && !done) {
@@ -289,7 +292,6 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				aStar(data,lastmouse);
 				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 				GraphicUpdate(screen, data);
-				aStarPathPrint(data,screen);
 				free(lastmouse);
 				lastmouse=NULL;
 				motionPath=0;
