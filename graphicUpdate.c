@@ -1,6 +1,6 @@
 #include "SDLincludes.h"
 #include "graphicUpdate.h"
-#define field_pic "./pictures/textur5.png"
+#define field_pic "./pictures/textur.png"
 #define start_pic "./pictures/startzonetest.png"
 #define person_pic "./pictures/person.png"
 #define kreis_pic "./pictures/kreis.png"
@@ -27,8 +27,8 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 		printf("Can't load image person: %s\n", SDL_GetError());
 		exit(1);
 	}
-	src.w =src.h = FIELDSIZE_FIELD;
-	dst.w = dst.h = FIELDSIZE_FIELD;
+	dst.h = src.h = 70;
+	dst.w = src.w = FIELDSIZE_FIELD;
 	for(j=0; j<12; j++) {
 		dst.y = FIELDSIZE_FIELD*j;
 		
@@ -61,10 +61,10 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	//print Person
 	src.x = FIELDSIZE_FIELD*data->player.heading;
 	src.y = 0;
-	src.w =src.h = FIELDSIZE_FIELD;
+	src.w =dst.w = FIELDSIZE_FIELD;
 	dst.x = FIELDSIZE_FIELD*(data->player.p_pos.x-hSpos);
 	dst.y = FIELDSIZE_FIELD*(data->player.p_pos.y-scrollposition);
-	dst.w = dst.h = FIELDSIZE_FIELD;
+	src.h = dst.h = 70;
 	SDL_BlitSurface(image_person, &src, l_screen, &dst);
 	//print energy bar
 	src.x= 25;
