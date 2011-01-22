@@ -26,6 +26,7 @@ int addHighscore(SDL_Surface *screen ,dataStore *data, int points)
 		strcpy(data->highscore[9].name,playerName);
 		data->highscore[9].points = points;
 		sortHighscore(data);
+		saveDataStore(data, 1, 0);
 	}
 	return 0;
 }

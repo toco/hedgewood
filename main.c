@@ -28,10 +28,10 @@ int main(int argc, char *argv[]) {
 	dataStore *test = calloc(1,sizeof(dataStore));
 	highscoreTestdata(test);
 	SDL_Surface* screen=initSDL(test);
-	readDataStore(test);
+	readDataStore(test,1,1);
 	addHighscore(screen, test, 1000);
 	menuStart(screen, test);
-	saveDataStore(test);
+	saveDataStore(test,1,0);
 	quitSDL();
 	return 0;
 }

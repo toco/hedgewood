@@ -18,8 +18,8 @@
 #include "structs.h"
 
 
-int saveDataStore(dataStore *data);
-int readDataStore(dataStore *data);
+int saveDataStore(dataStore *data, int highscore, int game);
+int readDataStore(dataStore *data, int highscore, int game);
 
 
 #endif

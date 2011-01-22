@@ -173,7 +173,7 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Save Game\n");
-	if (saveDataStore(data))
+	if (saveDataStore(data,1,1))
 	{
 		
 	}
@@ -184,7 +184,7 @@ int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Load Game\n");
-	readDataStore(data);
+	readDataStore(data,1,1);
 	popUp(screen, "Successfully loaded game!", "OK", NULL);
 	
 	return 0;
