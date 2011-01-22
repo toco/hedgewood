@@ -162,8 +162,9 @@ void verticalScrollPos( dataStore *data) {
 	
 	if(DEBUG)printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }
-void headPositionUpdate(dataStore *data,position *newPos) {
+int headPositionUpdate(dataStore *data,position *newPos) {
 	position old=data->player.p_pos,n_pos=(*newPos);
+	if(data->hedgewood[n_pos.y][n_pos.x].aStarValue<0)return 0;
 	int x=0,y=0,vis=data->player.vision,i,j;
 	x=old.x-n_pos.x;
 	y=old.y-n_pos.y;
@@ -191,6 +192,7 @@ void headPositionUpdate(dataStore *data,position *newPos) {
 	}
 	data->player.p_pos=n_pos;
 	verticalScrollPos(data);
+	return 1;
 }
 void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 	SDL_Surface *kreis=NULL;

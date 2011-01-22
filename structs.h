@@ -71,6 +71,7 @@ typedef struct dataStore{
 	//Highscore-Array max. 10 Einträge
 	highscoreElement highscore[10];
 	position home;
+	position stash;
 	int windowed;
 	
 }dataStore;

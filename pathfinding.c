@@ -117,6 +117,25 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
 
+void positionQListAdd(dataStore *data,  position *pos_add) {
+	struct position *zeiger=NULL;
+	pos_add->next=NULL;
+	if(data->player.anfang == NULL) {
+		data->player.anfang=pos_add;
+		data->player.anfang->next=NULL;
+		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
+	} else {
+		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);		
+		
+		zeiger=data->player.anfang;
+		while(zeiger->next!=NULL){
+			zeiger=zeiger->next;
+		}
+		zeiger->next=pos_add;
+	}
+	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
+}
+
 void positionListDelete( dataStore *data) {
 	struct position *zeiger, *zeiger1;
 	if(data->player.anfang != NULL) {
@@ -135,7 +154,7 @@ position *positionListRead( dataStore *data) {
 	printdb("Start ListRead\n");
 	struct position *result;
 	if(data->player.anfang==NULL) {
-		printf("Die Liste ist Leer\n");
+		if(DEBUG)printf("Die Liste ist Leer\n");
 		return NULL;
 	} else {
 		if(DEBUG)printf("Position read x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
