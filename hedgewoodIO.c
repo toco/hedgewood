@@ -19,11 +19,7 @@
 
 int saveDataStore(dataStore *data, int highscore, int game)
 {
-	FILE *dataFile;
-	dataFile = fopen(GAMEDATA_PATH, "w");
-	if (!dataFile) {
-		printf("Error opening File: %s \n",GAMEDATA_PATH);
-	}
+
 	dataStore *tmpData = malloc(sizeof(dataStore));
 	memcpy(tmpData,data, sizeof(dataStore));
 	int tmpHighscore, tmpGame;
@@ -36,6 +32,12 @@ int saveDataStore(dataStore *data, int highscore, int game)
 	else 
 		tmpGame=1;
 	readDataStore(tmpData, tmpHighscore, tmpGame);
+	
+	FILE *dataFile;
+	dataFile = fopen(GAMEDATA_PATH, "w");
+	if (!dataFile) {
+		printf("Error opening File: %s \n",GAMEDATA_PATH);
+	}
 	
 	/*Highscore*/
 	fprintf(dataFile, "!#highscore\n");
@@ -119,7 +121,7 @@ int readDataStore(dataStore *data, int highscore, int game)
 		}
 		
 		/*Import Highscore*/
-		if (importHighscore==1&&linecounter<10) {
+		if (highscore==1&&importHighscore==1&&linecounter<10) {
 			tabPos = strcspn(read,tab);
 			strncpy(tmp,read,tabPos);
 			strcpy(tmpData->highscore[linecounter].name, tmp);
@@ -127,7 +129,7 @@ int readDataStore(dataStore *data, int highscore, int game)
 			linecounter++;
 		}
 		/*Import Person*/
-		else if(importPerson==1)
+		else if(game==1&&importPerson==1)
 		{
 			readPtr=&read[0];
 			tabPos=0;
@@ -184,7 +186,7 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tmpData->player.vision=atoi(tmp);
 			
 		}
-		else if(importFieldArray==1)
+		else if(game==1&&importFieldArray==1)
 		{
 			readPtr=&read[0];
 			tabPos=0;
