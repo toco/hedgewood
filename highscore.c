@@ -18,17 +18,30 @@
 
 #include "highscore.h"
 
+int addHighscore(SDL_Surface *screen ,dataStore *data, int points)
+{
+	if (inHighscore(data, points)) {
+		char *playerName = malloc(sizeof(char)*20);
+		inputPopUp(screen,"Highscore! Please enter your Name:", playerName, 20, "Ok", NULL);
+		strcpy(data->highscore[9].name,playerName);
+		data->highscore[9].points = points;
+		sortHighscore(data);
+	}
+	return 0;
+}
+
 int sortHighscore(dataStore *data)
 {
 	highscoreElement *highscore=data->highscore;
-	int i,n,temp,changed,steps=0;;
+	highscoreElement temp;
+	int i,n,changed,steps=0;
 	for (i=0; i<10; i++) {
 		changed=0;
 		for (n=1; n<10-i; n++) {
-			if (highscore[n-1].points>highscore[n].points) {
-				temp=highscore[n-1].points;
-				highscore[n-1].points=highscore[n].points;
-				highscore[n].points=temp;
+			if (highscore[n-1].points<highscore[n].points) {
+				memcpy(&temp,&highscore[n-1],sizeof(highscoreElement));
+				memcpy(&highscore[n-1],&highscore[n],sizeof(highscoreElement));
+				memcpy(&highscore[n],&temp,sizeof(highscoreElement));
 				changed++;
 			}
 			
@@ -41,7 +54,8 @@ int sortHighscore(dataStore *data)
 	return 0;
 }
 
-int inHighscore(int points, dataStore *data)
+
+int inHighscore(dataStore *data, int points)
 {
 	sortHighscore(data);
 	if (points>data->highscore[9].points)

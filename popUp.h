@@ -26,8 +26,12 @@
 /*text has to be a string without \n or \t"*/
 int popUp(SDL_Surface *screen, char *text, char *button0Title, char *button1Title);
 
+/*same as popUp but also inputText can be typed in by User*/
+/*inputText pointer to string – inputLength maxStringLength */
+int inputPopUp(SDL_Surface *screen, char *text, char *inputText, int inputLenght, char *button0Title, char *button1Title);
 
-int displayPopup(SDL_Surface *screen, menuDataStore *menuData, char *text);
+
+int displayPopup(SDL_Surface *screen, menuDataStore *menuData);
 int popUpLoop(SDL_Surface *screen, menuDataStore *menuData);
 
 

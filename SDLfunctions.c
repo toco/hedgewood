@@ -19,13 +19,14 @@
 #include "SDLfunctions.h"
 
 
-SDL_Surface* initSDL()
+SDL_Surface* initSDL(dataStore *data)
 {
 	Uint32 initflags = SDL_INIT_VIDEO;  /* See documentation for details */
 	SDL_Surface *screen;
 	Uint8  video_bpp = WINDOWBPP;
 	Uint32 videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_HWPALETTE;
 
+	data->windowed = 1;
 	
 	/* Initialize the SDL library */
 	if ( SDL_Init(initflags) < 0 ) {
@@ -33,9 +34,6 @@ SDL_Surface* initSDL()
 				SDL_GetError());
 		exit(1);
 	}
-	
-	
-	
 
 	/* Set 800x600 video mode */
 	screen=SDL_SetVideoMode(WINDOWWIDTH,WINDOWHEIGTH, video_bpp, videoflags);
@@ -48,10 +46,23 @@ SDL_Surface* initSDL()
 	}
 	SDL_WM_SetCaption(GAMENAME, NULL );
 
+	/*TTF init for font*/
+	if (TTF_Init() == -1)
+	{
+		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
+		exit(1);
+	}
+	
 	
 	return screen;
 }
-
+void quitSDL()
+{
+	/*quit TTF */
+	TTF_Quit();
+	/* Clean up the SDL library */
+	SDL_Quit();
+}
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
     //Holds offsets
@@ -104,11 +115,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
 
 }
 
-void quitSDL()
-{
-	/* Clean up the SDL library */
-	SDL_Quit();
-}
+
 
 SDL_Surface *load_image(char *filename ) { 
 	//Temporary storage for the image that's loaded 

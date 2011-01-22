@@ -50,11 +50,7 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 {
 	/*Background */
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
-	if (TTF_Init() == -1)
-	{
-		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
-		exit(1);
-	}
+
 	
 #define BUTTONX 300
 #define BUTTONWIDTH 200
@@ -113,9 +109,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
-	
-	int windowed = 1;
-	
+		
 	Uint32 startTime, stopTime, diffTime;
 	Uint32 innerStartTime, innerStopTime;
 
@@ -150,7 +144,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 					switch( event.key.keysym.sym )
 				{
 					case SDLK_f:
-						windowed = toggleFullscreen(screen, windowed);
+						data->windowed = toggleFullscreen(screen, data->windowed);
 						setupMenu(screen,menuData);
 						break;
 						

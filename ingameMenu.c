@@ -130,6 +130,11 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 					/* Any keypress quits the app... */
 					switch( event.key.keysym.sym )
 				{
+					case SDLK_f:
+						data->windowed = toggleFullscreen(screen, data->windowed);
+						displayIngameMenu(screen, data, menuData);
+						break;
+						
 						
 					case SDLK_ESCAPE:
 					case SDLK_q:

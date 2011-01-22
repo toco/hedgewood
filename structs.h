@@ -55,7 +55,7 @@ typedef struct person{
 //Highscore-Element
 typedef struct highscoreElement
 {
-	char name[10];
+	char name[25];
 	int points;
 }highscoreElement;
 
@@ -71,6 +71,7 @@ typedef struct dataStore{
 	//Highscore-Array max. 10 Einträge
 	highscoreElement highscore[10];
 	position home;
+	int windowed;
 	
 }dataStore;
 
@@ -97,6 +98,9 @@ typedef struct menuDataStore
 {
 	myButton *buttons;
 	int buttonCount;
+	char *text;
+	char *inputText;
+	int inputLength;
 }menuDataStore;
 
 #endif

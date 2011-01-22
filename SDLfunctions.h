@@ -27,7 +27,7 @@
 #define WINDOWHEIGTH 600
 #define WINDOWBPP 32
 
-SDL_Surface* initSDL();
+SDL_Surface* initSDL(dataStore *data);
 
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
 

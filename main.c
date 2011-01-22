@@ -27,10 +27,11 @@ int main(int argc, char *argv[]) {
 	printf("%s %d\n",argv[0],argc);
 	dataStore *test = calloc(1,sizeof(dataStore));
 	highscoreTestdata(test);
-	SDL_Surface* screen=initSDL();
+	SDL_Surface* screen=initSDL(test);
 	readDataStore(test);
+	addHighscore(screen, test, 1000);
 	menuStart(screen, test);
-//	saveDataStore(test);
+	saveDataStore(test);
 	quitSDL();
 	return 0;
 }
