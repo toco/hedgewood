@@ -198,6 +198,10 @@ int headPositionUpdate(dataStore *data,position *newPos) {
 	if(n_pos.y==2){
 		if(n_pos.x==7)data->player.currentEnergy=data->player.maxEnergy;
 		else if(n_pos.x==13){
+		printf("CANDYSTASH: %d\n",data->player.candystash);
+		else if(n_pos.x==2)
+			int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData);
+
 		data->player.candystash+=data->player.bp.currentVolume;
 		data->player.bp.currentVolume=0;
 		printf("CANDYSTASH: %d\n",data->player.candystash);

@@ -116,7 +116,7 @@ void createRandomField(dataStore *data) {
 	data->player.p_pos.next=NULL;
 	data->player.heading=2;
 	data->player.anfang=NULL;
-	data->player.vision=4;
+	data->player.vision=1;
 	data->player.maxEnergy=1000;
 	data->player.currentEnergy=1000;
 	data->verticalScroll=0;

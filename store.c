@@ -1,5 +1,5 @@
 /*
- *  ingameMenu.c
+ *  store.c
  *  Hedgewood
  *	
  *	Prozedurale Programmierung WS10/11	TUHH
@@ -14,9 +14,9 @@
  *	
  */
 
-#include "ingameMenu.h"
+#include "store.h"
 
-int ingameMenuStart(SDL_Surface *screen, dataStore *data)
+int storeStart(SDL_Surface *screen, dataStore *data)
 {
 	
 	int rtnValue;
@@ -28,37 +28,37 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 	myButton *buttons = menuData->buttons;
 	
 	/*background from 150 to 450 */
-	buttons[ CONTINUE_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
-	buttons[ CONTINUE_BUTTON ].rect.w=BUTTONWIDTH;
-	buttons[ CONTINUE_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ CONTINUE_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[CONTINUE_BUTTON].rect.w/2;
-	buttons[ CONTINUE_BUTTON ].name="Continue";
-	buttons[ CONTINUE_BUTTON ].function=NULL;
+	buttons[ ITEM_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
+	buttons[ ITEM_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ ITEM_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ ITEM_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[ITEM_BUTTON].rect.w/2;
+	buttons[ ITEM_BUTTON ].name="Item Upgrade!(ITEMPRICE)";
+	buttons[ ITEM_BUTTON ].function=NULL;
 	
 
-	buttons[ SAVEGAME_BUTTON ].rect.y=screen->clip_rect.h/2-25-BUTTONHEIGHT/2; 
-	buttons[ SAVEGAME_BUTTON ].rect.w=BUTTONWIDTH;
-	buttons[ SAVEGAME_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ SAVEGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[SAVEGAME_BUTTON].rect.w/2;
-	buttons[ SAVEGAME_BUTTON ].name="Save Game";
-	buttons[ SAVEGAME_BUTTON ].function=saveGame;
+	buttons[ BACKPACK_BUTTON ].rect.y=screen->clip_rect.h/2-25-BUTTONHEIGHT/2; 
+	buttons[ BACKPACK_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ BACKPACK_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ BACKPACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACKPACK_BUTTON].rect.w/2;
+	buttons[ BACKPACK_BUTTON ].name="Backpack Upgrade!(BACKPACKPRICE)";
+	buttons[ BACKPACK_BUTTON ].function=NULL;
 	
-	buttons[ LOADGAME_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
-	buttons[ LOADGAME_BUTTON ].rect.w=BUTTONWIDTH;
-	buttons[ LOADGAME_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ LOADGAME_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
-	buttons[ LOADGAME_BUTTON ].name="Load Game";
-	buttons[ LOADGAME_BUTTON ].function=loadGame;
+	buttons[ VIEW_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
+	buttons[ VIEW_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ VIEW_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ VIEW_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[VIEW_BUTTON].rect.w/2;
+	buttons[ VIEW_BUTTON ].name="View Upgrade!(VIEWPRICE)";
+	buttons[ VIEW_BUTTON ].function=NULL;
 	
-	buttons[ QUIT_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
-	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
-	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[LOADGAME_BUTTON].rect.w/2;
-	buttons[ QUIT_BUTTON ].name="Quit Game";
-	buttons[ QUIT_BUTTON ].function=NULL;
+	buttons[ BACK_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
+	buttons[ BACK_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ BACK_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ BACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACK_BUTTON].rect.w/2;
+	buttons[ BACK_BUTTON ].name="Back";
+	buttons[ BACK_BUTTON ].function=NULL;
 	
-	displayIngameMenu(screen, data, menuData);
-	rtnValue = ingameMenuLoop(screen, data, menuData);
+	displaystore(screen, data, menuData);
+	rtnValue = storeLoop(screen, data, menuData);
 	
 	free(menuData->buttons);
 	free(menuData);
@@ -66,7 +66,7 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 }
 
 
-int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
+int displaystore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 {
 	/*Background */
 //	int width = 400, height = 350;
@@ -84,11 +84,12 @@ int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuD
 	return 0;
 }
 
-int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
+int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
-		
+	
+	int  diffmoney;
 	unsigned int startTime, stopTime, diffTime;
 	unsigned int innerStartTime, innerStopTime;
 	
@@ -114,18 +115,52 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
 							if(menuData->buttons[buttonID].function!=NULL)
 								(menuData->buttons[buttonID].function)(screen, data);
-							displayIngameMenu(screen, data,menuData);
-							if (buttonID==CONTINUE_BUTTON) {
-								done = 1;
-							}
-							else if(buttonID == QUIT_BUTTON){
-//								quitSDL();
-//								exit(0);
-								return 1;
-							}
+							displaystore(screen, data,menuData);
 							
-						}
-					}
+								
+								if (buttonID==ITEM_BUTTON) {
+
+									if (data->player.candystash +
+										data->player.bp.currentVolume>=ITEMPRICE) {
+
+											data->player.cutSpeed+=0.5;
+											
+											diffmoney= data->player.bp.currentVolume - ITEMPRICE;
+											if(diffmoney<0){
+											data->player.bp.currentVolume=0;
+												
+											data->player.candystash += diffmoney;
+											}
+											else data->player.bp.currentVolume -= ITEMPRICE;
+											}
+											
+										}
+										
+									else if (buttonID==BACKPACK_BUTTON ) {
+										if (data->player.candystash +
+											data->player.bp.currentVolume>=BACKPACKPRICE) {
+
+												data->player.bp.maxVolume+=200;
+											
+												diffmoney= data->player.bp.currentVolume - BACKPACKPRICE;
+												if(diffmoney<0){
+												data->player.bp.currentVolume=0;
+												
+												data->player.candystash += diffmoney;
+												}
+												else data->player.bp.currentVolume -= ITEMPRICE;
+												}
+									}
+									
+									else if (buttonID==BACK_BUTTON)
+										done=1;
+											break;
+										
+							}
+
+							
+						
+					
 					break;
 				case SDL_KEYDOWN:
 					/* Any keypress quits the app... */
@@ -133,7 +168,7 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 				{
 					case SDLK_f:
 						data->windowed = toggleFullscreen(screen, data->windowed);
-						displayIngameMenu(screen, data, menuData);
+						displaystore(screen, data, menuData);
 						break;
 						
 						
@@ -168,24 +203,6 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 	}
 	return 0;
 	
-}
 
-int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
-{
-	printf("Save Game\n");
-	if (saveDataStore(data,1,1))
-	{
-		
-	}
-	popUp(screen, "Successfully saved game!", "OK", NULL);
-	
-	return 0;
 }
-int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
-{
-	printf("Load Game\n");
-	readDataStore(data,1,1);
-	popUp(screen, "Successfully loaded game!", "OK", NULL);
-	
-	return 0;
 }
