@@ -20,6 +20,7 @@
 #include "highscore.h"
 #include "structs.h"
 #include "ingameMenu.h"
+#include "gameloop.h"
 
 #define STARTEN_BUTTON 0
 #define HIGHSCORE_BUTTON 1
@@ -28,11 +29,13 @@
 
 #define BUTTONCOUNT 4
 
-
+/*function to be called to start the menu*/
+/*displays the main Menu */
 void menuStart(SDL_Surface *screen, dataStore *data);
 
+/*draws the menu*/
 void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData);
-
-int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data);
+/*SDL Event-Loop handels user interaction */
+int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data);
 
 #endif

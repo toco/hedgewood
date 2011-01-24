@@ -31,29 +31,28 @@ main.o: main.c main.h SDLincludes.h structs.h hedgewoodIO.o gameloop.o
 SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c SDLfunctions.c SDLincludes.h
 
-menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o about.o highscore.o structs.h
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c menu.c SDLfunctions.o about.o highscore.o
+menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o about.o highscore.o structs.h gameloop.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c menu.c SDLfunctions.o about.o highscore.o gameloop.o
 	
 about.o: about.h about.c SDLfunctions.o SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c about.c SDLfunctions.o
 
-highscore.o: highscore.c highscore.h SDLfunctions.o SDLincludes.h
+highscore.o: highscore.c highscore.h SDLfunctions.o SDLincludes.h structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c highscore.c SDLfunctions.o
 
-graphicUpdate.o: graphicUpdate.c graphicUpdate.h pathfinding.o structs.h ingameMenu.o
+graphicUpdate.o: graphicUpdate.c graphicUpdate.h pathfinding.o structs.h SDLincludes.h ingameMenu.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c graphicUpdate.c pathfinding.o ingameMenu.o
 	
 pathfinding.o: pathfinding.c pathfinding.h SDLincludes.h SDLfunctions.o structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c pathfinding.c SDLfunctions.o
 
-
 hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c hedgewoodIO.h hedgewoodIO.c
 	
 ingameMenu.o: ingameMenu.h ingameMenu.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c ingameMenu.c SDLfunctions.o hedgewoodIO.o popUp.p
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c ingameMenu.c SDLfunctions.o hedgewoodIO.o popUp.o
 	
-gameloop.o: gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
+gameloop.o: gameloop.c gameloop.h structs.h SDLincludes.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
 
 popUp.o: popUp.c popUp.h SDLfunctions.o structs.h

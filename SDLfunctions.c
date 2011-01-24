@@ -19,13 +19,14 @@
 #include "SDLfunctions.h"
 
 
-SDL_Surface* initSDL()
+SDL_Surface* initSDL(dataStore *data)
 {
 	Uint32 initflags = SDL_INIT_VIDEO;  /* See documentation for details */
 	SDL_Surface *screen;
 	Uint8  video_bpp = WINDOWBPP;
-	Uint32 videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+	Uint32 videoflags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_HWPALETTE;
 
+	data->windowed = 1;
 	
 	/* Initialize the SDL library */
 	if ( SDL_Init(initflags) < 0 ) {
@@ -33,11 +34,8 @@ SDL_Surface* initSDL()
 				SDL_GetError());
 		exit(1);
 	}
-	
-	
-	
 
-	/* Set 640x480 video mode */
+	/* Set 800x600 video mode */
 	screen=SDL_SetVideoMode(WINDOWWIDTH,WINDOWHEIGTH, video_bpp, videoflags);
 
 	if (screen == NULL) {
@@ -46,13 +44,25 @@ SDL_Surface* initSDL()
 		SDL_Quit();
 		exit(2);
 	}
-	
 	SDL_WM_SetCaption(GAMENAME, NULL );
 
+	/*TTF init for font*/
+	if (TTF_Init() == -1)
+	{
+		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
+		exit(1);
+	}
+	
 	
 	return screen;
 }
-
+void quitSDL()
+{
+	/*quit TTF */
+	TTF_Quit();
+	/* Clean up the SDL library */
+	SDL_Quit();
+}
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
 {
     //Holds offsets
@@ -73,7 +83,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
     if( windowed)
     {
         //Set the screen to fullscreen
-        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE | SDL_FULLSCREEN ); /* | SDL_RESIZABLE */
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE | SDL_FULLSCREEN ); /* | SDL_RESIZABLE */
 		
         //If there's an error
         if( screen == NULL )
@@ -89,7 +99,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
     else if( windowed == 0 )
     {
         //Window the screen
-        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_SWSURFACE); /* | SDL_RESIZABLE */
+        screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE); /* | SDL_RESIZABLE */
 		
         //If there's an error
         if( screen == NULL )
@@ -105,11 +115,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
 
 }
 
-void quitSDL()
-{
-	/* Clean up the SDL library */
-	SDL_Quit();
-}
+
 
 SDL_Surface *load_image(char *filename ) { 
 	//Temporary storage for the image that's loaded 
@@ -151,26 +157,47 @@ TTF_Font *arialFont(int size)
 }
 int drawButton (SDL_Surface *destinationSurface, myButton *button)
 {
+	SDL_Rect buttonBorder = button->rect;
+	buttonBorder.h++;
+	buttonBorder.w++;
+	buttonBorder.x--;
+	buttonBorder.y--;
+	SDL_FillRect(destinationSurface, &buttonBorder, SDL_MapRGB( destinationSurface->format, 0xFF, 0xFF, 0xFF ));
+
 	SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x00, 0x00, 0xFF ));
 
 	SDL_Surface *message;
 	TTF_Font *font = buttonFont();
+	SDL_Color blackTextColor = { 0, 0, 0,0};
+	if (!(message = TTF_RenderText_Blended( font, button->name, blackTextColor )))
+	{
+		printf("%s\n",TTF_GetError());
+		return 1;
+	}
+	SDL_Rect textBlack = {button->rect.x+button->rect.w/2-message->w/2+2,button->rect.y+button->rect.h/2-message->h/2+2,0,0};
+	if(0!=SDL_BlitSurface( message, NULL, destinationSurface, &textBlack))
+	{
+		printf("%s\n",SDL_GetError());
+		return 1;
+	}
+	
 	SDL_Color textColor = { 255, 255, 255,0};
 	if (!(message = TTF_RenderText_Blended( font, button->name, textColor )))
 	{
 		printf("%s\n",TTF_GetError());
 		return 1;
 	}
-	TTF_CloseFont(font);
 	SDL_Rect text = {button->rect.x+button->rect.w/2-message->w/2,button->rect.y+button->rect.h/2-message->h/2,0,0};
-	if(0==SDL_BlitSurface( message, NULL, destinationSurface, &text))
-		return 0;
-	else {
+	TTF_CloseFont(font);
+	if(0!=SDL_BlitSurface( message, NULL, destinationSurface, &text))
+	{
 		printf("%s\n",SDL_GetError());
 		return 1;
 	}
 	SDL_FreeSurface(message);
+	return 1;
 }
+
 int isButtonClicked(myButton *button, int x, int y)
 {
 	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h)

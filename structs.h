@@ -4,9 +4,13 @@
 typedef struct field{
     int visible;
     int currency;
-	//-1 := nicht begehbar
+	//1-10 wenig
+	//11-20 mittel
+	//21-30 viel		
+	
 	int aStarValue;
-
+	//-1 := nicht begehbar
+	
     int type;
 	//0 := Verdeckt			nicht begehbar
 	//1 := linker Zaun		nicht begehbar
@@ -39,17 +43,19 @@ typedef struct person{
 	 * 2: DOWN
 	 * 3: LEFT
 	 */
+	int candystash;
 	int heading;
     int maxEnergy;
     int currentEnergy;
 	int vision;
+	float cutSpeed;
 	struct position *anfang;
 }person;
 
 //Highscore-Element
 typedef struct highscoreElement
 {
-	char name[10];
+	char name[25];
 	int points;
 }highscoreElement;
 
@@ -61,8 +67,13 @@ typedef struct dataStore{
     struct person player;
     //Aktuell oberste sichtbar Zeile im Array
     int verticalScroll;
+	int horizontalScroll;
 	//Highscore-Array max. 10 Einträge
 	highscoreElement highscore[10];
+	position home;
+	position stash;
+	int windowed;
+	
 }dataStore;
 
 typedef struct pfNode{
@@ -88,6 +99,9 @@ typedef struct menuDataStore
 {
 	myButton *buttons;
 	int buttonCount;
+	char *text;
+	char *inputText;
+	int inputLength;
 }menuDataStore;
 
 #endif

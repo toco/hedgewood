@@ -25,7 +25,7 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 	
 	
 	setupMenu(screen, menuData);
-	testLoop(screen, menuData, data);
+	mainMenuLoop(screen, menuData, data);
 	
 	free(menuData->buttons);
 	free(menuData);	
@@ -33,13 +33,11 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 
 int startGame( SDL_Surface *screen, dataStore *data)
 {
-	printf("Start ingame Menu\n");
 	
-	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
-	SDL_Flip(screen);
-	ingameMenuStart(screen, data);
+//	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+//	SDL_Flip(screen);
+	gameloop(data,screen);
 
-	printf("StartGame Clicked\n");
 	
 	return 0;
 }
@@ -52,42 +50,38 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 {
 	/*Background */
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
-	if (TTF_Init() == -1)
-	{
-		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
-		exit(1);
-	}
+
 	
 #define BUTTONX 300
 #define BUTTONWIDTH 200
 #define BUTTONHEIGHT 50
 	
 	myButton *buttons = &(dataStore->buttons[0]);
-	buttons[ STARTEN_BUTTON ].rect.x=BUTTONX;
-	buttons[ STARTEN_BUTTON ].rect.y=100;
+	buttons[ STARTEN_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ STARTEN_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
 	buttons[ STARTEN_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ STARTEN_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ STARTEN_BUTTON ].name="Start Game";
 	buttons[ STARTEN_BUTTON ].function=startGame;
 
-	buttons[ HIGHSCORE_BUTTON ].rect.x=BUTTONX;
-	buttons[ HIGHSCORE_BUTTON ].rect.y=200;
+	buttons[ HIGHSCORE_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ HIGHSCORE_BUTTON ].rect.y=screen->clip_rect.h/2-25-BUTTONHEIGHT/2;
 	buttons[ HIGHSCORE_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ HIGHSCORE_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ HIGHSCORE_BUTTON ].name="Highscore";
 	buttons[ HIGHSCORE_BUTTON ].function=displayHighscore;
 
 	
-	buttons[ ABOUT_BUTTON ].rect.x=BUTTONX;
-	buttons[ ABOUT_BUTTON ].rect.y=300;
+	buttons[ ABOUT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ ABOUT_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
 	buttons[ ABOUT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ ABOUT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ ABOUT_BUTTON ].name="About/Help";
 	buttons[ ABOUT_BUTTON ].function=displayAbout;
 
 	
-	buttons[ QUIT_BUTTON ].rect.x=BUTTONX;
-	buttons[ QUIT_BUTTON ].rect.y=400;
+	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
+	buttons[ QUIT_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
 	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ QUIT_BUTTON ].name="Quit";
@@ -111,13 +105,11 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	
 }
 
-int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
+int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
-	
-	int windowed = 1;
-	
+		
 	Uint32 startTime, stopTime, diffTime;
 	Uint32 innerStartTime, innerStopTime;
 
@@ -152,7 +144,7 @@ int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *dat
 					switch( event.key.keysym.sym )
 				{
 					case SDLK_f:
-						windowed = toggleFullscreen(screen, windowed);
+						data->windowed = toggleFullscreen(screen, data->windowed);
 						setupMenu(screen,menuData);
 						break;
 						

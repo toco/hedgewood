@@ -23,11 +23,11 @@
 #include "structs.h"
 #endif
 
-#define WINDOWWIDTH 800
-#define WINDOWHEIGTH 600
-#define WINDOWBPP 32
+//#define WINDOWWIDTH 800
+//#define WINDOWHEIGTH 600
+//#define WINDOWBPP 32
 
-SDL_Surface* initSDL();
+SDL_Surface* initSDL(dataStore *data);
 
 void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip);
 
@@ -43,5 +43,6 @@ TTF_Font *arialFont(int size); /*requires  	TTF_CloseFont(font); after use*/
 
 int drawButton (SDL_Surface *destinationSurface, myButton *button);
 int isButtonClicked(myButton *button, int x, int y);
+
 
 #endif
