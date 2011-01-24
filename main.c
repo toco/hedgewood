@@ -29,7 +29,6 @@ int main(int argc, char *argv[]) {
 	highscoreTestdata(test);
 	SDL_Surface* screen=initSDL(test);
 	readDataStore(test,1,1);
-	addHighscore(screen, test, 1000);
 	menuStart(screen, test);
 	saveDataStore(test,1,0);
 	quitSDL();
