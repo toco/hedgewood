@@ -25,7 +25,7 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 	
 	
 	setupMenu(screen, menuData);
-	testLoop(screen, menuData, data);
+	mainMenuLoop(screen, menuData, data);
 	
 	free(menuData->buttons);
 	free(menuData);	
@@ -105,7 +105,7 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	
 }
 
-int testLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
+int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
