@@ -193,7 +193,8 @@ void graphicLoop(SDL_Surface *l_screen,dataStore *data) {
 			if(motionPath){
 			lastmouse->y+=data->verticalScroll;
 			aStar(data,lastmouse);
-			if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
+
+		if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 			updateGraphics(l_screen, data);
 			aStarPathPrint(data,l_screen);
 			free(lastmouse);
