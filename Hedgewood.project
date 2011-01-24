@@ -31,6 +31,12 @@
     <File Name="README"/>
     <File Name="Makefile"/>
     <File Name="highscore.h"/>
+    <File Name="gameloop.h"/>
+    <File Name="popUp.c"/>
+    <File Name="gameloop.c"/>
+    <File Name="popUp.h"/>
+    <File Name="store.c"/>
+    <File Name="store.h"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>
