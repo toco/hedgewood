@@ -82,45 +82,33 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 		while ( SDL_PollEvent(&event) ) {
 			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
-				case SDL_MOUSEMOTION:
-					break;
-				case SDL_MOUSEBUTTONUP:
-					SDL_GetMouseState(&mouseX,&mouseY);
-					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
-					int buttonID;
-					for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
-						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
-							if(menuData->buttons[buttonID].function!=NULL)
-								(menuData->buttons[buttonID].function)(screen, data);
-							if (buttonID==ITEM_BUTTON) {
-								if (data->player.candystash +
-							        data->player.bp.currentVolume>=ITEMPRICE) {
-									data->player.cutSpeed+=0.5;
-									diffmoney= data->player.bp.currentVolume - ITEMPRICE;
-									if(diffmoney<0) {
-										data->player.bp.currentVolume=0;
-										data->player.candystash += diffmoney;
-									} else data->player.bp.currentVolume -= ITEMPRICE;
-								}
-								else {
-									popUp(screen, NOTENOUGHMONEY, "OK", NULL);
-									
-								}
-
+			case SDL_MOUSEMOTION:
+				break;
+			case SDL_MOUSEBUTTONUP:
+				SDL_GetMouseState(&mouseX,&mouseY);
+				printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+				int buttonID;
+				for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
+					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
+						displaystore(screen, data,menuData);
+						if (buttonID==ITEM_BUTTON) {
+							if (data->player.candystash + data->player.bp.currentVolume>=ITEMPRICE) {
+								data->player.cutSpeed+=0.5;
+								diffmoney= data->player.bp.currentVolume - ITEMPRICE;
+								if(diffmoney<0) {
+									data->player.bp.currentVolume=0;
+									data->player.candystash += diffmoney;
+								} else data->player.bp.currentVolume -= ITEMPRICE;
 							}
-							else if (buttonID==BACKPACK_BUTTON ) {
-								if (data->player.candystash +
-							        data->player.bp.currentVolume>=BACKPACKPRICE) {
-									data->player.bp.maxVolume+=200;
-									diffmoney= data->player.bp.currentVolume - BACKPACKPRICE;
-									if(diffmoney<0) {
-										data->player.bp.currentVolume=0;
-										data->player.candystash += diffmoney;
-									} else data->player.bp.currentVolume -= BACKPACKPRICE;
-								}
-								else {
-									popUp(screen, NOTENOUGHMONEY, "OK", NULL);
-								}
+						}
+						else if (buttonID==BACKPACK_BUTTON ) {
+							if (data->player.candystash + data->player.bp.currentVolume>=BACKPACKPRICE) {
+								data->player.bp.maxVolume+=200;
+								diffmoney= data->player.bp.currentVolume - BACKPACKPRICE;
+								if(diffmoney<0) {
+									data->player.bp.currentVolume=0;
+									data->player.candystash += diffmoney;
+								} else data->player.bp.currentVolume -= ITEMPRICE;
 							}
 							else if (buttonID==VIEW_BUTTON)
 							{
