@@ -22,7 +22,7 @@
 #include "pathfinding.h"
 
 void aStar( dataStore *data, position *end) {
-	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue<0)return;
+	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue*data->hedgewood[end->y][end->x].visible<0)return;
 	else {
 		int suchen=1,i,j,aStarVal;
 		pfNode *open=NULL,*closed=NULL,*zeiger=NULL,*tmp_element=NULL;

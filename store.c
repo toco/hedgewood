@@ -14,38 +14,49 @@
  *
  */
 #include "store.h"
+
 int storeStart(SDL_Surface *screen, dataStore *data) {
-	int rtnValue;
+	int rtnValue,buttonID;
 	menuDataStore *menuData = malloc(sizeof(menuDataStore));
-	menuData->buttons = malloc(sizeof(myButton)*INGAMEBUTTONCOUNT);
+	menuData->buttons = malloc(sizeof(myButton)*STOREBUTTONCOUNT);
 	myButton *buttons = menuData->buttons;
 	/*background from 150 to 450 */
-	buttons[ ITEM_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
+	for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {
+		buttons[buttonID].name=calloc(30,sizeof(char));
+	}
+	buttons[ ITEM_BUTTON ].rect.y=screen->clip_rect.h/2-150-BUTTONHEIGHT/2;
 	buttons[ ITEM_BUTTON ].rect.w=BUTTONWIDTH*2+20;
 	buttons[ ITEM_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ ITEM_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[ITEM_BUTTON].rect.w/2;
-	buttons[ ITEM_BUTTON ].name="Item Upgrade (800)";
+	sprintf(buttons[ ITEM_BUTTON ].name,"Tool Upgrade %.0f",data->player.cutSpeed*1000);	
 	buttons[ ITEM_BUTTON ].function=NULL;
-	buttons[ BACKPACK_BUTTON ].rect.y=screen->clip_rect.h/2-25-BUTTONHEIGHT/2;
+	buttons[ BACKPACK_BUTTON ].rect.y=screen->clip_rect.h/2-50-BUTTONHEIGHT/2;
 	buttons[ BACKPACK_BUTTON ].rect.w=BUTTONWIDTH*2+20;
 	buttons[ BACKPACK_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ BACKPACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACKPACK_BUTTON].rect.w/2;
-	buttons[ BACKPACK_BUTTON ].name="Backpack Upgrade (1000)";
+	sprintf(buttons[ BACKPACK_BUTTON ].name,"Backpack Upgrade %d",data->player.bp.maxVolume*3);
 	buttons[ BACKPACK_BUTTON ].function=NULL;
-	buttons[ VIEW_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
+	buttons[ VIEW_BUTTON ].rect.y=screen->clip_rect.h/2+0+BUTTONHEIGHT/2;
 	buttons[ VIEW_BUTTON ].rect.w=BUTTONWIDTH*2+20;
 	buttons[ VIEW_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ VIEW_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[VIEW_BUTTON].rect.w/2;
-	buttons[ VIEW_BUTTON ].name="View Upgrade (1200)";
+	sprintf(buttons[ VIEW_BUTTON ].name,"View Upgrade %d",data->player.vision*1000);
 	buttons[ VIEW_BUTTON ].function=NULL;
-	buttons[ BACK_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
+	buttons[ BACK_BUTTON ].rect.y=screen->clip_rect.h/2+200+BUTTONHEIGHT/2;
 	buttons[ BACK_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ BACK_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ BACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACK_BUTTON].rect.w/2;
 	buttons[ BACK_BUTTON ].name="Back";
-	buttons[ BACK_BUTTON ].function=NULL;
+	buttons[ BACK_BUTTON ].function=NULL;	
+	buttons[ ENERGY_BUTTON ].rect.y=screen->clip_rect.h/2+100+BUTTONHEIGHT/2;
+	buttons[ ENERGY_BUTTON ].rect.w=BUTTONWIDTH*2+20;
+	buttons[ ENERGY_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ ENERGY_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[ENERGY_BUTTON].rect.w/2;
+	sprintf(buttons[ ENERGY_BUTTON ].name,"Energy Upgrade %d",data->player.maxEnergy);
+	buttons[ ENERGY_BUTTON ].function=NULL;
+	
 	displayStore(screen, data, menuData);
-	rtnValue = storeLoop(screen, data, menuData);
+	if(storeLoop(screen, data, menuData))storeStart(screen,data);
 	free(menuData->buttons);
 	free(menuData);
 	return rtnValue;
@@ -57,10 +68,33 @@ int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) 
 	//	int width = 400, height = 350;
 	//	SDL_Rect background = {screen->clip_rect.w/2-width/2,screen->clip_rect.h/2-height/2,width,height};
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+	int i;
+	for(i=0;i<3;i+=2){
+	   /*Draw Text */
+        char text[50];
+		sprintf(text,"%d CANDY",(data->player.candystash+data->player.bp.currentVolume));
+		
+        SDL_Surface *message;
+        TTF_Font *font = arialFont(25);
+        SDL_Color textColor = { 255*i, 255*i, 255*i,0};
+        if (!(message = TTF_RenderText_Blended( font, text, textColor )))
+        {
+                printf("%s\n",TTF_GetError());
+                return 1;
+        }
+        TTF_CloseFont(font);
+        SDL_Rect textRect = {300-i,22-i,0,0};
+        if(0!=SDL_BlitSurface( message, NULL, screen, &textRect))
+        {
+                printf("%s\n",SDL_GetError());
+                return 1;
+        }
+        SDL_FreeSurface(message);
+	}
 	
 	/*Buttons*/
 	int buttonID;
-	for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
+	for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {
 		drawButton(screen, &menuData->buttons[buttonID]);
 	}
 	
@@ -87,43 +121,56 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 				break;
 			case SDL_MOUSEBUTTONUP:
 				SDL_GetMouseState(&mouseX,&mouseY);
-				printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
-				
-				for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
-					
-					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
+				printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);				
+				for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {					
+					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {						
 						displayStore(screen, data,menuData);
 						if (buttonID==ITEM_BUTTON) {
-							if (data->player.candystash + data->player.bp.currentVolume>=ITEMPRICE) {
+							if (data->player.candystash + data->player.bp.currentVolume>=data->player.cutSpeed*1000) {
 								data->player.cutSpeed+=0.5;
-								diffmoney= data->player.bp.currentVolume - ITEMPRICE;
+								diffmoney= data->player.bp.currentVolume - data->player.cutSpeed*1000;
 								if(diffmoney<0) {
 									data->player.bp.currentVolume=0;
 									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= ITEMPRICE;
+								} else data->player.bp.currentVolume -= data->player.cutSpeed*1000;
 							}
+							done=2;
 						}
 						else if (buttonID==BACKPACK_BUTTON ) {
-							if (data->player.candystash + data->player.bp.currentVolume>=BACKPACKPRICE) {
+							if (data->player.candystash + data->player.bp.currentVolume>=data->player.bp.maxVolume*3) {
 								data->player.bp.maxVolume+=200;
-								diffmoney= data->player.bp.currentVolume - BACKPACKPRICE;
+								diffmoney= data->player.bp.currentVolume - data->player.bp.maxVolume*3;
 								if(diffmoney<0) {
 									data->player.bp.currentVolume=0;
 									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= BACKPACKPRICE;
+								} else data->player.bp.currentVolume -= data->player.bp.maxVolume*3;
 							}
+							done=2;
 						}
 						else if (buttonID==VIEW_BUTTON ) {
 						
-							if (data->player.candystash + data->player.bp.currentVolume>=VIEWPRICE) {
+							if (data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000) {
 								data->player.vision+=1;
-								diffmoney= data->player.bp.currentVolume - VIEWPRICE;
+								diffmoney= data->player.bp.currentVolume - data->player.vision*1000;
 								if(diffmoney<0) {
 									data->player.bp.currentVolume=0;
 									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= VIEWPRICE;
+								} else data->player.bp.currentVolume -= data->player.vision*1000;
 							}
-						}						
+							done=2;
+						}
+						else if (buttonID==ENERGY_BUTTON) {
+						
+							if (data->player.candystash + data->player.bp.currentVolume>=data->player.maxEnergy) {
+								data->player.maxEnergy+=100;
+								diffmoney= data->player.bp.currentVolume - data->player.maxEnergy;
+								if(diffmoney<0) {
+									data->player.bp.currentVolume=0;
+									data->player.candystash += diffmoney;
+								} else data->player.bp.currentVolume -= data->player.maxEnergy;
+							}
+							done=2;
+						}
 						else if (buttonID==BACK_BUTTON){
 							
 							done=1;
@@ -165,5 +212,5 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 		
 	
 	}
-	return 0;
+	return (done-1);
 }

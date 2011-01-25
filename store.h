@@ -21,12 +21,9 @@
 #define ITEM_BUTTON 0
 #define BACKPACK_BUTTON 1
 #define VIEW_BUTTON 2
-#define BACK_BUTTON 3
-#define INGAMEBUTTONCOUNT 4
-
-#define	ITEMPRICE 8
-#define	BACKPACKPRICE 10
-#define VIEWPRICE 12
+#define ENERGY_BUTTON 3
+#define BACK_BUTTON 4
+#define STOREBUTTONCOUNT 5
 
 #define NOTENOUGHMONEY "You haven't got enough money to buy this!"
 

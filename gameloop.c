@@ -120,7 +120,7 @@ void createRandomField(dataStore *data) {
 	data->player.bp.currentVolume=0;
 	data->player.bp.maxVolume=400;
 	data->player.bp.maxOverall=0;
-	data->player.candystash=0;
+	data->player.candystash=10000;
 	data->home.x=7;
 	data->home.y=2;
 	data->stash.x=13;
@@ -161,7 +161,7 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 							tmp=calloc(1,sizeof(struct position));
 							tmp->x=mouse_pos->x+data->horizontalScroll;
 							tmp->y=mouse_pos->y+data->verticalScroll;
-							if(data->player.anfang!=NULL&& data->hedgewood[tmp->y][tmp->x].aStarValue>-1 && aStarManhatten(*lastpath,*tmp)==AVGASTAR) {
+							if(data->player.anfang!=NULL&& data->hedgewood[tmp->y][tmp->x].aStarValue*data->hedgewood[tmp->y][tmp->x].visible>-1 && aStarManhatten(*lastpath,*tmp)==AVGASTAR) {
 								lastpath=tmp;
 								positionQListAdd(data,tmp);
 								ownpath++;
@@ -238,8 +238,6 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 				}
 			case SDL_KEYDOWN:
 				switch( event.key.keysym.sym ) {
-				case SDLK_r:
-					break;
 				case SDLK_ESCAPE:
 					done = ingameMenuStart(screen, data);
 					if (!done)
