@@ -92,7 +92,7 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 				for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {
 					
 					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
-						displaystore(screen, data,menuData);
+						displayStore(screen, data,menuData);
 						if (buttonID==ITEM_BUTTON) {
 							if (data->player.candystash + data->player.bp.currentVolume>=ITEMPRICE) {
 								data->player.cutSpeed+=0.5;
@@ -164,5 +164,6 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 		}
 		
 	
+	}
 	return 0;
 }
