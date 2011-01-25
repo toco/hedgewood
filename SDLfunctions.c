@@ -135,7 +135,8 @@ SDL_Surface *load_image(char *filename ) {
 			//Map the color key
 			Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0, 255, 255 );
 			//Set all pixels of color R 0 G 255, B 255 to be transparent
-			SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
+			if(0!=SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey ))
+				printf("Error: Alpha not set %s\n",SDL_GetError());
 	}
 	return optimizedImage;
 }

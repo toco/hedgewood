@@ -119,7 +119,6 @@ int displayPopup(SDL_Surface *screen, menuDataStore *menuData)
 		printf("%s\n",SDL_GetError());
 		return 1;
 	}
-	SDL_FreeSurface(message);
 	
 	/*DrawTextField*/
 	if (menuData->inputLength) {
@@ -142,7 +141,9 @@ int displayPopup(SDL_Surface *screen, menuDataStore *menuData)
 		textFieldRect.x +=1;
 		textFieldRect.y +=1;
 		SDL_FillRect(screen, &textFieldRect, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ));
+		
 		if (menuData->inputText[0]!='\0') {
+			SDL_FreeSurface(message);
 			SDL_Color blackTextColor = { 0, 0, 0, 0};
 			if (!(message = TTF_RenderText_Blended( font, menuData->inputText, blackTextColor )))
 			{
@@ -156,12 +157,11 @@ int displayPopup(SDL_Surface *screen, menuDataStore *menuData)
 				printf("%s\n",SDL_GetError());
 				return 1;
 			}
-			SDL_FreeSurface(message);			
 		}
 		else {
 		}
-		
 	}
+	SDL_FreeSurface(message);
 	TTF_CloseFont(font);
 	
 	/*Draw Buttons*/
