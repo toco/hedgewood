@@ -22,13 +22,16 @@
 #define BACKPACK_BUTTON 1
 #define VIEW_BUTTON 2
 #define BACK_BUTTON 3
-#define STOREBUTTONCOUNT 4
-#define	ITEMPRICE 10
-#define	BACKPACKPRICE 20
-#define VIEWPRICE 30
+#define INGAMEBUTTONCOUNT 4
+
+#define	ITEMPRICE 8
+#define	BACKPACKPRICE 10
+#define VIEWPRICE 12
+
+#define NOTENOUGHMONEY "You haven't got enough money to buy this!"
 
 int storeStart(SDL_Surface *screen, dataStore *data);
-int displaystore(SDL_Surface *screen,  dataStore *data, menuDataStore *menuData);
+int displayStore(SDL_Surface *screen,  dataStore *data, menuDataStore *menuData);
 int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData);
 
 

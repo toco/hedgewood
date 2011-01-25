@@ -155,6 +155,7 @@ TTF_Font *arialFont(int size)
 	}
 	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
+
 int drawButton (SDL_Surface *destinationSurface, myButton *button)
 {
 	SDL_Rect buttonBorder = button->rect;
