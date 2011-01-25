@@ -83,12 +83,9 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 				int buttonID;
 				for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
 					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
-						if(menuData->buttons[buttonID].function!=NULL)
-							(menuData->buttons[buttonID].function)(screen, data);
 						displaystore(screen, data,menuData);
 						if (buttonID==ITEM_BUTTON) {
-							if (data->player.candystash +
-							        data->player.bp.currentVolume>=ITEMPRICE) {
+							if (data->player.candystash + data->player.bp.currentVolume>=ITEMPRICE) {
 								data->player.cutSpeed+=0.5;
 								diffmoney= data->player.bp.currentVolume - ITEMPRICE;
 								if(diffmoney<0) {
@@ -98,8 +95,7 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 							}
 						}
 						else if (buttonID==BACKPACK_BUTTON ) {
-							if (data->player.candystash +
-							        data->player.bp.currentVolume>=BACKPACKPRICE) {
+							if (data->player.candystash + data->player.bp.currentVolume>=BACKPACKPRICE) {
 								data->player.bp.maxVolume+=200;
 								diffmoney= data->player.bp.currentVolume - BACKPACKPRICE;
 								if(diffmoney<0) {
