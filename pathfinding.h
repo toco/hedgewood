@@ -22,4 +22,5 @@ int aStarManhatten(position start, position end);
 pfNode *aStarListRemove(pfNode *list,pfNode *node_add, int stack);
 void aStarListDelete(pfNode *list);
 void positionQListAdd(dataStore *data,  position *pos_add);
+
 #endif
