@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
 	dataStore *test = calloc(1,sizeof(dataStore));
 	highscoreTestdata(test);
 	SDL_Surface* screen=initSDL(test);
+	test->screen=screen;
 	readDataStore(test,1,1);
 	menuStart(screen, test);
 	saveDataStore(test,1,0);

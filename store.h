@@ -23,12 +23,11 @@
 #define VIEW_BUTTON 2
 #define BACK_BUTTON 3
 #define INGAMEBUTTONCOUNT 4
-#define	ITEMPRICE 800
-#define	BACKPACKPRICE 1000
-#define VIEWPRICE 1200
+#define	ITEMPRICE 8
+#define	BACKPACKPRICE 10
+#define VIEWPRICE 12
 
 int storeStart(SDL_Surface *screen, dataStore *data);
-
 int displaystore(SDL_Surface *screen,  dataStore *data, menuDataStore *menuData);
 int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData);
 

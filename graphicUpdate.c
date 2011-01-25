@@ -175,7 +175,7 @@ void verticalScrollPos( dataStore *data) {
 	
 	if(DEBUG)printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }
-int headPositionUpdate(dataStore *data,position *newPos) {
+int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen) {
 	position old=data->player.p_pos,n_pos=(*newPos);
 	if(data->hedgewood[n_pos.y][n_pos.x].aStarValue<0)return 0;
 	int x=0,y=0,vis=data->player.vision,i,j;
@@ -199,13 +199,12 @@ int headPositionUpdate(dataStore *data,position *newPos) {
 		if(n_pos.x==7)data->player.currentEnergy=data->player.maxEnergy;
 		else if(n_pos.x==13){
 		printf("CANDYSTASH: %d\n",data->player.candystash);
-		else if(n_pos.x==2)
-			int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData);
-
 		data->player.candystash+=data->player.bp.currentVolume;
 		data->player.bp.currentVolume=0;
-		printf("CANDYSTASH: %d\n",data->player.candystash);
-		}	
+		}
+		else if(n_pos.x==1){
+			storeStart(l_screen, data);
+	}	
 	}
 	data->player.p_pos=n_pos;
 	verticalScrollPos(data);

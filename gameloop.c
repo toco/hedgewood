@@ -323,7 +323,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 					tmp=positionListRead(data);
 					if(tmp!=NULL) {
 						if(DEBUG)printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
-						if(headPositionUpdate(data,tmp)){
+						if(headPositionUpdate(data,tmp,screen)){
 						aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
 						SDL_Delay((aVal*60/data->player.cutSpeed)+100);
 						

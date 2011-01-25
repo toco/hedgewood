@@ -21,14 +21,14 @@ CFLAGS = -g -Wall -Wextra -std=c99 -pedantic
 SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
 CPRECOMPILER = -save-temps
 
-Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o
+Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o store.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -o Hedgewood main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o store.o
 
 main.o: main.c main.h SDLincludes.h structs.h hedgewoodIO.o gameloop.o store.o
 	$(CC) $(SDLFLAGS) $(CFLAGS)  -c main.c hedgewoodIO.o gameloop.o store.o
 #gcc `sdl-config --cflags --libs` -lSDL_gfx -Wall -Wextra -o Hedgewood main.c
 
-SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h structs.h store.o
+SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h structs.h 
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c SDLfunctions.c SDLincludes.h
 
 menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o about.o highscore.o structs.h gameloop.o
@@ -46,19 +46,19 @@ graphicUpdate.o: graphicUpdate.c graphicUpdate.h pathfinding.o structs.h SDLincl
 pathfinding.o: pathfinding.c pathfinding.h SDLincludes.h SDLfunctions.o structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c pathfinding.c SDLfunctions.o
 
-hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h store.o
+hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c hedgewoodIO.h hedgewoodIO.c
 	
 ingameMenu.o: ingameMenu.h ingameMenu.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c ingameMenu.c SDLfunctions.o hedgewoodIO.o popUp.o
 	
-gameloop.o: gameloop.c gameloop.h structs.h SDLincludes.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o
+gameloop.o: gameloop.c gameloop.h structs.h SDLincludes.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o store.o
+	$(CC) $(SDLFLAGS) $(CFLAGS) -c gameloop.c gameloop.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o store.o
 
 popUp.o: popUp.c popUp.h SDLfunctions.o structs.h
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c popUp.c SDLfunctions.o
 	
-store.o: store.h store.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o store.o
+store.o: store.h store.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o 
 	$(CC) $(SDLFLAGS) $(CFLAGS) -c store.c store.h SDLfunctions.o hedgewoodIO.o popUp.o 
 
 
@@ -70,18 +70,3 @@ clean:
 cleanall:
 	rm *.s # lösche precompiled header
 	rm *.i # lösche precompiled header
-	
-preprocessor:
-
-	$(CC) $(SDLFLAGS) $(CFLAGS)  -c $(CPRECOMPILER) main.c
-
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) SDLfunctions.c 
-
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) menu.c 
-	
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) about.c 
-
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) highscore.c 
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) graphicUpdate.c 
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) pathfinding.c 
-	$(CC) $(SDLFLAGS) $(CFLAGS) -c $(CPRECOMPILER) hedgewoodIO.c 
