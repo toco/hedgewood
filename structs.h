@@ -33,6 +33,7 @@ typedef struct position{
 typedef struct backpack{
     int maxVolume;
     int currentVolume;
+	int maxOverall;
 }backpack;
 
 typedef struct person{

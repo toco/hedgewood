@@ -61,6 +61,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 				if(data->hedgewood[j+scrollposition][i+hSpos].currency > 0 && src.x>0) {
 					src2=src;
 					src2.x=50*((data->hedgewood[j+scrollposition][i+hSpos].currency-1)/10);
+					if(src2.x>100)src2.x=100;
 					SDL_BlitSurface(image_candy, &src2, l_screen, &dst);
 				}
 			}
@@ -199,6 +200,7 @@ int headPositionUpdate(dataStore *data,position *newPos) {
 		if(n_pos.x==7)data->player.currentEnergy=data->player.maxEnergy;
 		else if(n_pos.x==13){
 		data->player.candystash+=data->player.bp.currentVolume;
+		data->player.bp.maxOverall+=data->player.bp.currentVolume;
 		data->player.bp.currentVolume=0;
 		printf("CANDYSTASH: %d\n",data->player.candystash);
 		}	

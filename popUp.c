@@ -16,7 +16,7 @@
 
 #include "popUp.h"
 
-#include<stdio.h>
+#include <stdio.h>
 
 int popUp(SDL_Surface *screen, char *text, char *button0Title, char *button1Title)
 {

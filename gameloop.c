@@ -87,17 +87,17 @@ void createRandomField(dataStore *data) {
 			if (r<=50)
 				r_currency=0;
 			else if (r<=60)
-				r_currency=6;
+				r_currency=3;
 			else if (r_currency<=70)
-				r_currency=7;
+				r_currency=4;
 			else if (r<=80)
-				r_currency=8;
+				r_currency=5;
 			else if (r<=90)
-				r_currency=9;
+				r_currency=6;
 			else
-				r_currency= 10;
+				r_currency= 8;
 			if(k==6)data->hedgewood[i][j].currency=0;
-			else data->hedgewood[i][j].currency=(k-8)*r_currency;
+			else data->hedgewood[i][j].currency=(k-8)*(k-8)*r_currency;
 			
 		}
 	}
@@ -116,19 +116,20 @@ void createRandomField(dataStore *data) {
 	data->player.p_pos.next=NULL;
 	data->player.heading=2;
 	data->player.anfang=NULL;
-	data->player.vision=4;
+	data->player.vision=1;
 	data->player.maxEnergy=1000;
 	data->player.currentEnergy=1000;
 	data->verticalScroll=0;
 	data->horizontalScroll=0;
 	data->player.bp.currentVolume=0;
 	data->player.bp.maxVolume=400;
+	data->player.bp.maxOverall=0;
 	data->player.candystash=0;
 	data->home.x=7;
 	data->home.y=2;
 	data->stash.x=13;
 	data->stash.y=2;
-	data->player.cutSpeed=5.0;
+	data->player.cutSpeed=1.0;
 	
 }
 
@@ -258,10 +259,6 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				switch( event.key.keysym.sym ) {
 				case SDLK_r:
 					break;
-				case SDLK_h:
-					aStar(data,&(data->home));
-					runPath=1;
-					break;
 				case SDLK_ESCAPE:
 					done = ingameMenuStart(screen, data);
 					if (!done)
@@ -310,7 +307,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 							break;
 						case SDL_KEYDOWN:
 							switch( event.key.keysym.sym ) {
-							case SDLK_r:
+							case SDLK_ESCAPE:
 								i=0;
 								break;
 							default:
@@ -331,7 +328,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 							data->player.currentEnergy-=aVal;
 							if(data->player.currentEnergy<0){
 								printf("YOU ARE DEAD\n NEW GAME\n");
-								return 1;
+								done=1;
 							}
 							else {
 								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
@@ -342,7 +339,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 							}
 						}
 						
-						GraphicUpdate(screen,data);
+						if(!done)GraphicUpdate(screen,data);
 					}
 					else positionListDelete(data);
 					}
@@ -356,5 +353,25 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 		diffTime = (stopTime-startTime);
 		if (MS_FRAMETIME>diffTime)SDL_Delay(MS_FRAMETIME-diffTime);
 	}
+	
+	
+	addHighscore(screen,data,calcHighscore(data));
 	return 0;
+}
+
+int calcHighscore(dataStore *data){
+	
+	int i,j,highscore=0;
+	data->player.bp.maxOverall+=data->player.bp.currentVolume;
+	for(i=1; i<FIELDSIZE_Y-1; i++) {
+		for(j=1; j<FIELDSIZE_X-1; j++) {
+			highscore+=data->hedgewood[i][j].visible;
+		}
+	}
+	//64 Felder waren schon sichtbar
+	highscore-=64;
+	highscore+=1000*(data->player.cutSpeed-1)+1000*(data->player.vision-1);
+	highscore+=data->player.maxEnergy;
+	highscore+=data->player.bp.maxOverall;
+	return highscore;
 }
