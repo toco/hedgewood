@@ -4,7 +4,6 @@
 void createRandomField(dataStore *data) {
 	int i,j,k=0,r,r_currency;
 	double fortschritt,sand,mittel,leicht,schwer,tmp;
-
 	for(i=0; i<FIELDSIZE_Y-1; i++) {
 		data->hedgewood[i][0].visible=1;
 		data->hedgewood[i][0].type=1;
@@ -75,11 +74,10 @@ void createRandomField(dataStore *data) {
 				k=11;
 			}
 			r=rand()%100+1;
-			if(r<6){
-			data->hedgewood[i][j].type=7;
-			data->hedgewood[i][j].aStarValue=-1;			
-			}
-			else {
+			if(r<6) {
+				data->hedgewood[i][j].type=7;
+				data->hedgewood[i][j].aStarValue=-1;
+			} else {
 				data->hedgewood[i][j].type=k;
 				if(k==6)data->hedgewood[i][j].aStarValue=2;
 				else data->hedgewood[i][j].aStarValue=(k-8)*10+1;
@@ -98,7 +96,6 @@ void createRandomField(dataStore *data) {
 				r_currency= 8;
 			if(k==6)data->hedgewood[i][j].currency=0;
 			else data->hedgewood[i][j].currency=(k-8)*(k-8)*r_currency;
-			
 		}
 	}
 	for(i=0; i<4; i++) {
@@ -108,7 +105,6 @@ void createRandomField(dataStore *data) {
 			if(j==0||j==FIELDSIZE_X-1||i==0||(i==1&&(j==1||j==2||(j>5&&j<15)))||(i==2&&(j==2||j==6||(j>7&&j<13)||j==14)))data->hedgewood[i][j].aStarValue=-1;
 			else data->hedgewood[i][j].aStarValue=0;
 			data->hedgewood[i][j].currency=0;
-			
 		}
 	}
 	data->player.p_pos.x=7;
@@ -130,20 +126,14 @@ void createRandomField(dataStore *data) {
 	data->stash.x=13;
 	data->stash.y=2;
 	data->player.cutSpeed=1.0;
-	
 }
-
-int gameloop(dataStore *data,SDL_Surface *screen)
-{
-	
-	createRandomField(data);	
-	
+int gameloop(dataStore *data,SDL_Surface *screen) {
+	createRandomField(data);
 	clock_t innerStartTime, innerStopTime, startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=500;
 	int done=0,i=0,aVal,motionPath=0,runPath=0,drawPath=0,mouseDown=0,ownpath=0;
 	position *lastmouse=NULL,*mouse_pos=NULL,*tmp=NULL,*lastpath=NULL;
 	SDL_Event event;
 	GraphicUpdate(screen,data);
-	
 	while (!done) {
 		/* Check for events */
 		startTime = SDL_GetTicks();
@@ -151,109 +141,100 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
 			case SDL_MOUSEMOTION:
-			//Prüft ob sich die Maus aus dem 50x50 Feld bewegt hat
+				//Prüft ob sich die Maus aus dem 50x50 Feld bewegt hat
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
-				if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y){
+				if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y) {
 					aStar(data,&(data->home));
 					GraphicUpdate(screen,data);
 					positionListDelete(data);
 					break;
-				}
-				else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y){
+				} else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y) {
 					aStar(data,&(data->stash));
 					GraphicUpdate(screen,data);
 					positionListDelete(data);
 					break;
-				}
-				else{
-				mouse_pos=pixelToGrid(mouse_pos);
-			if(lastmouse!=NULL && mouseDown){
-				
-				if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y || ownpath==0){
-					tmp=calloc(1,sizeof(struct position));
-					tmp->x=mouse_pos->x+data->horizontalScroll;
-					tmp->y=mouse_pos->y+data->verticalScroll;
-					if(data->player.anfang!=NULL&& data->hedgewood[tmp->y][tmp->x].aStarValue>-1 && aStarManhatten(*lastpath,*tmp)==AVGASTAR){
-						lastpath=tmp;
-					positionQListAdd(data,tmp);
-					ownpath++;
-					GraphicUpdate(screen,data);
-					}
-					else{
-						if(tmp->x==data->player.p_pos.x && tmp->y==data->player.p_pos.y){
-							lastpath=tmp;
-							positionQListAdd(data,tmp);
-							ownpath++;
-							GraphicUpdate(screen,data);
+				} else {
+					mouse_pos=pixelToGrid(mouse_pos);
+					if(lastmouse!=NULL && mouseDown) {
+						if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y || ownpath==0) {
+							tmp=calloc(1,sizeof(struct position));
+							tmp->x=mouse_pos->x+data->horizontalScroll;
+							tmp->y=mouse_pos->y+data->verticalScroll;
+							if(data->player.anfang!=NULL&& data->hedgewood[tmp->y][tmp->x].aStarValue>-1 && aStarManhatten(*lastpath,*tmp)==AVGASTAR) {
+								lastpath=tmp;
+								positionQListAdd(data,tmp);
+								ownpath++;
+								GraphicUpdate(screen,data);
+							} else {
+								if(tmp->x==data->player.p_pos.x && tmp->y==data->player.p_pos.y) {
+									lastpath=tmp;
+									positionQListAdd(data,tmp);
+									ownpath++;
+									GraphicUpdate(screen,data);
+								} else if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)printf("Die Startposition muss die Spielerposition sein\n");
+							}
+							//free(tmp);
 						}
-						else if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)printf("Die Startposition muss die Spielerposition sein\n");
-				  }	
-				  //free(tmp);
-				}
-			}else if(lastmouse!=NULL && ownpath==0) {
-					if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)mouseTime=SDL_GetTicks(),drawPath=1;
-					else {
-						if(drawPath) {
-							mT=SDL_GetTicks();
-							if((mouseTime + mousetimewait)< mT) {
-								motionPath=1;
+					} else if(lastmouse!=NULL && ownpath==0) {
+						if(lastmouse->x!=mouse_pos->x || lastmouse->y!=mouse_pos->y)mouseTime=SDL_GetTicks(),drawPath=1;
+						else {
+							if(drawPath) {
+								mT=SDL_GetTicks();
+								if((mouseTime + mousetimewait)< mT) {
+									motionPath=1;
+								}
 							}
 						}
+					} else if(ownpath==0) {
+						mouseTime = SDL_GetTicks();
+						drawPath=1;
+						if((lastmouse=calloc(1,sizeof(position))) == NULL) {
+							printf("Kein Speicherplatz vorhanden fuer position\n");
+							return -1;
+						}
 					}
-				} else if(ownpath==0){
-					mouseTime = SDL_GetTicks();
-					drawPath=1;
-					if((lastmouse=calloc(1,sizeof(position))) == NULL) {
-						printf("Kein Speicherplatz vorhanden fuer position\n");
-						return -1;
-					}
-				}
-				
-				memcpy(lastmouse,mouse_pos,sizeof(position));
+					memcpy(lastmouse,mouse_pos,sizeof(position));
 				}
 				free(mouse_pos);
-				
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				mouseDown=1;
 				if(DEBUG)printf("MOUSE DOWN\n");
 				break;
 			case SDL_MOUSEBUTTONUP:
-				if(ownpath>0){
-				runPath=1;
-				mouseDown=0;
-				break;
+				if(ownpath>0) {
+					runPath=1;
+					mouseDown=0;
+					break;
 				}
-				mouseDown=0;				
+				mouseDown=0;
 				mouse_pos=calloc(1,sizeof(struct position));
 				SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 				printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
-				if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y){
+				if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y) {
 					aStar(data,&(data->home));
 					runPath=1;
 					break;
-				}
-				else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y){
+				} else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y) {
 					aStar(data,&(data->stash));
 					runPath=1;
 					break;
-				}
-				else{
-				mouse_pos=pixelToGrid(mouse_pos);
-				if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
-				if(lastmouse==NULL) {
-					if((lastmouse=calloc(1,sizeof(position))) == NULL) {
-						printf("Kein Speicherplatz vorhanden fuer position\n");
-						return -1;
+				} else {
+					mouse_pos=pixelToGrid(mouse_pos);
+					if(DEBUG)printf("Cusor-Feld x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
+					if(lastmouse==NULL) {
+						if((lastmouse=calloc(1,sizeof(position))) == NULL) {
+							printf("Kein Speicherplatz vorhanden fuer position\n");
+							return -1;
+						}
 					}
-				}
-				memcpy(lastmouse,mouse_pos,sizeof(position));
-				free(mouse_pos);
-				mouse_pos=NULL;
-				motionPath=1;
-				runPath=1;
-				break;
+					memcpy(lastmouse,mouse_pos,sizeof(position));
+					free(mouse_pos);
+					mouse_pos=NULL;
+					motionPath=1;
+					runPath=1;
+					break;
 				}
 			case SDL_KEYDOWN:
 				switch( event.key.keysym.sym ) {
@@ -275,7 +256,7 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				break;
 			}
 			innerStopTime = SDL_GetTicks();
-			diffTime=(innerStopTime-innerStartTime);			
+			diffTime=(innerStopTime-innerStartTime);
 			if (MS_FRAMETIME>diffTime)SDL_Delay(MS_FRAMETIME-diffTime);
 		}
 		mT=SDL_GetTicks();
@@ -293,11 +274,10 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 				lastmouse=NULL;
 				motionPath=0;
 				drawPath=0;
-				
 			}
 			if(runPath) {
 				i=1;
-				tmp=data->player.anfang;				
+				tmp=data->player.anfang;
 				while(tmp!=NULL&&i) {
 					//Schleife um die Laufbewegung Abzubrechen
 					while ( SDL_PollEvent(&event) ) {
@@ -320,30 +300,26 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 					tmp=positionListRead(data);
 					if(tmp!=NULL) {
 						if(DEBUG)printf("Position Stack x: %d y: %d\n",tmp->x,tmp->y);
-						if(headPositionUpdate(data,tmp,screen)){
-						aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
-						SDL_Delay((aVal*60/data->player.cutSpeed)+100);
-						
-						if(aVal>0){
-							data->player.currentEnergy-=aVal;
-							if(data->player.currentEnergy<0){
-								printf("YOU ARE DEAD\n NEW GAME\n");
-								done=1;
+						if(headPositionUpdate(data,tmp,screen)) {
+							aVal=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue;
+							SDL_Delay((aVal*60/data->player.cutSpeed)+100);
+							if(aVal>0) {
+								data->player.currentEnergy-=aVal;
+								if(data->player.currentEnergy<0) {
+									printf("YOU ARE DEAD\nNEW GAME\n");
+									done=1;
+								} else {
+									data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
+									data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=2;
+									data->player.bp.currentVolume+=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency;
+									if(data->player.bp.currentVolume > data->player.bp.maxVolume) data->player.bp.currentVolume=data->player.bp.maxVolume;
+									data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency=0;
+								}
 							}
-							else {
-								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
-								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=2;
-								data->player.bp.currentVolume+=data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency;
-								if(data->player.bp.currentVolume > data->player.bp.maxVolume) data->player.bp.currentVolume=data->player.bp.maxVolume;
-								data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].currency=0;
-							}
-						}
-						
-						if(!done)GraphicUpdate(screen,data);
+							if(!done)GraphicUpdate(screen,data);
+						} else positionListDelete(data);
 					}
-					else positionListDelete(data);
-					}
-				}				
+				}
 				runPath=0;
 				ownpath=0;
 			}
@@ -353,14 +329,10 @@ int gameloop(dataStore *data,SDL_Surface *screen)
 		diffTime = (stopTime-startTime);
 		if (MS_FRAMETIME>diffTime)SDL_Delay(MS_FRAMETIME-diffTime);
 	}
-	
-	
 	addHighscore(screen,data,calcHighscore(data));
 	return 0;
 }
-
-int calcHighscore(dataStore *data){
-	
+int calcHighscore(dataStore *data) {
 	int i,j,highscore=0;
 	data->player.bp.maxOverall+=data->player.bp.currentVolume;
 	for(i=1; i<FIELDSIZE_Y-1; i++) {

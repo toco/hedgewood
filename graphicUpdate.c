@@ -159,7 +159,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 position *pixelToGrid(position *l_pos) {
 	position *pos=calloc(1,sizeof( position));
 	pos->x=(l_pos->x)/FIELDSIZE_FIELD;
-	pos->y=(l_pos->y)/FIELDSIZE_FIELD;
+	pos->y=(l_pos->y+10)/FIELDSIZE_FIELD;
 	pos->next=NULL;
 	return pos;
 }
@@ -223,7 +223,7 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 	src.w=src.h=dst.w=dst.h=FIELDSIZE_FIELD;
 	while(tmp!=NULL) {
 		dst.x=(tmp->x-data->horizontalScroll)*FIELDSIZE_FIELD;
-		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD;
+		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD-10;
 		if(tmp->next==NULL)src.x=50;
 		else src.x=0;
 		src.y=0;
