@@ -128,7 +128,7 @@ void createRandomField(dataStore *data) {
 	data->home.y=2;
 	data->stash.x=13;
 	data->stash.y=2;
-	data->player.cutSpeed=5.0;
+	data->player.cutSpeed=1.0;
 	
 }
 
