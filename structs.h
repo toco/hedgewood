@@ -74,6 +74,7 @@ typedef struct dataStore{
 	position home;
 	position stash;
 	int windowed;
+	SDL_Surface *screen;
 	
 }dataStore;
 
