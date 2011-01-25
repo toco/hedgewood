@@ -90,7 +90,7 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 				int buttonID;
 				for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
 					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
-						displaystore(screen, data,menuData);
+						displayStore(screen, data,menuData);
 						if (buttonID==ITEM_BUTTON) {
 							if (data->player.candystash + data->player.bp.currentVolume>=ITEMPRICE) {
 								data->player.cutSpeed+=0.5;
@@ -164,5 +164,6 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 			SDL_Delay(MS_FRAMETIME-diffTime);
 	}
 	
+	}
 	return 0;
 }

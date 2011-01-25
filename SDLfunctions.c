@@ -201,9 +201,10 @@ int drawButton (SDL_Surface *destinationSurface, myButton *button)
 
 int isButtonClicked(myButton *button, int x, int y)
 {
-	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h)
+	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h) {
 		printf("%s clicked \n",button->name);
 		return 1;
+	}
 	else
 		return 0;
 }
