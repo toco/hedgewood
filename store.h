@@ -14,9 +14,9 @@
 #endif
 #include "SDLfunctions.h"
 #include "structs.h"
-
 #include "hedgewoodIO.h"
 #include "popUp.h"
+
 
 #define ITEM_BUTTON 0
 #define BACKPACK_BUTTON 1

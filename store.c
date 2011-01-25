@@ -89,7 +89,7 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 				SDL_GetMouseState(&mouseX,&mouseY);
 				printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
 				
-				for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {
+				for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
 					
 					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
 						displayStore(screen, data,menuData);
@@ -161,7 +161,7 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 			//25 Frames per second (40 Milliseconds per frame)
 			if (MS_FRAMETIME>diffTime)
 				SDL_Delay(MS_FRAMETIME-diffTime);
-		}
+		
 		
 	
 	}

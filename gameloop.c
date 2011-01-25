@@ -105,7 +105,7 @@ void createRandomField(dataStore *data) {
 		for(j=0; j<16; j++) {
 			data->hedgewood[i][j].visible=1;
 			data->hedgewood[i][j].type=-1;
-			if(j==0||j==FIELDSIZE_X-1||i==0)data->hedgewood[i][j].aStarValue=-1;
+			if(j==0||j==FIELDSIZE_X-1||i==0||(i==1&&(j==1||j==2||(j>5&&j<15)))||(i==2&&(j==2||j==6||(j>7&&j<13)||j==14)))data->hedgewood[i][j].aStarValue=-1;
 			else data->hedgewood[i][j].aStarValue=0;
 			data->hedgewood[i][j].currency=0;
 			
