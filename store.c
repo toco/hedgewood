@@ -59,9 +59,10 @@ int storeStart(SDL_Surface *screen, dataStore *data) {
 	buttons[ BACK_BUTTON ].name="Back";
 	buttons[ BACK_BUTTON ].disabled=0;
 	buttons[ BACK_BUTTON ].function=NULL;	
-
+	
 	displayStore(screen, data, menuData);
-	if(storeLoop(screen, data, menuData))storeStart(screen,data);
+	storeLoop(screen, data, menuData);
+	
 	free(menuData->buttons);
 	free(menuData);
 	return rtnValue;
@@ -75,7 +76,10 @@ int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) 
 	menuData->buttons[BACKPACK_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000);
 	menuData->buttons[ ENERGY_BUTTON ].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.maxEnergy);
 	
-	
+	sprintf(menuData->buttons[ ITEM_BUTTON ].name,"Tool Upgrade %.0f",data->player.cutSpeed*1000);	
+	sprintf(menuData->buttons[ BACKPACK_BUTTON ].name,"Backpack Upgrade %d",data->player.bp.maxVolume*3);
+	sprintf(menuData->buttons[ VIEW_BUTTON ].name,"View Upgrade %d",data->player.vision*1000);
+	sprintf(menuData->buttons[ ENERGY_BUTTON ].name,"Energy Upgrade %d",data->player.maxEnergy);
 	
 	
 	
@@ -85,7 +89,7 @@ int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) 
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 	int i;
 	for(i=0;i<3;i+=2){
-	   /*Draw Text */
+		/*Draw Text */
         char text[50];
 		sprintf(text,"%d CANDY",(data->player.candystash+data->player.bp.currentVolume));
 		
@@ -94,15 +98,15 @@ int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) 
         SDL_Color textColor = { 255*i, 255*i, 255*i,0};
         if (!(message = TTF_RenderText_Blended( font, text, textColor )))
         {
-                printf("%s\n",TTF_GetError());
-                return 1;
+			printf("%s\n",TTF_GetError());
+			return 1;
         }
         TTF_CloseFont(font);
         SDL_Rect textRect = {300-i,22-i,0,0};
         if(0!=SDL_BlitSurface( message, NULL, screen, &textRect))
         {
-                printf("%s\n",SDL_GetError());
-                return 1;
+			printf("%s\n",SDL_GetError());
+			return 1;
         }
         SDL_FreeSurface(message);
 	}
@@ -132,68 +136,68 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 		while ( SDL_PollEvent(&event) ) {
 			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
-			case SDL_MOUSEMOTION:
-				break;
-			case SDL_MOUSEBUTTONUP:
-				SDL_GetMouseState(&mouseX,&mouseY);
-				printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);				
-				for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {					
-					if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {						
-						displayStore(screen, data,menuData);
-						if (buttonID==ITEM_BUTTON) {
-							if (data->player.candystash + data->player.bp.currentVolume>=data->player.cutSpeed*1000) {
-								data->player.cutSpeed+=0.5;
-								diffmoney= data->player.bp.currentVolume - data->player.cutSpeed*1000;
-								if(diffmoney<0) {
-									data->player.bp.currentVolume=0;
-									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= data->player.cutSpeed*1000;
+				case SDL_MOUSEMOTION:
+					break;
+				case SDL_MOUSEBUTTONUP:
+					SDL_GetMouseState(&mouseX,&mouseY);
+					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);				
+					for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {					
+						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {						
+							if (buttonID==ITEM_BUTTON) {
+								if (data->player.candystash + data->player.bp.currentVolume>=data->player.cutSpeed*1000) {
+									diffmoney= data->player.bp.currentVolume - data->player.cutSpeed*1000;
+									if(diffmoney<0) {
+										data->player.bp.currentVolume=0;
+										data->player.candystash += diffmoney;
+									} else data->player.bp.currentVolume -= data->player.cutSpeed*1000;
+									data->player.cutSpeed+=0.5;
+								}
+								//							done=2;
 							}
-							done=2;
-						}
-						else if (buttonID==BACKPACK_BUTTON ) {
-							if (data->player.candystash + data->player.bp.currentVolume>=data->player.bp.maxVolume*3) {
-								data->player.bp.maxVolume+=200;
-								diffmoney= data->player.bp.currentVolume - data->player.bp.maxVolume*3;
-								if(diffmoney<0) {
-									data->player.bp.currentVolume=0;
-									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= data->player.bp.maxVolume*3;
+							else if (buttonID==BACKPACK_BUTTON ) {
+								if (data->player.candystash + data->player.bp.currentVolume>=data->player.bp.maxVolume*3) {
+									diffmoney= data->player.bp.currentVolume - data->player.bp.maxVolume*3;
+									if(diffmoney<0) {
+										data->player.bp.currentVolume=0;
+										data->player.candystash += diffmoney;
+									} else data->player.bp.currentVolume -= data->player.bp.maxVolume*3;
+									data->player.bp.maxVolume+=200;
+								}
+								//							done=2;
 							}
-							done=2;
-						}
-						else if (buttonID==VIEW_BUTTON ) {
-						
-							if (data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000) {
-								data->player.vision+=1;
-								diffmoney= data->player.bp.currentVolume - data->player.vision*1000;
-								if(diffmoney<0) {
-									data->player.bp.currentVolume=0;
-									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= data->player.vision*1000;
+							else if (buttonID==VIEW_BUTTON ) {
+								
+								if (data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000) {
+									diffmoney= data->player.bp.currentVolume - data->player.vision*1000;
+									if(diffmoney<0) {
+										data->player.bp.currentVolume=0;
+										data->player.candystash += diffmoney;
+									} else data->player.bp.currentVolume -= data->player.vision*1000;
+									data->player.vision+=1;
+								}
+								//							done=2;
 							}
-							done=2;
-						}
-						else if (buttonID==ENERGY_BUTTON) {
-						
-							if (data->player.candystash + data->player.bp.currentVolume>=data->player.maxEnergy) {
-								data->player.maxEnergy+=100;
-								diffmoney= data->player.bp.currentVolume - data->player.maxEnergy;
-								if(diffmoney<0) {
-									data->player.bp.currentVolume=0;
-									data->player.candystash += diffmoney;
-								} else data->player.bp.currentVolume -= data->player.maxEnergy;
+							else if (buttonID==ENERGY_BUTTON) {
+								
+								if (data->player.candystash + data->player.bp.currentVolume>=data->player.maxEnergy) {
+									diffmoney= data->player.bp.currentVolume - data->player.maxEnergy;
+									if(diffmoney<0) {
+										data->player.bp.currentVolume=0;
+										data->player.candystash += diffmoney;
+									} else data->player.bp.currentVolume -= data->player.maxEnergy;
+									data->player.maxEnergy+=100;
+								}
+								//							done=2;
 							}
-							done=2;
-						}
-						else if (buttonID==BACK_BUTTON){
-							
-							done=1;
-						break;
-						
+							else if (buttonID==BACK_BUTTON){
+								
+								done=1;
+								break;
+								
+							}
 						}
 					}
-				}
+					displayStore(screen, data,menuData);
 					break;
 				case SDL_KEYDOWN:
 					/* Any keypress quits the app... */
@@ -211,21 +215,21 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 					break;
 				default:
 					break;
-				}
-				innerStopTime = SDL_GetTicks();
-				diffTime=(innerStopTime-innerStartTime);
-				//25 Frames per second (40 Milliseconds per frame)
-				if (MS_FRAMETIME>diffTime)
-					SDL_Delay(MS_FRAMETIME-diffTime);
 			}
-			stopTime = SDL_GetTicks();
-			diffTime = (stopTime-startTime);
+			innerStopTime = SDL_GetTicks();
+			diffTime=(innerStopTime-innerStartTime);
 			//25 Frames per second (40 Milliseconds per frame)
 			if (MS_FRAMETIME>diffTime)
 				SDL_Delay(MS_FRAMETIME-diffTime);
+		}
+		stopTime = SDL_GetTicks();
+		diffTime = (stopTime-startTime);
+		//25 Frames per second (40 Milliseconds per frame)
+		if (MS_FRAMETIME>diffTime)
+			SDL_Delay(MS_FRAMETIME-diffTime);
 		
 		
-	
+		
 	}
 	return (done-1);
 }
