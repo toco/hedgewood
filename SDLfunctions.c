@@ -115,8 +115,6 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
 
 }
 
-
-
 SDL_Surface *load_image(char *filename ) { 
 	//Temporary storage for the image that's loaded 
 	SDL_Surface* loadedImage = NULL; 
@@ -154,8 +152,12 @@ TTF_Font *arialFont(int size)
 	}
 	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
-
 int drawButton (SDL_Surface *destinationSurface, myButton *button)
+{
+	return drawButtonWithState (destinationSurface, button, 0);
+}
+
+int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int withState)
 {
 	SDL_Rect buttonBorder = button->rect;
 	buttonBorder.h++;
@@ -163,8 +165,12 @@ int drawButton (SDL_Surface *destinationSurface, myButton *button)
 	buttonBorder.x--;
 	buttonBorder.y--;
 	SDL_FillRect(destinationSurface, &buttonBorder, SDL_MapRGB( destinationSurface->format, 0xFF, 0xFF, 0xFF ));
+	if (button->disabled&&withState) {
+		SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x73, 0x73, 0x73 ));
+	} else {
+		SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x00, 0x00, 0xFF ));
+	}
 
-	SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x00, 0x00, 0xFF ));
 
 	SDL_Surface *message;
 	TTF_Font *font = buttonFont();

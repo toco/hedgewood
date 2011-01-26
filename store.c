@@ -30,31 +30,36 @@ int storeStart(SDL_Surface *screen, dataStore *data) {
 	buttons[ ITEM_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[ITEM_BUTTON].rect.w/2;
 	sprintf(buttons[ ITEM_BUTTON ].name,"Tool Upgrade %.0f",data->player.cutSpeed*1000);	
 	buttons[ ITEM_BUTTON ].function=NULL;
+	buttons[ ITEM_BUTTON ].disabled=1;
 	buttons[ BACKPACK_BUTTON ].rect.y=screen->clip_rect.h/2-50-BUTTONHEIGHT/2;
 	buttons[ BACKPACK_BUTTON ].rect.w=BUTTONWIDTH*2+20;
 	buttons[ BACKPACK_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ BACKPACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACKPACK_BUTTON].rect.w/2;
 	sprintf(buttons[ BACKPACK_BUTTON ].name,"Backpack Upgrade %d",data->player.bp.maxVolume*3);
 	buttons[ BACKPACK_BUTTON ].function=NULL;
+	buttons[ BACKPACK_BUTTON ].disabled=1;
 	buttons[ VIEW_BUTTON ].rect.y=screen->clip_rect.h/2+0+BUTTONHEIGHT/2;
 	buttons[ VIEW_BUTTON ].rect.w=BUTTONWIDTH*2+20;
 	buttons[ VIEW_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ VIEW_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[VIEW_BUTTON].rect.w/2;
 	sprintf(buttons[ VIEW_BUTTON ].name,"View Upgrade %d",data->player.vision*1000);
 	buttons[ VIEW_BUTTON ].function=NULL;
-	buttons[ BACK_BUTTON ].rect.y=screen->clip_rect.h/2+200+BUTTONHEIGHT/2;
-	buttons[ BACK_BUTTON ].rect.w=BUTTONWIDTH;
-	buttons[ BACK_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ BACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACK_BUTTON].rect.w/2;
-	buttons[ BACK_BUTTON ].name="Back";
-	buttons[ BACK_BUTTON ].function=NULL;	
+	buttons[ VIEW_BUTTON ].disabled=1;
 	buttons[ ENERGY_BUTTON ].rect.y=screen->clip_rect.h/2+100+BUTTONHEIGHT/2;
 	buttons[ ENERGY_BUTTON ].rect.w=BUTTONWIDTH*2+20;
 	buttons[ ENERGY_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ ENERGY_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[ENERGY_BUTTON].rect.w/2;
 	sprintf(buttons[ ENERGY_BUTTON ].name,"Energy Upgrade %d",data->player.maxEnergy);
 	buttons[ ENERGY_BUTTON ].function=NULL;
-	
+	buttons[ ENERGY_BUTTON ].disabled=1;
+	buttons[ BACK_BUTTON ].rect.y=screen->clip_rect.h/2+200+BUTTONHEIGHT/2;
+	buttons[ BACK_BUTTON ].rect.w=BUTTONWIDTH;
+	buttons[ BACK_BUTTON ].rect.h=BUTTONHEIGHT;
+	buttons[ BACK_BUTTON ].rect.x=screen->clip_rect.w/2-buttons[BACK_BUTTON].rect.w/2;
+	buttons[ BACK_BUTTON ].name="Back";
+	buttons[ BACK_BUTTON ].disabled=0;
+	buttons[ BACK_BUTTON ].function=NULL;	
+
 	displayStore(screen, data, menuData);
 	if(storeLoop(screen, data, menuData))storeStart(screen,data);
 	free(menuData->buttons);
@@ -64,6 +69,16 @@ int storeStart(SDL_Surface *screen, dataStore *data) {
 
 //TODO: maxEngery, Backpacksize, curentMoney 
 int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
+	
+	menuData->buttons[ITEM_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.cutSpeed*1000);
+	menuData->buttons[VIEW_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.bp.maxVolume*3);
+	menuData->buttons[BACKPACK_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000);
+	menuData->buttons[ ENERGY_BUTTON ].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.maxEnergy);
+	
+	
+	
+	
+	
 	/*Background */
 	//	int width = 400, height = 350;
 	//	SDL_Rect background = {screen->clip_rect.w/2-width/2,screen->clip_rect.h/2-height/2,width,height};
@@ -95,7 +110,7 @@ int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) 
 	/*Buttons*/
 	int buttonID;
 	for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {
-		drawButton(screen, &menuData->buttons[buttonID]);
+		drawButtonWithState(screen, &menuData->buttons[buttonID],1);
 	}
 	
 	

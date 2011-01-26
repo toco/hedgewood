@@ -42,6 +42,7 @@ TTF_Font *buttonFont(); /*requires  	TTF_CloseFont(font); after use*/
 TTF_Font *arialFont(int size); /*requires  	TTF_CloseFont(font); after use*/
 
 int drawButton (SDL_Surface *destinationSurface, myButton *button);
+int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int withState);
 int isButtonClicked(myButton *button, int x, int y);
 
 

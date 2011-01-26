@@ -94,6 +94,7 @@ typedef struct myButton{
 	SDL_Rect rect;
 	char *name;
 	int (*function)(SDL_Surface *screen, dataStore *data);
+	int disabled;
 }myButton;
 
 typedef struct menuDataStore
