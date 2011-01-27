@@ -5,6 +5,7 @@
 #define person_pic "./pictures/person.png"
 #define kreis_pic "./pictures/kreis.png"
 #define candy_pic "./pictures/zuckerstangen.png"
+#define animation_pic "./pictures/cutanimation.png"
 
 int GraphicUpdate(SDL_Surface *l_screen,dataStore *data) {
 	int i,j,scrollposition=data->verticalScroll,hSpos=data->horizontalScroll,startzone=0;
@@ -178,8 +179,11 @@ void verticalScrollPos( dataStore *data) {
 }
 int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen) {
 	position old=data->player.p_pos,n_pos=(*newPos);
+	clock_t StartTime, StopTime,diffTime,innerStartTime;
 	if(data->hedgewood[n_pos.y][n_pos.x].aStarValue<0)return 0;
-	int x=0,y=0,vis=data->player.vision,i,j;
+	int x=0,y=0,vis=data->player.vision,i,j,animation=0,wait;
+	SDL_Surface *image_animation=NULL;
+	SDL_Rect src, dst;	
 	x=old.x-n_pos.x;
 	y=old.y-n_pos.y;
 	if(x<0)data->player.heading=1;
@@ -208,10 +212,48 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen) {
 			storeStart(l_screen, data);
 	}	
 	}
+	GraphicUpdate(l_screen,data);
+	wait=(data->hedgewood[n_pos.y][n_pos.x].aStarValue*60/data->player.cutSpeed)+100;
+	if(data->hedgewood[n_pos.y][n_pos.x].type>8){
+		//animation 20fps 10frames / durchgang
+		animation=1;
+		if ((image_animation =load_image(animation_pic))== NULL) {
+		printf("Can't load image start: %s\n", SDL_GetError());
+		exit(1);
+		}		
+		src.w=dst.w =src.h=dst.h =40;
+		StartTime = SDL_GetTicks();
+		while(animation){
+			innerStartTime = SDL_GetTicks();			
+			src.x=src.y=(150-src.w)/2;						
+			dst.x=(n_pos.x-data->horizontalScroll)*FIELDSIZE_FIELD-50+src.x;
+			dst.y=(n_pos.y-data->verticalScroll)*FIELDSIZE_FIELD-50+src.y;
+			if(0!=SDL_BlitSurface(image_animation, &src, l_screen, &dst))
+			{
+                printf("%s\n",SDL_GetError());
+                return 1;
+			}			
+			SDL_Flip(l_screen);
+			if(dst.h<141)src.w=dst.w =src.h=dst.h +=11;
+			else{
+				GraphicUpdate(l_screen,data);
+				src.w=dst.w =src.h=dst.h =40;
+			} 
+			StopTime = SDL_GetTicks();
+			diffTime = (StopTime-innerStartTime);		
+			if (50>diffTime)SDL_Delay(50-diffTime);
+			if(StopTime-StartTime > wait)animation=0;
+		}
+		SDL_FreeSurface(image_animation);
+	}
+	else if(wait>0){
+		SDL_Delay(wait);
+	}
 	data->player.p_pos=n_pos;
 	verticalScrollPos(data);
 	return 1;
 }
+
 void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 	SDL_Surface *kreis=NULL;
 	SDL_Rect  src,dst;
@@ -233,3 +275,4 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen) {
 	//SDL_Flip(l_screen);
 	SDL_FreeSurface(kreis);
 }
+
