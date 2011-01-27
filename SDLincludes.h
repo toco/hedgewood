@@ -28,6 +28,7 @@
 #include "/usr/include/SDL/SDL_image.h"
 #include "/usr/include/SDL/SDL.h"
 #include "/usr/include/SDL/SDL_ttf.h"
+#include "/usr/include/SDL/SDL_mixer.h"
 #endif
 
 #define GAMENAME "Hedgewood"
