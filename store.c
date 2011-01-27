@@ -72,8 +72,8 @@ int storeStart(SDL_Surface *screen, dataStore *data) {
 int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 	
 	menuData->buttons[ITEM_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.cutSpeed*1000);
-	menuData->buttons[VIEW_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.bp.maxVolume*3);
-	menuData->buttons[BACKPACK_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000);
+	menuData->buttons[BACKPACK_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.bp.maxVolume*3);
+	menuData->buttons[VIEW_BUTTON].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.vision*1000);
 	menuData->buttons[ ENERGY_BUTTON ].disabled=!(data->player.candystash + data->player.bp.currentVolume>=data->player.maxEnergy);
 	
 	sprintf(menuData->buttons[ ITEM_BUTTON ].name,"Tool Upgrade %.0f",data->player.cutSpeed*1000);	
