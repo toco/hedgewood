@@ -317,16 +317,12 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 								
 								
 						case 	SDLK_m:
-						printf ("Music on /Pause\n");
-				
+						printf ("Music on /Pause\n");				
 							if( Mix_PlayingMusic() == 0 )  
-								Mix_PlayMusic( music, -1);
-						
-				
+								Mix_PlayMusic( music, -1);			
 							if( Mix_PausedMusic() == 1 )
 								Mix_ResumeMusic(); 
-							else Mix_PauseMusic(); 
-						
+							else Mix_PauseMusic();						
 								break;
 							
 						case SDLK_0:
@@ -354,6 +350,7 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 								if(data->player.currentEnergy<0) {
 									printf("YOU ARE DEAD\nNEW GAME\n");
 									done=1;
+									i=0;
 								} else {
 									data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].type=6;
 									data->hedgewood[data->player.p_pos.y][data->player.p_pos.x].aStarValue=2;
@@ -375,9 +372,9 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 		diffTime = (stopTime-startTime);
 		if (MS_FRAMETIME>diffTime)SDL_Delay(MS_FRAMETIME-diffTime);
 	}
-	addHighscore(screen,data,calcHighscore(data));
 	Mix_FreeMusic( music );
 	Mix_CloseAudio();
+	addHighscore(screen,data,calcHighscore(data));	
 	return 0;
 	
 	
