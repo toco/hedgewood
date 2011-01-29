@@ -20,18 +20,16 @@
 #include "SDLincludes.h"
 #include "SDLfunctions.h"
 #include "pathfinding.h"
-
-void aStar( dataStore *data, position *end) {
+//Sucht den besten Pfad von der aktuellen Position der Spielfigur zu der Endposition end
+void aStar( dataStore *data, position *end)
+{
 	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue*data->hedgewood[end->y][end->x].visible<0)return;
 	else {
 		int suchen=1,i,j,aStarVal;
 		pfNode *open=NULL,*closed=NULL,*zeiger=NULL,*tmp_element=NULL;
 		position start = data->player.p_pos;
-		
 		positionListDelete(data);
-		
 		position tmp_pos[4];
-		
 		if ((zeiger = calloc(1,sizeof(struct pfNode)))==NULL) {
 			printf("MEM::pathfinding::35");
 			return;
@@ -99,9 +97,9 @@ void aStar( dataStore *data, position *end) {
 		}
 	}
 }
-
-//Fuegt hinten an die Liste das Element pos_add an.
-void positionListAdd(dataStore *data,  position *pos_add) {
+//Fuegt vorne an die Liste das Element pos_add an. Last in First out
+void positionListAdd(dataStore *data,  position *pos_add)
+{
 	struct position *zeiger=NULL;
 	pos_add->next=NULL;
 	if(data->player.anfang == NULL) {
@@ -109,15 +107,16 @@ void positionListAdd(dataStore *data,  position *pos_add) {
 		data->player.anfang->next=NULL;
 		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 	} else {
-		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);		
+		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);
 		zeiger=data->player.anfang;
 		data->player.anfang=pos_add;
 		data->player.anfang->next=zeiger;
 	}
 	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
-
-void positionQListAdd(dataStore *data,  position *pos_add) {
+//Fügt hinten an die Liste das element pos_add an. First in First out
+void positionQListAdd(dataStore *data,  position *pos_add)
+{
 	struct position *zeiger=NULL;
 	pos_add->next=NULL;
 	if(data->player.anfang == NULL) {
@@ -125,18 +124,18 @@ void positionQListAdd(dataStore *data,  position *pos_add) {
 		data->player.anfang->next=NULL;
 		if(DEBUG)printf("Position next first x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 	} else {
-		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);		
-		
+		if(DEBUG)printf("Position to add before x: %d y: %d\n",pos_add->x,pos_add->y);
 		zeiger=data->player.anfang;
-		while(zeiger->next!=NULL){
+		while(zeiger->next!=NULL) {
 			zeiger=zeiger->next;
 		}
 		zeiger->next=pos_add;
 	}
 	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
-
-void positionListDelete( dataStore *data) {
+//löscht die Positionsliste
+void positionListDelete( dataStore *data)
+{
 	struct position *zeiger, *zeiger1;
 	if(data->player.anfang != NULL) {
 		zeiger=data->player.anfang->next;
@@ -148,9 +147,9 @@ void positionListDelete( dataStore *data) {
 		data->player.anfang=NULL;
 	}
 }
-
 //liest die obere Position des Stacks und entfernt diesen
-position *positionListRead( dataStore *data) {
+position *positionListRead( dataStore *data)
+{
 	printdb("Start ListRead\n");
 	struct position *result;
 	if(data->player.anfang==NULL) {
@@ -165,10 +164,11 @@ position *positionListRead( dataStore *data) {
 	if(DEBUG)if(data->player.anfang!=NULL)printf("Position read end x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 	return result;
 }
-
 //stack==1 -> list
 //stack==2 -> last
-pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack) {
+//fügt der angegebenen Liste das element node_add hinzu
+pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack)
+{
 	if(stack==pfNode_list) {
 		if(list == NULL) {
 			list=node_add;
@@ -193,9 +193,9 @@ pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack) {
 	}
 	return list;
 }
-
 //sucht den kleinsten F-Wert (erster Fund wird Ausgegeben)
-pfNode *aStarSearchF(pfNode *list) {
+pfNode *aStarSearchF(pfNode *list)
+{
 	pfNode *result=list,*tmp=list;
 	while(tmp!=NULL) {
 		if(tmp->F<result->F) {
@@ -206,8 +206,9 @@ pfNode *aStarSearchF(pfNode *list) {
 	}
 	return result;
 }
-
-pfNode *aStarListSearchBool(pfNode *list,pfNode *element) {
+//gibt zurück ob sich das Element element in der Liste befindet
+pfNode *aStarListSearchBool(pfNode *list,pfNode *element)
+{
 	pfNode *tmp=list;
 	while(tmp!=NULL) {
 		if(tmp->n_pos.x != element->n_pos.x || tmp->n_pos.y != element->n_pos.y) {
@@ -216,8 +217,9 @@ pfNode *aStarListSearchBool(pfNode *list,pfNode *element) {
 	}
 	return NULL;
 }
-
-int aStarManhatten(position start, position end) {
+//berechnet den Manhatten abstand vom start zum end
+int aStarManhatten(position start, position end)
+{
 	int x=0,y=0;
 	x=end.x-start.x;
 	y=end.y-start.y;
@@ -225,8 +227,9 @@ int aStarManhatten(position start, position end) {
 	if(y<0)y*=(-1);
 	return ((x+y)*AVGASTAR);
 }
-
-pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack) {
+//löscht das Element node_remove aus der Liste list
+pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack)
+{
 	pfNode *tmp=list,*tmp2=NULL;
 	if(tmp!=NULL) {
 		if(stack==pfNode_list) {
@@ -256,8 +259,9 @@ pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack) {
 	}
 	return list;
 }
-
-void aStarListDelete(pfNode *list) {
+//löscht die Liste vom Pathfinding
+void aStarListDelete(pfNode *list)
+{
 	struct pfNode *zeiger, *zeiger1;
 	if(list != NULL) {
 		zeiger=list->list;
