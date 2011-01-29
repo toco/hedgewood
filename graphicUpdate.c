@@ -2,7 +2,7 @@
 #include "graphicUpdate.h"
 #define field_pic "./pictures/textur.png"
 #define start_pic "./pictures/startzonetest.png"
-#define person_pic "./pictures/person.png"
+#define person_pic "./pictures/person_iso.png"
 #define kreis_pic "./pictures/kreis.png"
 #define candy_pic "./pictures/zuckerstangen.png"
 #define animation_pic "./pictures/cutanimation.png"
