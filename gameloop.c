@@ -120,7 +120,7 @@ void createRandomField(dataStore *data) {
 	data->player.bp.currentVolume=0;
 	data->player.bp.maxVolume=400;
 	data->player.bp.maxOverall=0;
-	data->player.candystash=10000;
+	data->player.candystash=STARTCANDYSTASH;
 	data->home.x=7;
 	data->home.y=2;
 	data->stash.x=13;

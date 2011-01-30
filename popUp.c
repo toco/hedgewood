@@ -24,7 +24,7 @@ int popUp(SDL_Surface *screen, char *text, char *button0Title, char *button1Titl
 }
 int inputPopUp(SDL_Surface *screen, char *text, char *inputText, int inputLenght, char *button0Title, char *button1Title)
 {
-#ifdef DEBUG
+#if (DEBUG==1)
 	printf("Display popUp with Message: \"%s\" buttons \"%s\" \"%s\"\n",text,button0Title,button1Title);
 #endif
 	int btnCount;
@@ -200,8 +200,9 @@ int popUpLoop(SDL_Surface *screen, menuDataStore *menuData)
 				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					
+#if (DEBUG==1)					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					int buttonID;
 					for (buttonID = 0; buttonID<menuData->buttonCount; buttonID++) {
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {

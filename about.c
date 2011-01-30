@@ -32,8 +32,12 @@ int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color te
 		lineSurface = NULL;
 		if (!(lineSurface = TTF_RenderText_Blended(font, text[i], textColor)))
 			printf("%s\n",TTF_GetError());
-		apply_surface(100,yPos, lineSurface, screen, NULL);
-		
+		SDL_Rect offset;
+		//Get offsets
+		offset.x = 100;
+		offset.y = yPos;
+		//Blit
+		SDL_BlitSurface( lineSurface, NULL, screen, &offset );
 		yPos+=lineSurface->h;
 		if (xMax<lineSurface->w) {
 			xMax=lineSurface->w;
@@ -98,7 +102,9 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 						
 						done = 1;
 					}
+#if (DEBUG==1)
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					break;
 				case SDL_KEYDOWN:
 					/* Any keypress quits the app... */

@@ -229,9 +229,11 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tmpData->hedgewood[y][x].type=atoi(tmp);
 			
 		}
+#if (DEBUG==1)
 		else {
 			printf("Not imported: %s",read);
 		}
+#endif		
 	}
 	
 	if (highscore&&game) {

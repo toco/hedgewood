@@ -84,7 +84,11 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 	if (!(message = TTF_RenderText_Blended( aButtonFont, "Highscore", textColor )))
 		printf("%s\n",TTF_GetError());
 	
-	apply_surface( screen->clip_rect.w/2-message->w/2, 20, message, screen, NULL );
+	SDL_Rect offset;
+	offset.x =  screen->clip_rect.w/2-message->w/2;
+	offset.y = 20;
+	//Blit
+	SDL_BlitSurface( message, NULL, screen, &offset );
 	SDL_FreeSurface(message);
 	TTF_CloseFont(aButtonFont);
 
@@ -156,7 +160,9 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 					if (isButtonClicked(&button, mouseX, mouseY)) {
 						done = 1;
 					}
+#if (DEBUG==1)
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					break;
 				case SDL_KEYDOWN:
 					/* Any keypress quits the app... */

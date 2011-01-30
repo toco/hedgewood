@@ -20,11 +20,13 @@
 
 void menuStart(SDL_Surface *screen, dataStore *data)
 {
+	//alloc menuDataStore
 	menuDataStore *menuData = malloc(sizeof(menuDataStore));
 	menuData->buttons = malloc(sizeof(myButton)*BUTTONCOUNT);
 	
 	
 	setupMenu(screen, menuData);
+	drawMenu(screen, menuData);
 	mainMenuLoop(screen, menuData, data);
 	
 	free(menuData->buttons);
@@ -46,17 +48,10 @@ int menuQuit(SDL_Surface __attribute__((unused)) *screen, dataStore __attribute_
 	printf("Quit");
 	return 0;
 }
-void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
+void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData)
 {
-	/*Background */
-	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
-
-	
-#define BUTTONX 300
-#define BUTTONWIDTH 200
-#define BUTTONHEIGHT 50
-	
-	myButton *buttons = &(dataStore->buttons[0]);
+	//init the buttons
+	myButton *buttons = &(menuData->buttons[0]);
 	buttons[ STARTEN_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
 	buttons[ STARTEN_BUTTON ].rect.y=screen->clip_rect.h/2-125-BUTTONHEIGHT/2;
 	buttons[ STARTEN_BUTTON ].rect.w=BUTTONWIDTH;
@@ -71,7 +66,6 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	buttons[ HIGHSCORE_BUTTON ].name="Highscore";
 	buttons[ HIGHSCORE_BUTTON ].function=displayHighscore;
 
-	
 	buttons[ ABOUT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
 	buttons[ ABOUT_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
 	buttons[ ABOUT_BUTTON ].rect.w=BUTTONWIDTH;
@@ -79,32 +73,27 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *dataStore)
 	buttons[ ABOUT_BUTTON ].name="About/Help";
 	buttons[ ABOUT_BUTTON ].function=displayAbout;
 
-	
 	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
 	buttons[ QUIT_BUTTON ].rect.y=screen->clip_rect.h/2+125+BUTTONHEIGHT/2;
 	buttons[ QUIT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ QUIT_BUTTON ].rect.h=BUTTONHEIGHT;
 	buttons[ QUIT_BUTTON ].name="Quit";
 	buttons[ QUIT_BUTTON ].function=menuQuit;
+}
+void drawMenu(SDL_Surface *screen, menuDataStore *menuData)
+{
+	myButton *buttons = &(menuData->buttons[0]);
 
-	
-//	SDL_FillRect(screen, &buttons[STARTEN_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-//	SDL_FillRect(screen, &buttons[HIGHSCORE_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF));
-//	SDL_FillRect(screen, &buttons[ABOUT_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-//	SDL_FillRect(screen, &buttons[QUIT_BUTTON].rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0xFF ));
-//	
-
+	/*Background */
+	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+	/*Buttons */	
 	int buttonID;
-	
 	for (buttonID = 0; buttonID<BUTTONCOUNT; buttonID++) {
 		drawButton(screen, &buttons[buttonID]);
 	}
-
-
-	SDL_Flip(screen);
 	
+	SDL_Flip(screen);
 }
-
 int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data)
 {
 	int done, mouseX, mouseY;
@@ -126,13 +115,14 @@ int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore 
 				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					
+#if (DEBUG==1)					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					int buttonID;
 					for (buttonID = 0; buttonID<BUTTONCOUNT; buttonID++) {
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
 							(menuData->buttons[buttonID].function)(screen, data);
-							setupMenu(screen, menuData);
+							drawMenu(screen, menuData);
 							if (buttonID==QUIT_BUTTON) {
 								done = 1;
 							}

@@ -140,7 +140,9 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 					break;
 				case SDL_MOUSEBUTTONUP:
 					SDL_GetMouseState(&mouseX,&mouseY);
+#if (DEBUG==1)
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);				
+#endif
 					for (buttonID = 0; buttonID<STOREBUTTONCOUNT; buttonID++) {					
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {						
 							if (buttonID==ITEM_BUTTON) {

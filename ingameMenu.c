@@ -107,8 +107,9 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					
+#if (DEBUG==1)					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					int buttonID;
 					for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {

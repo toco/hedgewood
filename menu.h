@@ -33,8 +33,11 @@
 /*displays the main Menu */
 void menuStart(SDL_Surface *screen, dataStore *data);
 
-/*draws the menu*/
+
 void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData);
+/*draws the menu*/
+void drawMenu(SDL_Surface *screen, menuDataStore *menuData);
+
 /*SDL Event-Loop handels user interaction */
 int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore *data);
 

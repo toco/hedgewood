@@ -52,17 +52,8 @@ void quitSDL()
 	/* Clean up the SDL library */
 	SDL_Quit();
 }
-//zeichnet das Surface soucre auf das Surface destionation
-void apply_surface( int x, int y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip)
-{
-	//Holds offsets
-	SDL_Rect offset;
-	//Get offsets
-	offset.x = x;
-	offset.y = y;
-	//Blit
-	SDL_BlitSurface( source, clip, destination, &offset );
-}
+
+//wechselt zwischen fullscreen und windows mode, return: mode nach umschalten
 int toggleFullscreen(SDL_Surface *screen, int windowed)
 {
 	int windowOK;
@@ -112,41 +103,52 @@ SDL_Surface *load_image(char *filename )
 	}
 	return optimizedImage;
 }
+
+//gibt eine vollständig initialisierte Font mit der Größe für Buttons zurück
 TTF_Font *buttonFont()
 {
 	return arialFont(28); /*requires  	TTF_CloseFont(font); after use*/
 }
+//gibt eine vollständig initialisierte Font mit der Größe size zurück
 TTF_Font *arialFont(int size)
 {
 	TTF_Font *font = NULL;
 	//Open the font
 	font = TTF_OpenFont("./ArialBlack.ttf", size );
+	//if font not correctly opened
 	if (font == NULL) {
 		printf("Error: Font not loaded %s\n",SDL_GetError());
 		exit(1);
 	}
 	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
+//zeichnet einen Button und ignoriert den state
 int drawButton (SDL_Surface *destinationSurface, myButton *button)
 {
 	return drawButtonWithState (destinationSurface, button, 0);
 }
+//zeichnet einen Button wenn withState = 1 wird der state aus dem Button-Strukt berücksichtigt
+//returns 1 on error – return 0 on no error
 int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int withState)
 {
+	//draw border
 	SDL_Rect buttonBorder = button->rect;
 	buttonBorder.h++;
 	buttonBorder.w++;
 	buttonBorder.x--;
 	buttonBorder.y--;
 	SDL_FillRect(destinationSurface, &buttonBorder, SDL_MapRGB( destinationSurface->format, 0xFF, 0xFF, 0xFF ));
+	//draw button
 	if (button->disabled&&withState) {
 		SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x73, 0x73, 0x73 ));
 	} else {
 		SDL_FillRect(destinationSurface, &button->rect, SDL_MapRGB( destinationSurface->format, 0x00, 0x00, 0xFF ));
 	}
+	//draw button title
 	SDL_Surface *message;
 	TTF_Font *font = buttonFont();
 	SDL_Color blackTextColor = { 0, 0, 0,0};
+	//text shade
 	if (!(message = TTF_RenderText_Blended( font, button->name, blackTextColor ))) {
 		printf("%s\n",TTF_GetError());
 		return 1;
@@ -156,6 +158,7 @@ int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int 
 		printf("%s\n",SDL_GetError());
 		return 1;
 	}
+	//text
 	SDL_Color textColor = { 255, 255, 255,0};
 	if (!(message = TTF_RenderText_Blended( font, button->name, textColor ))) {
 		printf("%s\n",TTF_GetError());
@@ -168,16 +171,21 @@ int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int 
 		return 1;
 	}
 	SDL_FreeSurface(message);
-	return 1;
+	return 0;
 }
+//check if the button is clicked
+//returns 1 if the button is clicked
 int isButtonClicked(myButton *button, int x, int y)
 {
 	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h) {
+#if (DEBUG==1)
 		printf("%s clicked \n",button->name);
+#endif
 		return 1;
 	} else
 		return 0;
 }
+
 void printdb(char *str)
 {
 	if(DEBUG)printf("%s",str);
