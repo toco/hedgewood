@@ -67,6 +67,5 @@ clean:
 	rm *.o # lösche alle Objektdateien 
 	rm *.gch # lösche precompiled header
 
-cleanall:
-	rm *.s # lösche precompiled header
-	rm *.i # lösche precompiled header
+doku:
+	doxygen Doxyfile

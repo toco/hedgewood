@@ -6,8 +6,7 @@
 #define kreis_pic "./pictures/kreis.png"
 #define candy_pic "./pictures/zuckerstangen.png"
 #define animation_pic "./pictures/cutanimation.png"
-/**Zeichnet das aktuell sichtbare Spielfeld mit der Person
-	* a normal member taking two arguments and returning an integer value.
+/**Zeichnet das aktuell sichtbare Spielfeld mit der Person.	* 
 	* @param l_screen an SDL_Surface.
 	* @param data a dataStore pointer.
 	* @see dataStore
@@ -179,7 +178,7 @@ void verticalScrollPos( dataStore *data)
 *zeigt außerdem die Animation des Schneidens an und wartet
 */
 int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
-{
+{	
 	position old=data->player.p_pos,n_pos=(*newPos);
 	clock_t StartTime, StopTime,diffTime,innerStartTime;
 	if(data->hedgewood[n_pos.y][n_pos.x].aStarValue<0)return 0;
@@ -193,7 +192,7 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 	if(y<0)data->player.heading=2;
 	if(y>0)data->player.heading=0;
 	for(i=-vis; i<=vis; i++) {
-		for(j=-vis; j<=vis; j++) {
+		for(j=-vis; j<=vis; j++) {			
 			if(n_pos.y+i>0&&n_pos.y+i<FIELDSIZE_Y &&n_pos.x+i>0&&n_pos.x+i<FIELDSIZE_X) {
 				if(y>0 && i<0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
 				else if(x<0 && j>0)data->hedgewood[n_pos.y+i][n_pos.x+j].visible=1;
@@ -214,6 +213,8 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 		}
 	}
 	GraphicUpdate(l_screen,data);
+	
+
 	wait=(data->hedgewood[n_pos.y][n_pos.x].aStarValue*60/data->player.cutSpeed)+100;
 	if(data->hedgewood[n_pos.y][n_pos.x].type>8) {
 		/**animation 20fps 10frames / durchgang*/
@@ -226,6 +227,7 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 		StartTime = SDL_GetTicks();
 		while(animation) {
 			innerStartTime = SDL_GetTicks();
+			Mix_PlayChannel(-1, data->chaingo, 0 );
 			src.x=src.y=(150-src.w)/2;
 			dst.x=(n_pos.x-data->horizontalScroll)*FIELDSIZE_FIELD-50+src.x;
 			dst.y=(n_pos.y-data->verticalScroll)*FIELDSIZE_FIELD-50+src.y;
@@ -244,6 +246,7 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 			if (50>diffTime)SDL_Delay(50-diffTime);
 			if(StopTime-StartTime > wait)animation=0;
 		}
+		
 		SDL_FreeSurface(image_animation);
 	} else if(wait>0) {
 		SDL_Delay(wait);
