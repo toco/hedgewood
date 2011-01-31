@@ -148,8 +148,8 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 					break;
 				case SDL_QUIT:
 					done = 1;
-//					if(!popUp(screen, data, "Save game before quit?", "Yes", "No"))
-//						saveDataStore(data, 1, 1);
+					if(!popUp(screen, data, "Save game before quit?", "Yes", "No"))
+						saveDataStore(data, 1, 1);
 					quitSDL(data);
 					break;
 				default:

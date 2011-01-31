@@ -48,15 +48,15 @@ int inputPopUp(SDL_Surface *screen, dataStore *data, char *text, char *inputText
 	char *rightBtn;
 	
 	/*background from 150 to 450 */
-	if	(btnCount==1 && button1Title == NULL)
+	if	(button1Title != NULL)
+	{
+		rightBtn = button1Title;
+	}
+	else if (button0Title != NULL)
 	{
 		rightBtn = button0Title;
 	}
-	else if (btnCount ==1 && button0Title == NULL)
-	{
-		rightBtn = button1Title;
-		
-	}
+
 	
 	buttons[ BUTTON0 ].rect.w=BUTTONWIDTH;
 	buttons[ BUTTON0 ].rect.h=BUTTONHEIGHT;
