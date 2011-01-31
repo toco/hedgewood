@@ -102,8 +102,8 @@ SDL_Surface *load_image(char *filename )
 		//Set all pixels of color R 0 G 255, B 255 to be transparent
 		SDL_SetColorKey( loadedImage, SDL_SRCCOLORKEY, colorkey);
 		//Create an optimized image
-		optimizedImage = SDL_DisplayFormat( loadedImage );
-		
+		optimizedImage = SDL_DisplayFormatAlpha( loadedImage );
+
 		//Free the old image
 		SDL_FreeSurface( loadedImage );
 	}
