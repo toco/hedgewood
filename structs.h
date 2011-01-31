@@ -94,7 +94,10 @@ typedef struct dataStore{
 	position home;
 	position stash;
 	int windowed;
-	SDL_Surface *screen;	
+	SDL_Surface *screen;
+	Mix_Chunk *chaingo;
+	Mix_Music *startmusic;
+	Mix_Music *ingamemusic;
 }dataStore;
 
 /**Stores the information about a node used by A*.

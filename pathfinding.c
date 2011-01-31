@@ -49,6 +49,10 @@ void aStar( dataStore *data, position *end)
 		zeiger->n_pos=start;
 		open=zeiger;
 		while(suchen) {
+			/*if(data->hedgewood[tmp->y][tmp->x].type==5 || data->hedgewood[tmp->y][tmp->x].type==6 || data->hedgewood[tmp->y][tmp->x].type==7) {
+				Mix_PlayChannel( -1, chainstand, 0 );
+				Mix_PlayChannel( -1, chaingo, -1 );
+			}*/
 			zeiger=aStarSearchF(open);
 			if(DBPATH)printf("NEWTESTField x:%d y:%d G:%d H:%d F:%d\n",zeiger->n_pos.x,zeiger->n_pos.y,zeiger->G,zeiger->H,zeiger->F);
 			if(DEBUG)printf("tmp 58 x: %d y: %d\n",zeiger->n_pos.x,zeiger->n_pos.y);

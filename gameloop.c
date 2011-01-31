@@ -133,15 +133,20 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 	int done=0,i=0,aVal,motionPath=0,runPath=0,drawPath=0,mouseDown=0,ownpath=0;
 	position *lastmouse=NULL,*mouse_pos=NULL,*tmp=NULL,*lastpath=NULL;
 	SDL_Event event;
-	Mix_Music *music = NULL;
-	Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 );
-	printf ("Music on /Pause\n");
-	music = Mix_LoadMUS( "Voices.wav" );
-		if(music==NULL)
+	Mix_HaltMusic();	 
+	//Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 );
+	data->ingamemusic = Mix_LoadMUS( "Voices.wav" );
+		if(data->ingamemusic==NULL)
 			printf("Musik fehlt\n");
+	data->chaingo = Mix_LoadWAV( "chainsaw2.wav" );
+	if( data->chaingo == NULL )
+		printf("Effekte fehlen\n");
+	Mix_PlayMusic( data->ingamemusic, -1);
+
 	
 	GraphicUpdate(screen,data);
 	while (!done) {
+
 		/* Check for events */
 		startTime = SDL_GetTicks();
 		while ( SDL_PollEvent(&event) ) {
@@ -251,7 +256,7 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 
 				
 				if( Mix_PlayingMusic() == 0 )  
-					 Mix_PlayMusic( music, -1);
+					 Mix_PlayMusic( data->ingamemusic, -1);
 						
 				
 				if( Mix_PausedMusic() == 1 )
@@ -319,7 +324,7 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 						case 	SDLK_m:
 						printf ("Music on /Pause\n");				
 							if( Mix_PlayingMusic() == 0 )  
-								Mix_PlayMusic( music, -1);			
+								Mix_PlayMusic( data->ingamemusic, -1);			
 							if( Mix_PausedMusic() == 1 )
 								Mix_ResumeMusic(); 
 							else Mix_PauseMusic();						
@@ -372,7 +377,8 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 		diffTime = (stopTime-startTime);
 		if (MS_FRAMETIME>diffTime)SDL_Delay(MS_FRAMETIME-diffTime);
 	}
-	Mix_FreeMusic( music );
+	Mix_FreeChunk( data->chaingo ); 
+	Mix_FreeMusic( data->ingamemusic );
 	Mix_CloseAudio();
 	addHighscore(screen,data,calcHighscore(data));	
 	return 0;
