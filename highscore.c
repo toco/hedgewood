@@ -14,10 +14,31 @@
  *	
  */
 
-
-
 #include "highscore.h"
 
+
+// "privat" functions
+
+
+/**
+ * checks if the player is in highscore
+ * @param data the dataStore
+ * @param the points the player achieved
+ * @return 1 if the player is in highscore
+ * @return 0 if the player is not in highscore
+ */
+int inHighscore(dataStore *data, int points);
+
+/**
+ * Sorts the Highscore
+ * @param data the dataStore
+ * @return 0
+ */
+
+int sortHighscore(dataStore *data);
+
+
+//implementation
 int addHighscore(SDL_Surface *screen ,dataStore *data, int points)
 {
 	if (inHighscore(data, points)) {
@@ -28,6 +49,7 @@ int addHighscore(SDL_Surface *screen ,dataStore *data, int points)
 		sortHighscore(data);
 		saveDataStore(data, 1, 0);
 		displayHighscore(screen,data);
+		return 1;
 	}
 	return 0;
 }
@@ -55,7 +77,6 @@ int sortHighscore(dataStore *data)
 	}
 	return 0;
 }
-
 
 int inHighscore(dataStore *data, int points)
 {

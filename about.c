@@ -19,39 +19,6 @@
 #include "about.h"
 
 
-int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen)
-{
-	SDL_Surface *lineSurface = NULL;
-	char *line;
-	int yPos = 50;
-	int xMax = 0;
-	/*pch = first line of text*/
-	int i;
-	for (i = 0; i<lines;i++)
-	{
-		lineSurface = NULL;
-		if (!(lineSurface = TTF_RenderText_Blended(font, text[i], textColor)))
-			printf("%s\n",TTF_GetError());
-		SDL_Rect offset;
-		//Get offsets
-		offset.x = 100;
-		offset.y = yPos;
-		//Blit
-		SDL_BlitSurface( lineSurface, NULL, screen, &offset );
-		yPos+=lineSurface->h;
-		if (xMax<lineSurface->w) {
-			xMax=lineSurface->w;
-		}
-		SDL_FreeSurface(lineSurface);
-		line = strtok (NULL, " ,.-");
-	}
-
-	SDL_Flip(screen);
-
-	return 1;
-	
-}
-
 int displayAbout(SDL_Surface *screen, dataStore *data)
 {
 	int done, mouseX, mouseY;
@@ -142,4 +109,37 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 		
 	}
 	return 0;
+}
+
+int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen)
+{
+	SDL_Surface *lineSurface = NULL;
+	char *line;
+	int yPos = 50;
+	int xMax = 0;
+	/*pch = first line of text*/
+	int i;
+	for (i = 0; i<lines;i++)
+	{
+		lineSurface = NULL;
+		if (!(lineSurface = TTF_RenderText_Blended(font, text[i], textColor)))
+			printf("%s\n",TTF_GetError());
+		SDL_Rect offset;
+		//Get offsets
+		offset.x = 100;
+		offset.y = yPos;
+		//Blit
+		SDL_BlitSurface( lineSurface, NULL, screen, &offset );
+		yPos+=lineSurface->h;
+		if (xMax<lineSurface->w) {
+			xMax=lineSurface->w;
+		}
+		SDL_FreeSurface(lineSurface);
+		line = strtok (NULL, " ,.-");
+	}
+	
+	SDL_Flip(screen);
+	
+	return 0;
+	
 }

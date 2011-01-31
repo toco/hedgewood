@@ -48,8 +48,7 @@ int saveDataStore(dataStore *data, int highscore, int game)
 	
 	/*Person*/
 	fprintf(dataFile, "!#person\n");
-	fprintf(dataFile, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",tmpData->player.p_pos.x,tmpData->player.p_pos.y,tmpData->player.bp.maxVolume,tmpData->player.bp.currentVolume,tmpData->player.heading,tmpData->player.maxEnergy,tmpData->player.currentEnergy,tmpData->player.vision);
-	
+	fprintf(dataFile, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%f\t%d\t%d\n",tmpData->player.p_pos.x,tmpData->player.p_pos.y,tmpData->player.bp.maxVolume,tmpData->player.bp.currentVolume,tmpData->player.bp.maxOverall,tmpData->player.candystash, tmpData->player.heading,tmpData->player.maxEnergy,tmpData->player.currentEnergy,tmpData->player.vision,tmpData->player.cutSpeed,tmpData->horizontalScroll,tmpData->verticalScroll);
 	/*fieldArray*/
 	fprintf(dataFile, "!#fieldArray\n");
 	int x,y;
@@ -150,12 +149,24 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.bp.maxVolume=atoi(tmp);
+			/*maxOverall backpack*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->player.bp.maxVolume=atoi(tmp);
 			/*currentVolume backpack*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.bp.currentVolume=atoi(tmp);
+			/*candystash*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->player.candystash=atoi(tmp);
 			/*heading*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
@@ -181,9 +192,30 @@ int readDataStore(dataStore *data, int highscore, int game)
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
 			tabPosOld=tabPos;
-			tabPos = strcspn(readPtr,newLine);
+			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.vision=atoi(tmp);
+			/*cutspeed*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->player.cutSpeed=atof(tmp);
+			/*horizontal scroll*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->horizontalScroll=atoi(tmp);
+			/*vertical scroll*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPosOld=tabPos;
+			tabPos = strcspn(readPtr,newLine);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->verticalScroll=atoi(tmp);
 			
 		}
 		else if(game==1&&importFieldArray==1)
@@ -201,6 +233,10 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			x=atoi(tmp);
+			if (x>=FIELDSIZE_X|y>=FIELDSIZE_Y) {
+				printf("ERROR: tried to import field which does not fit into array x: %d y: %d",x,y);
+				continue;
+			}
 			/*visible*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
