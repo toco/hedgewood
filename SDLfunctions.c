@@ -45,12 +45,17 @@ SDL_Surface* initSDL(dataStore *data)
 	return screen;
 }
 //beendet SDL
-void quitSDL()
+void quitSDL(dataStore *data)
 {
+	
+	saveDataStore(data,1,0);
+	
 	/*quit TTF */
 	TTF_Quit();
 	/* Clean up the SDL library */
 	SDL_Quit();
+	
+	exit(0);
 }
 
 //wechselt zwischen fullscreen und windows mode, return: mode nach umschalten
@@ -60,7 +65,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
 	//If the screen is windowed
 	if( windowed) {
 		//Set the screen to fullscreen
-		screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE | SDL_FULLSCREEN ); /* | SDL_RESIZABLE */
+		screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE | SDL_FULLSCREEN | SDL_DOUBLEBUF| SDL_HWPALETTE); /* | SDL_RESIZABLE */
 		//If there's an error
 		if( screen == NULL ) {
 			windowOK = 0;
@@ -72,7 +77,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
 	//If the screen is fullscreen
 	else if( windowed == 0 ) {
 		//Window the screen
-		screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE); /* | SDL_RESIZABLE */
+		screen = SDL_SetVideoMode( WINDOWWIDTH, WINDOWHEIGTH, WINDOWBPP, SDL_HWSURFACE | SDL_DOUBLEBUF| SDL_HWPALETTE); /* | SDL_RESIZABLE */
 		//If there's an error
 		if( screen == NULL ) {
 			windowOK = 0;
@@ -95,9 +100,10 @@ SDL_Surface *load_image(char *filename )
 		//If nothing went wrong in loading the image
 		Uint32 colorkey = SDL_MapRGB( loadedImage->format, 0, 255, 255 );
 		//Set all pixels of color R 0 G 255, B 255 to be transparent
-		SDL_SetColorKey( loadedImage, SDL_SRCCOLORKEY, colorkey );
+		SDL_SetColorKey( loadedImage, SDL_SRCCOLORKEY, colorkey);
 		//Create an optimized image
 		optimizedImage = SDL_DisplayFormatAlpha( loadedImage );
+
 		//Free the old image
 		SDL_FreeSurface( loadedImage );
 	}

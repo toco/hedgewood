@@ -32,7 +32,7 @@ SDL_Surface* initSDL(dataStore *data);
 //wechselt zwischen fullscreen und windows mode, return: mode nach umschalten
 int toggleFullscreen(SDL_Surface *screen, int windowed);
 
-void quitSDL();
+void quitSDL(dataStore *data);
 
 SDL_Surface *load_image(char *filename );
 void printdb(char *str);

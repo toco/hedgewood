@@ -31,7 +31,6 @@ int main(int argc, char *argv[]) {
 	test->screen=screen;
 	readDataStore(test,1,1);
 	menuStart(screen, test);
-	saveDataStore(test,1,0);
-	quitSDL();
+	quitSDL(test);
 	return 0;
 }

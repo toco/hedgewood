@@ -135,11 +135,11 @@ int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore 
 				{
 					case SDLK_f:
 						data->windowed = toggleFullscreen(screen, data->windowed);
-						setupMenu(screen,menuData);
+						drawMenu(screen,menuData);
 						break;
 						
 					case SDLK_ESCAPE:
-					case SDLK_q:
+//					case SDLK_q:
 						done = 1;
 						break;
 					default:
@@ -149,6 +149,7 @@ int mainMenuLoop(SDL_Surface *screen, struct menuDataStore *menuData, dataStore 
 					break;
 				case SDL_QUIT:
 					done = 1;
+					quitSDL(data);
 					break;
 				default:
 					break;

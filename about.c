@@ -71,10 +71,9 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 	drawButton(screen, &button);
 	
 	TTF_Font *font = arialFont(18);
+	char aboutText[10][100] = {"Hedgewood is a game written by:"," - toco"," - tk"," - JTR"," "," we hope you enjoy it."," ","Thanks to:"," - friend of tk for the grapics"," - our great tutor Arne"};
 	
-	char aboutText[6][100] = {"Hedgewood is a Programm written by:"," - toco"," - tk"," - JTR","   "," we hope you enjoy it."};
-	
-	if (!(renderMultiLineText(font, &aboutText[0],6, textColor,screen)))
+	if (!(renderMultiLineText(font, &aboutText[0],10, textColor,screen)))
 		printf("%s\n",TTF_GetError());
 	
 	
@@ -116,16 +115,17 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 					case SDLK_ESCAPE:
 					case SDLK_q:
 						done = 1;
+						quitSDL(data);
 						break;
 					default:
 						break;
 						
 				}	
 					break;
-				case SDL_QUIT:
+/*				case SDL_QUIT:
 					done = 1;
 					break;
-				default:
+*/				default:
 					break;
 			}
 			innerStopTime = SDL_GetTicks();
