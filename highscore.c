@@ -22,7 +22,7 @@ int addHighscore(SDL_Surface *screen ,dataStore *data, int points)
 {
 	if (inHighscore(data, points)) {
 		char *playerName = malloc(sizeof(char)*15);
-		inputPopUp(screen,"Highscore! Please enter your Name:", playerName, 15, "Ok", NULL);
+		inputPopUp(screen,data,"Highscore! Please enter your Name:", playerName, 15, "Ok", NULL);
 		strcpy(data->highscore[9].name,playerName);
 		data->highscore[9].points = points;
 		sortHighscore(data);
@@ -174,15 +174,16 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 					case SDLK_ESCAPE:
 						done = 1;
 						break;
-					case SDLK_q:
+/*					case SDLK_q:
 						break;
-					default:
+*/					default:
 						break;
 						
 				}	
 					break;
 				case SDL_QUIT:
 					done = 1;
+					quitSDL(data);
 					break;
 				default:
 					break;
