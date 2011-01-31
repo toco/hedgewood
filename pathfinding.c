@@ -1,21 +1,38 @@
-/*X 1)  	Füge das Startquadrat der offenen Liste hinzu.
-	2)  	Wiederhole das Folgende:
-	X	a) 	Suche in der offenen Liste nach dem Quadrat mit dem niedrigsten F-Wert. Wir bezeichnen dieses Quadrat im Folgenden als das aktuelle Quadrat.
-	X	b) 	Verschiebe es in die geschlossene Liste.
-		c) 	Für jedes der 8 an das aktuelle Quadrat angrenzenden Quadrate:
-		* Wenn es nicht begehbar ist oder sich bereits in der geschlossenen Liste befindet, ignoriere es; andernfalls mach das Folgende:
-		* Wenn es nicht in der offenen Liste ist, füge es der offenen Liste hinzu. Trage das aktuelle Quadrat als Vorgängerquadrat dieses Quadrats ein. Trage zusätzlich die Werte für die F-, G- und H-Kosten dieses Quadrates ein.
-		* Falls es bereits in der offenen Liste ist, prüfe, ob der Pfad vom aktuellen Quadrat zu ihm - gemessen am G-Wert -, besser ist, als der Pfad von seinem eingetragenen Vorgängerquadrat (ein geringerer G-Wert bedeutet einen besseren Pfad). Falls dem so ist, ändere sein Vorgängerquadrat auf das aktuelle Quadrat und berechne seine Werte für G und F neu. Sofern Du Deine offene Liste nach dem F-Wert sortiert hast, ist möglicherweise eine Neusortierung dieser Liste erforderlich, um dieser Veränderung Rechnung zu tragen.
-		d) 	Beende den Prozess, falls:
-		* Du das Zielquadrat in die geschlossene Liste verschoben hast; in diesem Fall hast Du den Pfad ermittelt
-		* kein Zielquadrat gefunden werden konnte und die offene Liste leer ist; in diesem Fall gibt es keinen Pfad.
-	3)  Sichere den Pfad. Der Pfad erschließt sich, indem Du vom Zielquadrat aus Quadrat für Quadrat rückwärts schreitend das Startquadrat erreichst.
-	 *
-		Der Schlüssel dazu, welche Quadrate für den Pfad in Frage kommen, ist folgende Gleichung:
-		F = G + H
-		wobei
-		* G = Die Bewegungskosten, um vom Startpunkt A zu einem gegebenen Quadrat des Gitters unter Verwendung des dafür ermittelten Pfades zu gelangen.
-		* H = Die geschätzten Kosten, um von dem gegebenen Quadrat zum Zielpunkt B zu gelangen. Dies wird oft heuristisch genannt, was ein bisschen verwirrend sein kann. Der Grund, warum dies so genannt wird, ist, dass diese Kosten auf Vermutung beruhen, denn tatsächlich kennen wir die wirkliche Entfernung erst, wenn wir den Pfad dorthin gefunden und auf dem Weg liegende Hindernisse (Wände, Wasser, etc.) berücksichtigt haben. In diesem Artikel wird ein möglicher Weg gezeigt, wie H ermittelt werden kann; es gibt aber viele weitere, die in anderen Web-Artikeln beschrieben sind.
+/*! \file pathfinding.c
+  	\brief this file locates our pathfinding A*.
+  
+	*1)  Füge das Startquadrat der offenen Liste hinzu.
+	* 
+	* 2)  Wiederhole das Folgende:
+	* 
+	*	a) 	Suche in der offenen Liste nach dem Quadrat mit dem niedrigsten F-Wert. Wir bezeichnen dieses Quadrat im Folgenden als das aktuelle Quadrat.
+	* 
+	*	b) 	Verschiebe es in die geschlossene Liste.
+	* 
+	*	c) 	Für jedes der 8 an das aktuelle Quadrat angrenzenden Quadrate:
+	* 
+			* Wenn es nicht begehbar ist oder sich bereits in der geschlossenen Liste befindet, ignoriere es; andernfalls mach das Folgende:
+			* 
+			* Wenn es nicht in der offenen Liste ist, füge es der offenen Liste hinzu. Trage das aktuelle Quadrat als Vorgängerquadrat dieses Quadrats ein. Trage zusätzlich die Werte für die F-, G- und H-Kosten dieses Quadrates ein.
+			* 
+			* Falls es bereits in der offenen Liste ist, prüfe, ob der Pfad vom aktuellen Quadrat zu ihm - gemessen am G-Wert -, besser ist, als der Pfad von seinem eingetragenen Vorgängerquadrat (ein geringerer G-Wert bedeutet einen besseren Pfad). Falls dem so ist, ändere sein Vorgängerquadrat auf das aktuelle Quadrat und berechne seine Werte für G und F neu. Sofern Du Deine offene Liste nach dem F-Wert sortiert hast, ist möglicherweise eine Neusortierung dieser Liste erforderlich, um dieser Veränderung Rechnung zu tragen.
+		d) 	
+		 * Beende den Prozess, falls:
+			* 
+			* Du das Zielquadrat in die geschlossene Liste verschoben hast; in diesem Fall hast Du den Pfad ermittelt
+			* 
+			* kein Zielquadrat gefunden werden konnte und die offene Liste leer ist; in diesem Fall gibt es keinen Pfad.
+	3)  
+	 * Sichere den Pfad. Der Pfad erschließt sich, indem Du vom Zielquadrat aus Quadrat für Quadrat rückwärts schreitend das Startquadrat erreichst.
+	 
+	Der Schlüssel dazu, welche Quadrate für den Pfad in Frage kommen, ist folgende Gleichung:
+	*	
+	* F = G + H
+	*	wobei
+	* 	
+	* G = Die Bewegungskosten, um vom Startpunkt A zu einem gegebenen Quadrat des Gitters unter Verwendung des dafür ermittelten Pfades zu gelangen.
+	* 	
+	* H = Die geschätzten Kosten, um von dem gegebenen Quadrat zum Zielpunkt B zu gelangen. Dies wird oft heuristisch genannt, was ein bisschen verwirrend sein kann. Der Grund, warum dies so genannt wird, ist, dass diese Kosten auf Vermutung beruhen, denn tatsächlich kennen wir die wirkliche Entfernung erst, wenn wir den Pfad dorthin gefunden und auf dem Weg liegende Hindernisse (Wände, Wasser, etc.) berücksichtigt haben. In diesem Artikel wird ein möglicher Weg gezeigt, wie H ermittelt werden kann; es gibt aber viele weitere, die in anderen Web-Artikeln beschrieben sind.
 */
 #include "SDLincludes.h"
 #include "SDLfunctions.h"

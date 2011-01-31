@@ -1,11 +1,12 @@
-/** @file strucs.h
-    Our structs file.
-    Here you can find every struct we used in Hedgewood
+/*! \file structs.h
+    \brief Our global struct definition.
+    
+    Every struct we used is in here.
 */
-
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+/** Gamefield struct*/
 typedef struct field{
     int visible;
 	/**
@@ -35,6 +36,9 @@ typedef struct field{
 	int type;
 }field;
 
+/**Position struct.
+ * with pointer to the next position
+ */
 typedef struct position{
     int x;
     int y;
@@ -47,7 +51,9 @@ typedef struct backpack{
     int currentVolume;
 	int maxOverall;
 }backpack;
-
+/**Person struct.
+ * stores information about the player
+ */
 typedef struct person{
     struct position p_pos;
     struct backpack bp;
@@ -73,7 +79,7 @@ typedef struct highscoreElement
 	int points;
 }highscoreElement;
 
-
+/**Stores the game data.*/
 typedef struct dataStore{
    /**pointer auf 2D Array welches das Spielfeld enthält.
 	  Zeile 0-1 sind der Startbereich
@@ -91,11 +97,13 @@ typedef struct dataStore{
 	SDL_Surface *screen;	
 }dataStore;
 
+/**Stores the information about a node used by A*.
+ * @see aStar */
 typedef struct pfNode{
 	struct position n_pos;
-	int F;
-	int G;
-	int H;
+	int F; /**<G + H*/
+	int G; /**<Die Bewegungskosten, um vom Startpunkt A zu einem gegebenen Quadrat des Gitters unter Verwendung des dafür ermittelten Pfades zu gelangen*/
+	int H; /**<Die geschätzten Kosten, um von dem gegebenen Quadrat zum Zielpunkt B zu gelangen*/
 	/**Für den Pfad*/
 	struct pfNode *last;
 	/**Für die open/closed List */
