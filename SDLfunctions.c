@@ -14,8 +14,10 @@
  *
  */
 #include "SDLfunctions.h"
-//initialisiert das SDL_Surface
-SDL_Surface* initSDL(dataStore *data)
+/**
+ * Inits SDL and sets the Windowname
+ * @param data the dataStore
+ */SDL_Surface* initSDL(dataStore *data)
 {
 	Uint32 initflags = SDL_INIT_VIDEO;  /* See documentation for details */
 	SDL_Surface *screen;
@@ -44,7 +46,11 @@ SDL_Surface* initSDL(dataStore *data)
 	}
 	return screen;
 }
-//beendet SDL
+/**
+ * quit-functions
+ * saves the highscore quits TTF and SDL and then exit(0)
+ * @param data the dataStore
+ */
 void quitSDL(dataStore *data)
 {
 	
@@ -58,7 +64,13 @@ void quitSDL(dataStore *data)
 	exit(0);
 }
 
-//wechselt zwischen fullscreen und windows mode, return: mode nach umschalten
+/**
+ * wechselt zwischen fullscreen und windows mode, return: mode nach umschalten
+ * @param screen an SDL_Surface.
+ * @param windowed the 1 if the programm is currently windowed otherwise 0
+ * @return 1 if programm is now windowed
+ * @return 0 if programm is now fullscreen
+ */
 int toggleFullscreen(SDL_Surface *screen, int windowed)
 {
 	int windowOK;
@@ -88,6 +100,7 @@ int toggleFullscreen(SDL_Surface *screen, int windowed)
 	}
 	return windowed;
 }
+
 SDL_Surface *load_image(char *filename )
 {
 	//Temporary storage for the image that's loaded
@@ -109,14 +122,19 @@ SDL_Surface *load_image(char *filename )
 	}
 	return optimizedImage;
 }
-
-//gibt eine vollständig initialisierte Font mit der Größe für Buttons zurück
+/**
+ * Wenn die Schrift fertig verwendet wurde muss TTF_CloseFont(font); aufgerufen werden!
+ * @return gibt eine initialisierte TTF_Font zurück mit der Größe für Buttons
+ */
 TTF_Font *buttonFont()
 {
 	return arialFont(28); /*requires  	TTF_CloseFont(font); after use*/
 }
-//gibt eine vollständig initialisierte Font mit der Größe size zurück
-TTF_Font *arialFont(int size)
+/**
+ * Wenn die Schrift fertig verwendet wurde muss TTF_CloseFont(font); aufgerufen werden!
+ * @param size Schriftgröße in der die Schrift zurückgegeben werden soll
+ * @return gibt eine initialisierte TTF_Font zurück mit der Größe für Buttons
+ */TTF_Font *arialFont(int size)
 {
 	TTF_Font *font = NULL;
 	//Open the font
@@ -128,14 +146,26 @@ TTF_Font *arialFont(int size)
 	}
 	return font; /*requires  	TTF_CloseFont(font); after use*/
 }
-//zeichnet einen Button und ignoriert den state
+/**
+ * Draws the Button and ignores the state set in myButton
+ * @param destinationSurface the SDL_Surface to draw on.
+ * @param myButton struct which contains the Button 
+ * @return 1 on error
+ * @return 0 if there was no error
+ */
 int drawButton (SDL_Surface *destinationSurface, myButton *button)
 {
 	return drawButtonWithState (destinationSurface, button, 0);
 }
-//zeichnet einen Button wenn withState = 1 wird der state aus dem Button-Strukt berücksichtigt
-//returns 1 on error – return 0 on no error
-int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int withState)
+/**
+ * Draws the Button
+ * @param destinationSurface the SDL_Surface to draw on.
+ * @param myButton struct which contains the Button 
+ * @param withState 0 ignores the state set in myButton – 1 draw the button in the state
+ * @see myButton
+ * @return 1 on error
+ * @return 0 if there was no error
+ */int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int withState)
 {
 	//draw border
 	SDL_Rect buttonBorder = button->rect;
@@ -179,8 +209,15 @@ int drawButtonWithState (SDL_Surface *destinationSurface, myButton *button, int 
 	SDL_FreeSurface(message);
 	return 0;
 }
-//check if the button is clicked
-//returns 1 if the button is clicked
+/**
+ * Checks if the Button was clicked
+ * @param myButton struct which contains the Button 
+ * @param x the x-position which was clicked
+ * @param y the y-position which was clicked
+ * @see myButton
+ * @return 1 if the button was clicked
+ * @return 0 if the button was not clicked
+ */
 int isButtonClicked(myButton *button, int x, int y)
 {
 	if (button->rect.x < x && x < button->rect.x+button->rect.w && button->rect.y < y && y < button->rect.y+button->rect.h) {
