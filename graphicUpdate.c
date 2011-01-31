@@ -227,7 +227,9 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 		StartTime = SDL_GetTicks();
 		while(animation) {
 			innerStartTime = SDL_GetTicks();
-			Mix_PlayChannel(-1, data->chaingo, 0 );
+			if (!Mix_Playing(data->chainChannel)) {
+				data->chainChannel = Mix_PlayChannel(-1, data->chaingo, 0 );
+			}
 			src.x=src.y=(150-src.w)/2;
 			dst.x=(n_pos.x-data->horizontalScroll)*FIELDSIZE_FIELD-50+src.x;
 			dst.y=(n_pos.y-data->verticalScroll)*FIELDSIZE_FIELD-50+src.y;

@@ -96,6 +96,8 @@ typedef struct dataStore{
 	int windowed;
 	SDL_Surface *screen;
 	Mix_Chunk *chaingo;
+	int chainChannel;
+	/**channel der Chainsaw */
 	Mix_Music *startmusic;
 	Mix_Music *ingamemusic;
 }dataStore;
