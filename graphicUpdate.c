@@ -6,7 +6,14 @@
 #define kreis_pic "./pictures/kreis.png"
 #define candy_pic "./pictures/zuckerstangen.png"
 #define animation_pic "./pictures/cutanimation.png"
-//Zeichnet das aktuell sichtbare Spielfeld mit der Person
+/**Zeichnet das aktuell sichtbare Spielfeld mit der Person
+	* a normal member taking two arguments and returning an integer value.
+	* @param l_screen an SDL_Surface.
+	* @param data a dataStore pointer.
+	* @see dataStore
+	* @return 1 if successful
+	* @return 0 if fail
+*/
 int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 {
 	int i,j,scrollposition=data->verticalScroll,hSpos=data->horizontalScroll,startzone=0;
@@ -54,9 +61,9 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 				}
 			}
 			if(startzone)SDL_BlitSurface(image_start, &src, l_screen, &dst);
-			else {
+			else {/**<print candy*/
 				SDL_BlitSurface(image_field, &src, l_screen, &dst);
-				//print candy
+				
 				if(data->hedgewood[j+scrollposition][i+hSpos].currency > 0 && src.x>0) {
 					src2=src;
 					src2.x=50*((data->hedgewood[j+scrollposition][i+hSpos].currency-1)/10);
@@ -64,8 +71,8 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 					SDL_BlitSurface(image_candy, &src2, l_screen, &dst);
 				}
 			}
-			//print person
-			if(data->player.p_pos.x==i+hSpos && data->player.p_pos.y==j+scrollposition) {
+			
+			if(data->player.p_pos.x==i+hSpos && data->player.p_pos.y==j+scrollposition) {/**<print person*/
 				src.x = FIELDSIZE_FIELD*data->player.heading;
 				src.y = 0;
 				dst.x = FIELDSIZE_FIELD*(data->player.p_pos.x-hSpos);
@@ -79,7 +86,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 	SDL_FreeSurface(image_field);
 	SDL_FreeSurface(image_candy);
 	aStarPathPrint(data,l_screen);
-	//print energy bar
+	/**<print energy bar*/
 	src.x= 25;
 	dst.x = 23;
 	src.y=25;
@@ -98,14 +105,13 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 	dst.h -= 4;
 	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 255, 115, 0,255));
 	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255,201, 0,255));
-	//print candy bar
+	/**<print candy bar*/
 	src.x=dst.x = 575;
 	energy=200*(((float)data->player.bp.currentVolume)/((float)data->player.bp.maxVolume));
 	src.w = energy;
 	SDL_FillRect(l_screen, &dst, SDL_MapRGBA( l_screen->format, 160, 32, 64,255));
 	SDL_FillRect(l_screen, &src, SDL_MapRGBA( l_screen->format, 255, 128, 192,255));
-	for(i=0; i<3; i+=2) {
-		/*Draw Text */
+	for(i=0; i<3; i+=2) {/**<Draw Text */
 		char text[50];
 		sprintf(text,"%d IN STASH",(data->player.candystash));
 		SDL_Surface *message;
@@ -113,18 +119,17 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 		SDL_Color textColor = { 255*i, 255*i, 255*i,0};
 		if (!(message = TTF_RenderText_Blended( font, text, textColor ))) {
 			printf("%s\n",TTF_GetError());
-			return 1;
+			return 0;
 		}
 		TTF_CloseFont(font);
 		SDL_Rect textRect = {275-i,22-i,0,0};
 		if(0!=SDL_BlitSurface( message, NULL, l_screen, &textRect)) {
 			printf("%s\n",SDL_GetError());
-			return 1;
+			return 0;
 		}
 		SDL_FreeSurface(message);
 	}
-	for(i=0; i<3; i+=2) {
-		/*Draw Text */
+	for(i=0; i<3; i+=2) {/**<Draw Text */
 		char text[50];
 		sprintf(text,"%d von %d",data->player.bp.currentVolume,data->player.bp.maxVolume);
 		SDL_Surface *message;
@@ -132,23 +137,22 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 		SDL_Color textColor = { 255*i, 255*i, 255*i,0};
 		if (!(message = TTF_RenderText_Blended( font, text, textColor ))) {
 			printf("%s\n",TTF_GetError());
-			return 1;
+			return 0;
 		}
 		TTF_CloseFont(font);
 		SDL_Rect textRect = {687-i,29-i,0,0};
 		if(0!=SDL_BlitSurface( message, NULL, l_screen, &textRect)) {
 			printf("%s\n",SDL_GetError());
-			return 1;
+			return 0;
 		}
 		SDL_FreeSurface(message);
 	}
-	//end
 	SDL_FreeSurface(image_person);
 	aStarPathPrint(data,l_screen);
 	SDL_Flip(l_screen);
 	return 1;
 }
-//wandelt eine Position in Pixel auf eine Position auf dem Spielfeld um
+/**wandelt eine Position in Pixel auf eine Position auf dem Spielfeld um*/
 position *pixelToGrid(position *l_pos)
 {
 	position *pos=calloc(1,sizeof( position));
@@ -157,7 +161,7 @@ position *pixelToGrid(position *l_pos)
 	pos->next=NULL;
 	return pos;
 }
-//updatet die Scroll-Position des Spielfeldes
+/**updatet die Scroll-Position des Spielfeldes*/
 void verticalScrollPos( dataStore *data)
 {
 	int verticalScroll,verticalPos=data->player.p_pos.y,hScroll,hPos=data->player.p_pos.x;
@@ -171,8 +175,9 @@ void verticalScrollPos( dataStore *data)
 	data->horizontalScroll=hScroll;
 	if(DEBUG)printf("verticalScroll data/function: %d : %d\n",data->verticalScroll,verticalScroll);
 }
-//updatet die Position der Spielfigur und führt die Interaktion mit dem Spielfeld aus
-//zeigt außerdem die Animation des Schneidens an und wartet
+/**updatet die Position der Spielfigur und führt die Interaktion mit dem Spielfeld aus
+*zeigt außerdem die Animation des Schneidens an und wartet
+*/
 int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 {
 	position old=data->player.p_pos,n_pos=(*newPos);
@@ -211,7 +216,7 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 	GraphicUpdate(l_screen,data);
 	wait=(data->hedgewood[n_pos.y][n_pos.x].aStarValue*60/data->player.cutSpeed)+100;
 	if(data->hedgewood[n_pos.y][n_pos.x].type>8) {
-		//animation 20fps 10frames / durchgang
+		/**animation 20fps 10frames / durchgang*/
 		animation=1;
 		if ((image_animation =load_image(animation_pic))== NULL) {
 			printf("Can't load image start: %s\n", SDL_GetError());
@@ -247,7 +252,7 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 	verticalScrollPos(data);
 	return 1;
 }
-//Zeichnet den Pfad des Players auf das Spielfeld
+/**Zeichnet den Pfad des Players auf das Spielfeld*/
 void aStarPathPrint(dataStore *data,SDL_Surface *l_screen)
 {
 	SDL_Surface *kreis=NULL;
@@ -267,6 +272,5 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen)
 		if(dst.y>=0)SDL_BlitSurface(kreis, &src, l_screen, &dst);
 		tmp=tmp->next;
 	}
-	//SDL_Flip(l_screen);
 	SDL_FreeSurface(kreis);
 }
