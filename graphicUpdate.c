@@ -114,7 +114,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 		char text[50];
 		sprintf(text,"%d IN STASH",(data->player.candystash));
 		SDL_Surface *message;
-		TTF_Font *font = arialFont(20);
+		TTF_Font *font = theFont(20);
 		SDL_Color textColor = { 255*i, 255*i, 255*i,0};
 		if (!(message = TTF_RenderText_Blended( font, text, textColor ))) {
 			printf("%s\n",TTF_GetError());
@@ -132,7 +132,7 @@ int GraphicUpdate(SDL_Surface *l_screen,dataStore *data)
 		char text[50];
 		sprintf(text,"%d von %d",data->player.bp.currentVolume,data->player.bp.maxVolume);
 		SDL_Surface *message;
-		TTF_Font *font = arialFont(10);
+		TTF_Font *font = theFont(10);
 		SDL_Color textColor = { 255*i, 255*i, 255*i,0};
 		if (!(message = TTF_RenderText_Blended( font, text, textColor ))) {
 			printf("%s\n",TTF_GetError());
@@ -179,6 +179,8 @@ void verticalScrollPos( dataStore *data)
 */
 int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 {	
+
+	
 	position old=data->player.p_pos,n_pos=(*newPos);
 	clock_t StartTime, StopTime,diffTime,innerStartTime;
 	if(data->hedgewood[n_pos.y][n_pos.x].aStarValue<0)return 0;
@@ -227,9 +229,12 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 		StartTime = SDL_GetTicks();
 		while(animation) {
 			innerStartTime = SDL_GetTicks();
-			if (!Mix_Playing(data->chainChannel)) {
-				data->chainChannel = Mix_PlayChannel(-1, data->chaingo, 0 );
+			
+			/*Sound */
+			if (!Mix_Playing(CHAINSAWCHANNEL2)&&data->soundEnabled) {
+				Mix_PlayChannel(CHAINSAWCHANNEL2, data->chaingo, 0 );
 			}
+			
 			src.x=src.y=(150-src.w)/2;
 			dst.x=(n_pos.x-data->horizontalScroll)*FIELDSIZE_FIELD-50+src.x;
 			dst.y=(n_pos.y-data->verticalScroll)*FIELDSIZE_FIELD-50+src.y;

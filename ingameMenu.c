@@ -120,7 +120,8 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 								done = 1;
 							}
 							else if(buttonID == QUIT_BUTTON){
-								quitSDL(data);
+//								quitSDL(data);
+								done = 1;
 								return 1;
 							}
 							

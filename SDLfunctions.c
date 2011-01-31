@@ -44,6 +44,23 @@
 		printf("Error: TTF could not be initialized %s\n", SDL_GetError());
 		exit(1);
 	}
+	
+	Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 );
+	data->startmusic = Mix_LoadMUS( MENUMUSIC );
+	if(data->startmusic==NULL)
+		printf("Musik fehlt: %s\n",MENUMUSIC);
+	data->ingamemusic = Mix_LoadMUS( INGAMEMUSIC );
+	if(data->ingamemusic==NULL)
+		printf("Musik fehlt: %s\n", INGAMEMUSIC);
+	data->chaingo = Mix_LoadWAV( CHAINSAWSOUND2 );
+	if( data->chaingo == NULL )
+		printf("Effekte fehlen: %s\n",CHAINSAWSOUND2);
+	data->chainpause = Mix_LoadWAV( CHAINSAWSOUND1 );
+	if( data->chainpause == NULL )
+		printf("Effekte fehlen: %s\n",CHAINSAWSOUND1);
+	data->soundEnabled=1;
+	
+	
 	return screen;
 }
 /**
@@ -54,7 +71,17 @@
 void quitSDL(dataStore *data)
 {
 	
+	
 	saveDataStore(data,1,0);
+	
+
+	Mix_FreeMusic( data->startmusic );
+	Mix_FreeMusic( data->ingamemusic);
+	Mix_FreeChunk( data->chaingo ); 
+	Mix_FreeChunk( data->chainpause);
+	Mix_CloseAudio();
+
+
 	
 	/*quit TTF */
 	TTF_Quit();
@@ -128,17 +155,17 @@ SDL_Surface *load_image(char *filename )
  */
 TTF_Font *buttonFont()
 {
-	return arialFont(28); /*requires  	TTF_CloseFont(font); after use*/
+	return theFont(28); /*requires  	TTF_CloseFont(font); after use*/
 }
 /**
  * Wenn die Schrift fertig verwendet wurde muss TTF_CloseFont(font); aufgerufen werden!
  * @param size Schriftgröße in der die Schrift zurückgegeben werden soll
  * @return gibt eine initialisierte TTF_Font zurück mit der Größe für Buttons
- */TTF_Font *arialFont(int size)
+ */TTF_Font *theFont(int size)
 {
 	TTF_Font *font = NULL;
 	//Open the font
-	font = TTF_OpenFont("./ArialBlack.ttf", size );
+	font = TTF_OpenFont("./freefont/FreeSansBold.ttf", size );
 	//if font not correctly opened
 	if (font == NULL) {
 		printf("Error: Font not loaded %s\n",SDL_GetError());

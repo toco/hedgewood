@@ -23,17 +23,13 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 	//alloc menuDataStore
 	menuDataStore *menuData = malloc(sizeof(menuDataStore));
 	menuData->buttons = malloc(sizeof(myButton)*BUTTONCOUNT);
-	Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 );
-	data->startmusic = Mix_LoadMUS( "Talking About.wav" );
-		if(data->ingamemusic==NULL)
-			printf("Musik fehlt\n");
+
 	
 	setupMenu(screen, menuData);
 	Mix_PlayMusic( data->startmusic, -1);
 	drawMenu(screen, menuData);
 	mainMenuLoop(screen, menuData, data);
 	
-	Mix_FreeMusic( data->startmusic );
 	free(menuData->buttons);
 	free(menuData);	
 }

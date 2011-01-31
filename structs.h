@@ -95,9 +95,9 @@ typedef struct dataStore{
 	position stash;
 	int windowed;
 	SDL_Surface *screen;
+	int soundEnabled;
 	Mix_Chunk *chaingo;
-	int chainChannel;
-	/**channel der Chainsaw */
+	Mix_Chunk *chainpause;
 	Mix_Music *startmusic;
 	Mix_Music *ingamemusic;
 }dataStore;

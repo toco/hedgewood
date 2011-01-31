@@ -94,7 +94,7 @@ int displayStore(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) 
 		sprintf(text,"%d CANDY",(data->player.candystash+data->player.bp.currentVolume));
 		
         SDL_Surface *message;
-        TTF_Font *font = arialFont(25);
+        TTF_Font *font = theFont(25);
         SDL_Color textColor = { 255*i, 255*i, 255*i,0};
         if (!(message = TTF_RenderText_Blended( font, text, textColor )))
         {

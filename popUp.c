@@ -105,7 +105,7 @@ int displayPopup(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 	
 	/*Draw Text */
 	SDL_Surface *message;
-	TTF_Font *font = arialFont(24);
+	TTF_Font *font = theFont(24);
 	SDL_Color textColor = { 255, 255, 255,0};
 	//SDL_Color textColor = { 0, 0, 0, 0};
 	if (!(message = TTF_RenderText_Blended( font, menuData->text, textColor )))

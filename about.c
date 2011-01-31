@@ -37,7 +37,7 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 	
 	drawButton(screen, &button);
 	
-	TTF_Font *font = arialFont(18);
+	TTF_Font *font = theFont(18);
 	char aboutText[10][100] = {"Hedgewood is a game written by:"," - toco"," - tk"," - JTR"," "," we hope you enjoy it."," ","Thanks to:"," - friend of tk for the grapics"," - our great tutor Arne"};
 	
 	if (!(renderMultiLineText(font, &aboutText[0],10, textColor,screen)))

@@ -271,12 +271,12 @@ int readDataStore(dataStore *data, int highscore, int game)
 		}
 #endif		
 	}
-	
-	if (highscore&&game) {
-		memcpy(data, tmpData, sizeof(dataStore));
-	} else if (highscore) {
+	if (highscore) {
 		memcpy(&data->highscore, &tmpData->highscore, sizeof(data->highscore));
-	} else if (game){
+	}
+	if (game){
+		data->verticalScroll=tmpData->verticalScroll;
+		data->horizontalScroll=tmpData->horizontalScroll;
 		memcpy(&data->player, &tmpData->player, sizeof(data->player));
 		memcpy(&data->hedgewood, &tmpData->hedgewood, sizeof(data->hedgewood));
 	}

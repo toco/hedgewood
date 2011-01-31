@@ -62,4 +62,14 @@
 #define FIELDSIZE_FIELD 50
 
 
+/*soundConfigs */
+
+#define CHAINSAWSOUND1 "sound/chainsaw1.wav"
+#define CHAINSAWSOUND2 "sound/chainsaw2.wav"
+#define CHAINSAWCHANNEL1 1
+#define CHAINSAWCHANNEL2 2
+#define INGAMEMUSIC "sound/Voices.wav"
+#define MENUMUSIC "sound/Talking About.wav"
+
+
 #endif

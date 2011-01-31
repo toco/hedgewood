@@ -97,7 +97,7 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 	
 	
 	
-	TTF_Font *aButtonFont = arialFont(32);
+	TTF_Font *aButtonFont = theFont(32);
 	SDL_Color textColor = { 255, 255, 255,0};
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
@@ -118,7 +118,7 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 	SDL_Rect nameRect={screen->clip_rect.w/2-150,screen->clip_rect.h/2-230,0,0};
 	SDL_Rect pointsRect={screen->clip_rect.w/2+250,screen->clip_rect.h/2-230,0,0};
 	int pointRight=pointsRect.x;
-	TTF_Font *midFont = arialFont(28);
+	TTF_Font *midFont = theFont(28);
 	
 	int i;
 	int lineOffset = 40;

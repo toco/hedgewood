@@ -38,7 +38,7 @@ SDL_Surface *load_image(char *filename );
 void printdb(char *str);
 
 TTF_Font *buttonFont(); /*requires  	TTF_CloseFont(font); after use*/
-TTF_Font *arialFont(int size); /*requires  	TTF_CloseFont(font); after use*/
+TTF_Font *theFont(int size); /*requires  	TTF_CloseFont(font); after use*/
 
 //draws button and ignores state
 //return 0 on no errors – return 1 on errors
