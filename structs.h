@@ -10,8 +10,8 @@
 typedef struct field{
     int visible;
 	/**
-	1-10 wenig
-	11-20 mittel
+	1-10 wenig\n
+	11-20 mittel\n
 	21-30 viel
 	*/
     int currency;			
@@ -20,18 +20,18 @@ typedef struct field{
 	/**<-1 := nicht begehbar*/
 	
     
-/**	0 := Verdeckt			nicht begehbar
-	1 := linker Zaun		nicht begehbar
-	2 := rechter Zaun		nicht begehbar
-	3 := Bach Zaun links	nicht begehbar
-	4 := Bach 				nicht begehbar
-	5 := Bach Zaun rechts	nicht begehbar
-	6 := Sand				aStarValue 2
-	7 := Stein				nicht begehbar
-	8 := Mauer				nicht begehbar
-	9 := leichter Busch	aStarValue 10
-	10 := mittlerer Busch	aStarValue 20
-	11 := fester Busch		aStarValue 30
+/**	0 := Verdeckt			nicht begehbar\n
+	1 := linker Zaun		nicht begehbar\n
+	2 := rechter Zaun		nicht begehbar\n
+	3 := Bach Zaun links	nicht begehbar\n
+	4 := Bach 				nicht begehbar\n                 
+	5 := Bach Zaun rechts	nicht begehbar\n
+	6 := Sand				aStarValue 2\n
+	7 := Stein				nicht begehbar\n
+	8 := Mauer				nicht begehbar\n
+	9 := leichter Busch	aStarValue 10\n
+	10 := mittlerer Busch	aStarValue 20\n
+	11 := fester Busch		aStarValue 30\n
 	-1 := Startzone		aStarValue 0*/
 	int type;
 }field;

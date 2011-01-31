@@ -1,43 +1,38 @@
 /*! \file pathfinding.c
   	\brief this file locates our pathfinding A*.
   
-	*1)  Füge das Startquadrat der offenen Liste hinzu.
-	* 
-	* 2)  Wiederhole das Folgende:
-	* 
-	*	a) 	Suche in der offenen Liste nach dem Quadrat mit dem niedrigsten F-Wert. Wir bezeichnen dieses Quadrat im Folgenden als das aktuelle Quadrat.
-	* 
-	*	b) 	Verschiebe es in die geschlossene Liste.
-	* 
-	*	c) 	Für jedes der 8 an das aktuelle Quadrat angrenzenden Quadrate:
-	* 
-			* Wenn es nicht begehbar ist oder sich bereits in der geschlossenen Liste befindet, ignoriere es; andernfalls mach das Folgende:
-			* 
-			* Wenn es nicht in der offenen Liste ist, füge es der offenen Liste hinzu. Trage das aktuelle Quadrat als Vorgängerquadrat dieses Quadrats ein. Trage zusätzlich die Werte für die F-, G- und H-Kosten dieses Quadrates ein.
-			* 
-			* Falls es bereits in der offenen Liste ist, prüfe, ob der Pfad vom aktuellen Quadrat zu ihm - gemessen am G-Wert -, besser ist, als der Pfad von seinem eingetragenen Vorgängerquadrat (ein geringerer G-Wert bedeutet einen besseren Pfad). Falls dem so ist, ändere sein Vorgängerquadrat auf das aktuelle Quadrat und berechne seine Werte für G und F neu. Sofern Du Deine offene Liste nach dem F-Wert sortiert hast, ist möglicherweise eine Neusortierung dieser Liste erforderlich, um dieser Veränderung Rechnung zu tragen.
-		d) 	
-		 * Beende den Prozess, falls:
-			* 
-			* Du das Zielquadrat in die geschlossene Liste verschoben hast; in diesem Fall hast Du den Pfad ermittelt
-			* 
-			* kein Zielquadrat gefunden werden konnte und die offene Liste leer ist; in diesem Fall gibt es keinen Pfad.
+	*1)  Füge das Startquadrat der offenen Liste hinzu.\n
+	*2)  Wiederhole das Folgende:\n
+	*	a) 	Suche in der offenen Liste nach dem Quadrat mit dem niedrigsten F-Wert. Wir bezeichnen dieses Quadrat im Folgenden als das aktuelle Quadrat.\n
+	*	b) 	Verschiebe es in die geschlossene Liste.\n
+	*	c) 	Für jedes der 8 an das aktuelle Quadrat angrenzenden Quadrate:\n
+			* Wenn es nicht begehbar ist oder sich bereits in der geschlossenen Liste befindet, ignoriere es; andernfalls mach das Folgende:\n
+			* Wenn es nicht in der offenen Liste ist, füge es der offenen Liste hinzu. \n 
+			* Trage das aktuelle Quadrat als Vorgängerquadrat dieses Quadrats ein. \n
+			* Trage zusätzlich die Werte für die F-, G- und H-Kosten dieses Quadrates ein.\n
+			* Falls es bereits in der offenen Liste ist, prüfe, ob der Pfad vom aktuellen Quadrat zu ihm - gemessen am G-Wert -, besser ist, als der Pfad von seinem eingetragenen Vorgängerquadrat (ein geringerer G-Wert bedeutet einen besseren Pfad). \n
+			Falls dem so ist, ändere sein Vorgängerquadrat auf das aktuelle Quadrat und berechne seine Werte für G und F neu. Sofern Du Deine offene Liste nach dem F-Wert sortiert hast, ist möglicherweise eine Neusortierung dieser Liste erforderlich, um dieser Veränderung Rechnung zu tragen.\n
+		d)	Beende den Prozess, falls:\n
+			* Du das Zielquadrat in die geschlossene Liste verschoben hast; in diesem Fall hast Du den Pfad ermittelt\n
+			* kein Zielquadrat gefunden werden konnte und die offene Liste leer ist; in diesem Fall gibt es keinen Pfad.\n
 	3)  
-	 * Sichere den Pfad. Der Pfad erschließt sich, indem Du vom Zielquadrat aus Quadrat für Quadrat rückwärts schreitend das Startquadrat erreichst.
-	 
-	Der Schlüssel dazu, welche Quadrate für den Pfad in Frage kommen, ist folgende Gleichung:
-	*	
-	* F = G + H
-	*	wobei
-	* 	
-	* G = Die Bewegungskosten, um vom Startpunkt A zu einem gegebenen Quadrat des Gitters unter Verwendung des dafür ermittelten Pfades zu gelangen.
-	* 	
+	 * Sichere den Pfad. Der Pfad erschließt sich, indem Du vom Zielquadrat aus Quadrat für Quadrat rückwärts schreitend das Startquadrat erreichst.\n
+	Der Schlüssel dazu, welche Quadrate für den Pfad in Frage kommen, ist folgende Gleichung:\n
+	* F = G + H\n
+	*	wobei\n
+	* G = Die Bewegungskosten, um vom Startpunkt A zu einem gegebenen Quadrat des Gitters unter Verwendung des dafür ermittelten Pfades zu gelangen.\n
 	* H = Die geschätzten Kosten, um von dem gegebenen Quadrat zum Zielpunkt B zu gelangen. Dies wird oft heuristisch genannt, was ein bisschen verwirrend sein kann. Der Grund, warum dies so genannt wird, ist, dass diese Kosten auf Vermutung beruhen, denn tatsächlich kennen wir die wirkliche Entfernung erst, wenn wir den Pfad dorthin gefunden und auf dem Weg liegende Hindernisse (Wände, Wasser, etc.) berücksichtigt haben. In diesem Artikel wird ein möglicher Weg gezeigt, wie H ermittelt werden kann; es gibt aber viele weitere, die in anderen Web-Artikeln beschrieben sind.
 */
 #include "SDLincludes.h"
 #include "SDLfunctions.h"
 #include "pathfinding.h"
-//Sucht den besten Pfad von der aktuellen Position der Spielfigur zu der Endposition end
+/***/
+/**Sucht den besten Pfad von der aktuellen Position der Spielfigur zu der Endposition end.
+	* @param data a dataStore pointer.
+	* @param end the end position.
+	* @see dataStore
+	* @see position
+*/
 void aStar( dataStore *data, position *end)
 {
 	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue*data->hedgewood[end->y][end->x].visible<0)return;
@@ -114,7 +109,7 @@ void aStar( dataStore *data, position *end)
 		}
 	}
 }
-//Fuegt vorne an die Liste das Element pos_add an. Last in First out
+/**Fuegt vorne an die Liste das Element pos_add an. Last in First out*/
 void positionListAdd(dataStore *data,  position *pos_add)
 {
 	struct position *zeiger=NULL;
@@ -131,7 +126,7 @@ void positionListAdd(dataStore *data,  position *pos_add)
 	}
 	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
-//Fügt hinten an die Liste das element pos_add an. First in First out
+/**Fügt hinten an die Liste das element pos_add an. First in First out*/
 void positionQListAdd(dataStore *data,  position *pos_add)
 {
 	struct position *zeiger=NULL;
@@ -150,7 +145,7 @@ void positionQListAdd(dataStore *data,  position *pos_add)
 	}
 	if(DEBUG)printf("Position Start x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 }
-//löscht die Positionsliste
+/**löscht die Positionsliste*/
 void positionListDelete( dataStore *data)
 {
 	struct position *zeiger, *zeiger1;
@@ -164,7 +159,7 @@ void positionListDelete( dataStore *data)
 		data->player.anfang=NULL;
 	}
 }
-//liest die obere Position des Stacks und entfernt diesen
+/**liest die obere Position des Stacks und entfernt diesen*/
 position *positionListRead( dataStore *data)
 {
 	printdb("Start ListRead\n");
@@ -181,9 +176,13 @@ position *positionListRead( dataStore *data)
 	if(DEBUG)if(data->player.anfang!=NULL)printf("Position read end x: %d y: %d\n",data->player.anfang->x,data->player.anfang->y);
 	return result;
 }
-//stack==1 -> list
-//stack==2 -> last
-//fügt der angegebenen Liste das element node_add hinzu
+
+/**fügt der angegebenen Liste das element node_add hinzu
+ * @param list is the list node_add is added to
+ * @param node_add is the element to add
+ * @param stack ==1 -> list
+ * @param stack ==2 -> last
+ */
 pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack)
 {
 	if(stack==pfNode_list) {
@@ -210,7 +209,7 @@ pfNode *aStarListAdd(pfNode *list,pfNode *node_add, int stack)
 	}
 	return list;
 }
-//sucht den kleinsten F-Wert (erster Fund wird Ausgegeben)
+/**sucht den kleinsten F-Wert (erster Fund wird Ausgegeben)*/
 pfNode *aStarSearchF(pfNode *list)
 {
 	pfNode *result=list,*tmp=list;
@@ -223,7 +222,7 @@ pfNode *aStarSearchF(pfNode *list)
 	}
 	return result;
 }
-//gibt zurück ob sich das Element element in der Liste befindet
+/**gibt zurück ob sich das Element element in der Liste befindet*/
 pfNode *aStarListSearchBool(pfNode *list,pfNode *element)
 {
 	pfNode *tmp=list;
@@ -234,7 +233,7 @@ pfNode *aStarListSearchBool(pfNode *list,pfNode *element)
 	}
 	return NULL;
 }
-//berechnet den Manhatten abstand vom start zum end
+/**berechnet den Manhatten abstand vom start zum end*/
 int aStarManhatten(position start, position end)
 {
 	int x=0,y=0;
@@ -244,7 +243,7 @@ int aStarManhatten(position start, position end)
 	if(y<0)y*=(-1);
 	return ((x+y)*AVGASTAR);
 }
-//löscht das Element node_remove aus der Liste list
+/**löscht das Element node_remove aus der Liste list*/
 pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack)
 {
 	pfNode *tmp=list,*tmp2=NULL;
@@ -276,7 +275,7 @@ pfNode *aStarListRemove(pfNode *list,pfNode *node_remove, int stack)
 	}
 	return list;
 }
-//löscht die Liste vom Pathfinding
+/**löscht die Liste vom Pathfinding*/
 void aStarListDelete(pfNode *list)
 {
 	struct pfNode *zeiger, *zeiger1;

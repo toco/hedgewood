@@ -6,8 +6,7 @@
 #define kreis_pic "./pictures/kreis.png"
 #define candy_pic "./pictures/zuckerstangen.png"
 #define animation_pic "./pictures/cutanimation.png"
-/**Zeichnet das aktuell sichtbare Spielfeld mit der Person
-	* a normal member taking two arguments and returning an integer value.
+/**Zeichnet das aktuell sichtbare Spielfeld mit der Person.	* 
 	* @param l_screen an SDL_Surface.
 	* @param data a dataStore pointer.
 	* @see dataStore
