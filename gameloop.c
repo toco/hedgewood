@@ -125,7 +125,7 @@ void createRandomField(dataStore *data) {
 	data->home.y=2;
 	data->stash.x=13;
 	data->stash.y=2;
-	data->player.cutSpeed=1.0;
+	data->player.cutSpeed=1.5;
 }
 int gameloop(dataStore *data,SDL_Surface *screen) {
 	createRandomField(data);
@@ -147,6 +147,10 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 		while ( SDL_PollEvent(&event) ) {
 			innerStartTime = SDL_GetTicks();
 			switch (event.type) {
+				case SDL_QUIT:
+					done = 1;
+					quitSDL(data);
+					break;
 				case SDL_MOUSEMOTION:
 					//Prüft ob sich die Maus aus dem 50x50 Feld bewegt hat
 					mouse_pos=calloc(1,sizeof(struct position));

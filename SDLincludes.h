@@ -54,7 +54,7 @@
 
 #define DEBUG 0
 #define DBPATH 0
-#define STARTCANDYSTASH 0
+#define STARTCANDYSTASH 1000
 
 #define AVGASTAR 5
 #define FIELDSIZE_X 200
