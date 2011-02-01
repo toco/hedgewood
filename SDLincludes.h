@@ -21,7 +21,7 @@
 #include "/opt/local/include/SDL/SDL.h"
 #include "/opt/local/include/SDL/SDL_image.h"	/* http://www.libsdl.org/projects/SDL_image/ */
 #include "/opt/local/include/SDL/SDL_ttf.h"		/* http://www.libsdl.org/projects/SDL_ttf/ */
-#include "/usr/local/include/SDL/SDL_mixer.h"
+#include "/opt/local/include/SDL/SDL_mixer.h"
 
 #elif __WIN32__ || _MSC_VER 
 #include "Bla" 
