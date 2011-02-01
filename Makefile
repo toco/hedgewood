@@ -18,7 +18,7 @@ CC = gcc
 #CFLAGS = -Wall -Wextra -ansi -pedantic -DPARAUSGABE -O3 -mtune=core2 -march=core2 
 CFLAGS = -g -Wall -Wextra -std=c99 -pedantic
 #CFLAGS = -Wall -Wextra
-SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf
+SDLFLAGS = `sdl-config --cflags --libs` -lSDL_image -lSDL_ttf -lSDL_mixer
 CPRECOMPILER = -save-temps
 
 Hedgewood: main.o SDLfunctions.o menu.o graphicUpdate.o about.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o gameloop.o popUp.o store.o
@@ -67,6 +67,5 @@ clean:
 	rm *.o # lösche alle Objektdateien 
 	rm *.gch # lösche precompiled header
 
-cleanall:
-	rm *.s # lösche precompiled header
-	rm *.i # lösche precompiled header
+doku:
+	doxygen Doxyfile

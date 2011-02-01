@@ -18,9 +18,11 @@
 #define SDLINCLUDES_H
 
 #ifdef __APPLE__
-#include "/opt/local/include/SDL/SDL.h"
-#include "/opt/local/include/SDL/SDL_image.h"	/* http://www.libsdl.org/projects/SDL_image/ */
-#include "/opt/local/include/SDL/SDL_ttf.h"		/* http://www.libsdl.org/projects/SDL_ttf/ */
+#include "/usr/local/include/SDL/SDL.h"
+#include "/usr/local/include/SDL/SDL_image.h"	/* http://www.libsdl.org/projects/SDL_image/ */
+#include "/usr/local/include/SDL/SDL_ttf.h"		/* http://www.libsdl.org/projects/SDL_ttf/ */
+#include "/usr/local/include/SDL/SDL_mixer.h"
+
 #elif __WIN32__ || _MSC_VER 
 #include "Bla" 
 #include "Blubb"
@@ -28,6 +30,7 @@
 #include "/usr/include/SDL/SDL_image.h"
 #include "/usr/include/SDL/SDL.h"
 #include "/usr/include/SDL/SDL_ttf.h"
+#include "/usr/include/SDL/SDL_mixer.h"
 #endif
 
 #define GAMENAME "Hedgewood"
@@ -51,11 +54,22 @@
 
 #define DEBUG 0
 #define DBPATH 0
+#define STARTCANDYSTASH 0
 
 #define AVGASTAR 5
 #define FIELDSIZE_X 200
 #define FIELDSIZE_Y 200
 #define FIELDSIZE_FIELD 50
+
+
+/*soundConfigs */
+
+#define CHAINSAWSOUND1 "sound/chainsaw1.wav"
+#define CHAINSAWSOUND2 "sound/chainsaw2.wav"
+#define CHAINSAWCHANNEL1 1
+#define CHAINSAWCHANNEL2 2
+#define INGAMEMUSIC "sound/Voices.wav"
+#define MENUMUSIC "sound/Talking About.wav"
 
 
 #endif

@@ -18,13 +18,13 @@
 
 #include <stdio.h>
 
-int popUp(SDL_Surface *screen, char *text, char *button0Title, char *button1Title)
+int popUp(SDL_Surface *screen, dataStore *data, char *text, char *button0Title, char *button1Title)
 {
-	return inputPopUp(screen,text,NULL,0,button0Title,button1Title);
+	return inputPopUp(screen, data, text,NULL,0,button0Title,button1Title);
 }
-int inputPopUp(SDL_Surface *screen, char *text, char *inputText, int inputLenght, char *button0Title, char *button1Title)
+int inputPopUp(SDL_Surface *screen, dataStore *data, char *text, char *inputText, int inputLenght, char *button0Title, char *button1Title)
 {
-#ifdef DEBUG
+#if (DEBUG==1)
 	printf("Display popUp with Message: \"%s\" buttons \"%s\" \"%s\"\n",text,button0Title,button1Title);
 #endif
 	int btnCount;
@@ -48,15 +48,15 @@ int inputPopUp(SDL_Surface *screen, char *text, char *inputText, int inputLenght
 	char *rightBtn;
 	
 	/*background from 150 to 450 */
-	if	(btnCount==1 && button1Title == NULL)
+	if	(button1Title != NULL)
+	{
+		rightBtn = button1Title;
+	}
+	else if (button0Title != NULL)
 	{
 		rightBtn = button0Title;
 	}
-	else if (btnCount ==1 && button0Title == NULL)
-	{
-		rightBtn = button1Title;
-		
-	}
+
 	
 	buttons[ BUTTON0 ].rect.w=BUTTONWIDTH;
 	buttons[ BUTTON0 ].rect.h=BUTTONHEIGHT;
@@ -83,15 +83,15 @@ int inputPopUp(SDL_Surface *screen, char *text, char *inputText, int inputLenght
 		
 	}
 	int retVal;
-	if(!(retVal = displayPopup(screen, menuData)))
-		retVal = popUpLoop(screen, menuData);
+	if(!(retVal = displayPopup(screen, data, menuData)))
+		retVal = popUpLoop(screen, data, menuData);
 	
 	free(menuData->buttons);
 	free(menuData);
 	return retVal;
 }
 
-int displayPopup(SDL_Surface *screen, menuDataStore *menuData)
+int displayPopup(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 {
 	/*Background */
 	int width = POPUP_WIDTH+2, height = POPUP_HEIGHT+2;
@@ -105,7 +105,7 @@ int displayPopup(SDL_Surface *screen, menuDataStore *menuData)
 	
 	/*Draw Text */
 	SDL_Surface *message;
-	TTF_Font *font = arialFont(24);
+	TTF_Font *font = theFont(24);
 	SDL_Color textColor = { 255, 255, 255,0};
 	//SDL_Color textColor = { 0, 0, 0, 0};
 	if (!(message = TTF_RenderText_Blended( font, menuData->text, textColor )))
@@ -176,7 +176,7 @@ int displayPopup(SDL_Surface *screen, menuDataStore *menuData)
 }
 
 
-int popUpLoop(SDL_Surface *screen, menuDataStore *menuData)
+int popUpLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
 {
 	int done, mouseX, mouseY;
 	SDL_Event event;
@@ -200,8 +200,9 @@ int popUpLoop(SDL_Surface *screen, menuDataStore *menuData)
 				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					
+#if (DEBUG==1)					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					int buttonID;
 					for (buttonID = 0; buttonID<menuData->buttonCount; buttonID++) {
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
@@ -219,7 +220,7 @@ int popUpLoop(SDL_Surface *screen, menuDataStore *menuData)
 						break;
 					case SDLK_BACKSPACE:
 						menuData->inputText[strlen(menuData->inputText)-1]=0;
-						displayPopup(screen, menuData);
+						displayPopup(screen, data, menuData);
 						break;
 
 					case SDLK_RETURN:
@@ -231,7 +232,7 @@ int popUpLoop(SDL_Surface *screen, menuDataStore *menuData)
 						if (currentStrPos<menuData->inputLength-1) {
 							if (('a'<=aUnicodeChar&&aUnicodeChar<='z')||('A'<=aUnicodeChar&&aUnicodeChar<='Z')||('1'<=aUnicodeChar&&aUnicodeChar<='0')||aUnicodeChar==' ') {
 								menuData->inputText[currentStrPos]=aUnicodeChar;
-								displayPopup(screen, menuData);
+								displayPopup(screen, data, menuData);
 							}
 						}
 						break;
@@ -240,6 +241,7 @@ int popUpLoop(SDL_Surface *screen, menuDataStore *menuData)
 					break;
 				case SDL_QUIT:
 					done = 1;
+					quitSDL(data);
 					break;
 				default:
 					break;

@@ -17,16 +17,24 @@
 #include "hedgewoodIO.h"
 #include "popUp.h"
 
-/* to try to add an new highscore just use this function*/
-int addHighscore(SDL_Surface *screen ,dataStore *data, int points);
+/**
+ * need to be called to add an Highscore
+ * just call it with the points and checking and name-input will be done 
+ * when returned the previous screen needs to redraw itself
+ * @param screen a SDL_Surface to draw on
+ * @param data the dataStore
+ * @param the points the player achieved
+ * @return 1 if the player was added highscore
+ * @return 0 if the player is not in highscore
+ */int addHighscore(SDL_Surface *screen ,dataStore *data, int points);
 
-
-
-int sortHighscore(dataStore *data);
-/*returns 1 if points are higher than the last rank in highscore*/
-int inHighscore(dataStore *data, int points);
-/*Displays the Highscore fullscreen*/
-/*needs redraw when returned*/
+/**
+ * displays the highscore on the surface screen
+ * when return the previous screen needs to redraw itself
+ * @param screen a SDL_Surface to draw on
+ * @param data the dataStore
+ * @return 0
+ */
 int displayHighscore(SDL_Surface *screen, dataStore *data);
 
 

@@ -107,8 +107,9 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 				case SDL_MOUSEBUTTONUP:
 					
 					SDL_GetMouseState(&mouseX,&mouseY);
-					
+#if (DEBUG==1)					
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					int buttonID;
 					for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
 						if (isButtonClicked(&menuData->buttons[buttonID],mouseX,mouseY)) {
@@ -119,8 +120,8 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 								done = 1;
 							}
 							else if(buttonID == QUIT_BUTTON){
-//								quitSDL();
-//								exit(0);
+//								quitSDL(data);
+								done = 1;
 								return 1;
 							}
 							
@@ -148,6 +149,9 @@ int ingameMenuLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData
 					break;
 				case SDL_QUIT:
 					done = 1;
+					if(!popUp(screen, data, "Save game before quit?", "Yes", "No"))
+						saveDataStore(data, 1, 1);
+					quitSDL(data);
 					break;
 				default:
 					break;
@@ -177,7 +181,7 @@ int saveGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 	{
 		
 	}
-	popUp(screen, "Successfully saved game!", "OK", NULL);
+	popUp(screen, data, "Successfully saved game!", "OK", NULL);
 	
 	return 0;
 }
@@ -185,7 +189,7 @@ int loadGame(SDL_Surface __attribute__((unused)) *screen, dataStore *data)
 {
 	printf("Load Game\n");
 	readDataStore(data,1,1);
-	popUp(screen, "Successfully loaded game!", "OK", NULL);
+	popUp(screen, data, "Successfully loaded game!", "OK", NULL);
 	
 	return 0;
 }

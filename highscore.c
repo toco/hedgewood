@@ -14,20 +14,42 @@
  *	
  */
 
-
-
 #include "highscore.h"
 
+
+// "privat" functions
+
+
+/**
+ * checks if the player is in highscore
+ * @param data the dataStore
+ * @param the points the player achieved
+ * @return 1 if the player is in highscore
+ * @return 0 if the player is not in highscore
+ */
+int inHighscore(dataStore *data, int points);
+
+/**
+ * Sorts the Highscore
+ * @param data the dataStore
+ * @return 0
+ */
+
+int sortHighscore(dataStore *data);
+
+
+//implementation
 int addHighscore(SDL_Surface *screen ,dataStore *data, int points)
 {
 	if (inHighscore(data, points)) {
 		char *playerName = malloc(sizeof(char)*15);
-		inputPopUp(screen,"Highscore! Please enter your Name:", playerName, 15, "Ok", NULL);
+		inputPopUp(screen,data,"Highscore! Please enter your Name:", playerName, 15, "Ok", NULL);
 		strcpy(data->highscore[9].name,playerName);
 		data->highscore[9].points = points;
 		sortHighscore(data);
 		saveDataStore(data, 1, 0);
 		displayHighscore(screen,data);
+		return 1;
 	}
 	return 0;
 }
@@ -56,7 +78,6 @@ int sortHighscore(dataStore *data)
 	return 0;
 }
 
-
 int inHighscore(dataStore *data, int points)
 {
 	sortHighscore(data);
@@ -76,7 +97,7 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 	
 	
 	
-	TTF_Font *aButtonFont = arialFont(32);
+	TTF_Font *aButtonFont = theFont(32);
 	SDL_Color textColor = { 255, 255, 255,0};
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
@@ -84,7 +105,11 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 	if (!(message = TTF_RenderText_Blended( aButtonFont, "Highscore", textColor )))
 		printf("%s\n",TTF_GetError());
 	
-	apply_surface( screen->clip_rect.w/2-message->w/2, 20, message, screen, NULL );
+	SDL_Rect offset;
+	offset.x =  screen->clip_rect.w/2-message->w/2;
+	offset.y = 20;
+	//Blit
+	SDL_BlitSurface( message, NULL, screen, &offset );
 	SDL_FreeSurface(message);
 	TTF_CloseFont(aButtonFont);
 
@@ -93,7 +118,7 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 	SDL_Rect nameRect={screen->clip_rect.w/2-150,screen->clip_rect.h/2-230,0,0};
 	SDL_Rect pointsRect={screen->clip_rect.w/2+250,screen->clip_rect.h/2-230,0,0};
 	int pointRight=pointsRect.x;
-	TTF_Font *midFont = arialFont(28);
+	TTF_Font *midFont = theFont(28);
 	
 	int i;
 	int lineOffset = 40;
@@ -156,7 +181,9 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 					if (isButtonClicked(&button, mouseX, mouseY)) {
 						done = 1;
 					}
+#if (DEBUG==1)
 					printf("Cusor-Position x: %d y: %d\n",mouseX,mouseY);
+#endif
 					break;
 				case SDL_KEYDOWN:
 					/* Any keypress quits the app... */
@@ -168,15 +195,16 @@ int displayHighscore(SDL_Surface *screen, dataStore *data)
 					case SDLK_ESCAPE:
 						done = 1;
 						break;
-					case SDLK_q:
+/*					case SDLK_q:
 						break;
-					default:
+*/					default:
 						break;
 						
 				}	
 					break;
 				case SDL_QUIT:
 					done = 1;
+					quitSDL(data);
 					break;
 				default:
 					break;
