@@ -149,18 +149,18 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.bp.maxVolume=atoi(tmp);
-			/*maxOverall backpack*/
-			readPtr+=tabPos+1;
-			memset(tmp, '\0', sizeof(char)*100);
-			tabPos = strcspn(readPtr,tab);
-			strncpy(tmp,readPtr,tabPos);
-			tmpData->player.bp.maxVolume=atoi(tmp);
 			/*currentVolume backpack*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.bp.currentVolume=atoi(tmp);
+			/*maxOverall backpack*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->player.bp.maxOverall=atoi(tmp);
 			/*candystash*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
