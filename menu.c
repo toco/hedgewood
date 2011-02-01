@@ -26,8 +26,9 @@ void menuStart(SDL_Surface *screen, dataStore *data)
 
 	
 	setupMenu(screen, menuData);
-	Mix_PlayMusic( data->startmusic, -1);
 	drawMenu(screen, menuData);
+
+	Mix_PlayMusic( data->startmusic, -1);
 	mainMenuLoop(screen, menuData, data);
 	
 	free(menuData->buttons);
@@ -40,7 +41,8 @@ int startGame( SDL_Surface *screen, dataStore *data)
 //	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 //	SDL_Flip(screen);
 	gameloop(data,screen);
-
+	
+	Mix_PlayMusic( data->startmusic, -1);
 	
 	return 0;
 }
@@ -52,7 +54,7 @@ int menuQuit(SDL_Surface __attribute__((unused)) *screen, dataStore __attribute_
 void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData)
 {
 	//init the buttons
-	
+
 
 	myButton *buttons = &(menuData->buttons[0]);
 	buttons[ STARTEN_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;
@@ -85,10 +87,32 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData)
 }
 void drawMenu(SDL_Surface *screen, menuDataStore *menuData)
 {
-	myButton *buttons = &(menuData->buttons[0]);
 
+	
 	/*Background */
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
+
+	
+	TTF_Font *font = theFont(60);
+	SDL_Surface *message;
+	int y=40;
+	//text
+	SDL_Color textColor = { 255, 255, 255,0};
+	if (!(message = TTF_RenderText_Blended( font, GAMENAME, textColor ))) {
+		printf("%s\n",TTF_GetError());
+	}
+	SDL_Rect textRect = {screen->clip_rect.w/2-message->w/2,y,0,0};
+	if(0!=SDL_BlitSurface( message, NULL, screen, &textRect)) {
+		printf("%s\n",SDL_GetError());
+	}
+
+	
+	TTF_CloseFont(font);
+	SDL_FreeSurface(message);
+	
+	
+	myButton *buttons = &(menuData->buttons[0]);
+
 	/*Buttons */	
 	int buttonID;
 	for (buttonID = 0; buttonID<BUTTONCOUNT; buttonID++) {
