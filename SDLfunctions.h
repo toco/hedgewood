@@ -22,6 +22,7 @@
 #ifndef STRUCTS_H
 #include "structs.h"
 #endif
+#include "hedgewoodIO.h"
 
 //#define WINDOWWIDTH 800
 //#define WINDOWHEIGTH 600

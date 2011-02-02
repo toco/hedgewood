@@ -149,18 +149,18 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.bp.maxVolume=atoi(tmp);
-			/*maxOverall backpack*/
-			readPtr+=tabPos+1;
-			memset(tmp, '\0', sizeof(char)*100);
-			tabPos = strcspn(readPtr,tab);
-			strncpy(tmp,readPtr,tabPos);
-			tmpData->player.bp.maxVolume=atoi(tmp);
 			/*currentVolume backpack*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			tmpData->player.bp.currentVolume=atoi(tmp);
+			/*maxOverall backpack*/
+			readPtr+=tabPos+1;
+			memset(tmp, '\0', sizeof(char)*100);
+			tabPos = strcspn(readPtr,tab);
+			strncpy(tmp,readPtr,tabPos);
+			tmpData->player.bp.maxOverall=atoi(tmp);
 			/*candystash*/
 			readPtr+=tabPos+1;
 			memset(tmp, '\0', sizeof(char)*100);
@@ -233,7 +233,7 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			x=atoi(tmp);
-			if (x>=FIELDSIZE_X|y>=FIELDSIZE_Y) {
+			if ((x>=FIELDSIZE_X)|(y>=FIELDSIZE_Y)) {
 				printf("ERROR: tried to import field which does not fit into array x: %d y: %d",x,y);
 				continue;
 			}

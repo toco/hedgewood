@@ -74,6 +74,22 @@ int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuD
 	
 	SDL_FillRect( screen, &screen->clip_rect, SDL_MapRGB( screen->format, 0x00, 0x00, 0x00 ));
 	
+	
+	
+	TTF_Font *font = theFont(45);
+	SDL_Surface *message;
+	int y=40;
+	//text
+	SDL_Color textColor = { 255, 255, 255,0};
+	if (!(message = TTF_RenderText_Blended( font, "GAME PAUSED", textColor ))) {
+		printf("%s\n",TTF_GetError());
+	}
+	SDL_Rect textRect = {screen->clip_rect.w/2-message->w/2,y,0,0};
+	if(0!=SDL_BlitSurface( message, NULL, screen, &textRect)) {
+		printf("%s\n",SDL_GetError());
+	}
+	
+	
 	int buttonID;
 	
 	for (buttonID = 0; buttonID<INGAMEBUTTONCOUNT; buttonID++) {
