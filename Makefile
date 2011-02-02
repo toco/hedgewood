@@ -29,7 +29,7 @@ main.o: main.c main.h SDLincludes.h structs.h hedgewoodIO.o gameloop.o store.o
 #gcc `sdl-config --cflags --libs` -lSDL_gfx -Wall -Wextra -o Hedgewood main.c
 
 SDLfunctions.o: SDLfunctions.c SDLfunctions.h SDLincludes.h structs.h 
-	$(CC)  $(CFLAGS) -c SDLfunctions.c SDLincludes.h
+	$(CC)  $(CFLAGS) -c SDLfunctions.c
 
 menu.o: menu.c menu.h SDLincludes.h SDLfunctions.o about.o highscore.o structs.h gameloop.o
 	$(CC)  $(CFLAGS) -c menu.c
@@ -47,23 +47,23 @@ pathfinding.o: pathfinding.c pathfinding.h SDLincludes.h SDLfunctions.o structs.
 	$(CC)  $(CFLAGS) -c pathfinding.c
 
 hedgewoodIO.o: hedgewoodIO.h hedgewoodIO.c structs.h SDLincludes.h
-	$(CC)  $(CFLAGS) -c hedgewoodIO.h hedgewoodIO.c
+	$(CC)  $(CFLAGS) -c hedgewoodIO.c
 	
 ingameMenu.o: ingameMenu.h ingameMenu.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o
 	$(CC)  $(CFLAGS) -c ingameMenu.c
 	
 gameloop.o: gameloop.c gameloop.h structs.h SDLincludes.h SDLfunctions.o graphicUpdate.o highscore.o pathfinding.o hedgewoodIO.o ingameMenu.o store.o
-	$(CC)  $(CFLAGS) -c gameloop.c gameloop.h
+	$(CC)  $(CFLAGS) -c gameloop.c
 popUp.o: popUp.c popUp.h SDLfunctions.o structs.h
 	$(CC)  $(CFLAGS) -c popUp.c
 	
 store.o: store.h store.c structs.h SDLincludes.h SDLfunctions.o hedgewoodIO.o popUp.o 
-	$(CC)  $(CFLAGS) -c store.c store.h 
+	$(CC)  $(CFLAGS) -c store.c 
 
 # Aufruf des Targets "clean" löscht  alle nicht mehr benötigten Dateien
 clean: 
 	rm *.o # lösche alle Objektdateien 
-	rm *.gch # lösche precompiled header
+#	rm *.gch # lösche precompiled header
 
 doku:
 	doxygen Doxyfile

@@ -91,7 +91,7 @@ int inputPopUp(SDL_Surface *screen, dataStore *data, char *text, char *inputText
 	return retVal;
 }
 
-int displayPopup(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
+int displayPopup(SDL_Surface *screen, dataStore  __attribute__((unused)) *data, menuDataStore *menuData)
 {
 	/*Background */
 	int width = POPUP_WIDTH+2, height = POPUP_HEIGHT+2;
