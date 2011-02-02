@@ -233,7 +233,7 @@ int readDataStore(dataStore *data, int highscore, int game)
 			tabPos = strcspn(readPtr,tab);
 			strncpy(tmp,readPtr,tabPos);
 			x=atoi(tmp);
-			if (x>=FIELDSIZE_X|y>=FIELDSIZE_Y) {
+			if ((x>=FIELDSIZE_X)|(y>=FIELDSIZE_Y)) {
 				printf("ERROR: tried to import field which does not fit into array x: %d y: %d",x,y);
 				continue;
 			}

@@ -130,7 +130,7 @@ typedef struct menuDataStore
 	int buttonCount;
 	char *text;
 	char *inputText;
-	int inputLength;
+	unsigned int inputLength;
 }menuDataStore;
 
 #endif
