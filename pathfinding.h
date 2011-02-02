@@ -3,6 +3,7 @@
 
 #include "SDLfunctions.h"
 #include "structs.h"
+#include "graphicUpdate.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
