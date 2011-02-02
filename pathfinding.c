@@ -33,7 +33,7 @@
 	* @see dataStore
 	* @see position
 */
-void aStar( dataStore *data, position *end)
+void aStar( dataStore *data, position *end,SDL_Surface *l_screen)
 {
 	if(end==NULL || data->hedgewood[end->y][end->x].aStarValue*data->hedgewood[end->y][end->x].visible<0)return;
 	else {
@@ -83,6 +83,7 @@ void aStar( dataStore *data, position *end)
 						tmp_element->H=aStarManhatten(tmp_element->n_pos,*end);
 						tmp_element->F=tmp_element->G+tmp_element->H;
 						open=aStarListAdd(open,tmp_element,pfNode_list);
+						aStarPrint(data,l_screen,tmp_element);
 					} else {
 						tmp_element = aStarListSearchBool(open,tmp_element);
 						j=zeiger->G+aStarVal;

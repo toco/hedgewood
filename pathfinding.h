@@ -11,7 +11,7 @@
 #define pfNode_list 1
 #define pfNode_last 2
 
-void aStar( dataStore *data, position *end);
+void aStar( dataStore *data, position *end,SDL_Surface *l_screen);
 void positionListAdd( dataStore *data,  position *pos_add);
 void positionListDelete( dataStore *data);
 position *positionListRead( dataStore *data);

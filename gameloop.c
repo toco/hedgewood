@@ -156,12 +156,12 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 					mouse_pos=calloc(1,sizeof(struct position));
 					SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 					if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y) {
-						aStar(data,&(data->home));
+						aStar(data,&(data->home),screen);
 						GraphicUpdate(screen,data);
 						positionListDelete(data);
 						break;
 					} else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y) {
-						aStar(data,&(data->stash));
+						aStar(data,&(data->stash),screen);
 						GraphicUpdate(screen,data);
 						positionListDelete(data);
 						break;
@@ -224,11 +224,11 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 					SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 					printf("Cusor-Position x: %d y: %d\n",mouse_pos->x,mouse_pos->y);
 					if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y) {
-						aStar(data,&(data->home));
+						aStar(data,&(data->home),screen);
 						runPath=1;
 						break;
 					} else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y) {
-						aStar(data,&(data->stash));
+						aStar(data,&(data->stash),screen);
 						runPath=1;
 						break;
 					} else {
@@ -304,7 +304,7 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 			if(motionPath) {
 				lastmouse->y+=data->verticalScroll;
 				lastmouse->x+=data->horizontalScroll;
-				aStar(data,lastmouse);
+				aStar(data,lastmouse,screen);
 				if(DEBUG)printf("Player-Feld x: %d y: %d\n",data->player.p_pos.x,data->player.p_pos.y);
 				GraphicUpdate(screen, data);
 				free(lastmouse);

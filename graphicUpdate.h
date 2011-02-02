@@ -14,5 +14,5 @@ int GraphicUpdate(SDL_Surface *l_screen,  dataStore *data);
 void verticalScrollPos( dataStore *data);
 int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen);
 void aStarPathPrint(dataStore *data,SDL_Surface *l_screen);
-
+void aStarPrint(dataStore *data,SDL_Surface *l_screen,pfNode *node);
 #endif

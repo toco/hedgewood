@@ -284,3 +284,44 @@ void aStarPathPrint(dataStore *data,SDL_Surface *l_screen)
 	}
 	SDL_FreeSurface(kreis);
 }
+
+void aStarPrint(dataStore *data,SDL_Surface *l_screen,pfNode *node)
+{
+	SDL_Rect dst;
+	position *tmp= &node->n_pos;
+	dst.w=dst.h=0;
+	char text[50];
+	if(tmp!=NULL) {
+		dst.x=(tmp->x-data->horizontalScroll)*FIELDSIZE_FIELD;
+		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD;		
+		sprintf(text," %d  %d ",node->G,node->H);
+		SDL_Surface *message;
+		TTF_Font *font = theFont(15);
+		SDL_Color textColor = { 255, 255, 255,0};
+		if (!(message = TTF_RenderText_Blended( font, text, textColor ))) {
+			printf("%s\n",TTF_GetError());
+			return;
+		}
+		
+		if(0!=SDL_BlitSurface( message, NULL, l_screen, &dst)) {
+			printf("%s\n",SDL_GetError());
+			return;
+		}		
+		dst.x=(tmp->x-data->horizontalScroll)*FIELDSIZE_FIELD;
+		dst.y=(tmp->y-data->verticalScroll)*FIELDSIZE_FIELD+25;		
+		sprintf(text,"       %d",node->F);
+		SDL_Color textColor2 = { 255, 0, 0,0};
+		if (!(message = TTF_RenderText_Blended( font, text, textColor2 ))) {
+			printf("%s\n",TTF_GetError());
+			return;
+		}
+		TTF_CloseFont(font);
+		if(0!=SDL_BlitSurface( message, NULL, l_screen, &dst)) {
+			printf("%s\n",SDL_GetError());
+			return;
+		}
+		SDL_FreeSurface(message);
+	}
+	SDL_Flip(l_screen);
+	SDL_Delay(100);
+}
