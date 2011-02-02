@@ -66,7 +66,7 @@ int ingameMenuStart(SDL_Surface *screen, dataStore *data)
 }
 
 
-int displayIngameMenu(SDL_Surface *screen, dataStore *data, menuDataStore *menuData)
+int displayIngameMenu(SDL_Surface *screen, dataStore  __attribute__((unused)) *data, menuDataStore *menuData)
 {
 	/*Background */
 //	int width = 400, height = 350;

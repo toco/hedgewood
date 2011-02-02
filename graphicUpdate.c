@@ -184,7 +184,8 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 	position old=data->player.p_pos,n_pos=(*newPos);
 	clock_t StartTime, StopTime,diffTime,innerStartTime;
 	if(data->hedgewood[n_pos.y][n_pos.x].aStarValue<0)return 0;
-	int x=0,y=0,vis=data->player.vision,i,j,animation=0,wait;
+	int x=0,y=0,vis=data->player.vision,i,j,animation=0;
+	unsigned int wait;
 	SDL_Surface *image_animation=NULL;
 	SDL_Rect src, dst;
 	x=old.x-n_pos.x;
