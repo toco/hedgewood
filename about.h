@@ -39,7 +39,7 @@ int displayAbout(SDL_Surface *screen, dataStore *data);
  * @param textColor the color of the text
  * @param screen a SDL_Surface to draw on
  */
-int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen);
+int renderMultiLineText(TTF_Font *font, int xPos, int yPos, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen);
 
 
 #endif

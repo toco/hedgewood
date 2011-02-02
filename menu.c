@@ -75,7 +75,7 @@ void setupMenu(SDL_Surface *screen, struct menuDataStore *menuData)
 	buttons[ ABOUT_BUTTON ].rect.y=screen->clip_rect.h/2+25+BUTTONHEIGHT/2;
 	buttons[ ABOUT_BUTTON ].rect.w=BUTTONWIDTH;
 	buttons[ ABOUT_BUTTON ].rect.h=BUTTONHEIGHT;
-	buttons[ ABOUT_BUTTON ].name="About/Help";
+	buttons[ ABOUT_BUTTON ].name="About";
 	buttons[ ABOUT_BUTTON ].function=displayAbout;
 
 	buttons[ QUIT_BUTTON ].rect.x=screen->clip_rect.w/2-BUTTONWIDTH/2;

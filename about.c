@@ -37,10 +37,10 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 	
 	drawButton(screen, &button);
 	
-	TTF_Font *font = theFont(18);
+	TTF_Font *font = theFont(20);
 	char aboutText[10][100] = {"Hedgewood is a game written by:"," - toco"," - tk"," - JTR"," "," we hope you enjoy it."," ","Thanks to:"," - friend of tk for the grapics"," - our great tutor Arne"};
 	
-	if (!(renderMultiLineText(font, &aboutText[0],10, textColor,screen)))
+	if (!(renderMultiLineText(font, 150, 100, &aboutText[0],10, textColor,screen)))
 		printf("%s\n",TTF_GetError());
 	
 	
@@ -111,11 +111,10 @@ int displayAbout(SDL_Surface *screen, dataStore *data)
 	return 0;
 }
 
-int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen)
+int renderMultiLineText(TTF_Font *font, int xPos, int yPos, char text[][100],int lines, SDL_Color textColor, SDL_Surface *screen)
 {
 	SDL_Surface *lineSurface = NULL;
 	char *line;
-	int yPos = 50;
 	int xMax = 0;
 	/*pch = first line of text*/
 	int i;
@@ -126,7 +125,7 @@ int renderMultiLineText(TTF_Font *font, char text[][100],int lines, SDL_Color te
 			printf("%s\n",TTF_GetError());
 		SDL_Rect offset;
 		//Get offsets
-		offset.x = 100;
+		offset.x = xPos;
 		offset.y = yPos;
 		//Blit
 		SDL_BlitSurface( lineSurface, NULL, screen, &offset );
