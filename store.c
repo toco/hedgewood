@@ -208,6 +208,21 @@ int storeLoop(SDL_Surface *screen, dataStore *data, menuDataStore *menuData) {
 						case SDLK_q:
 							done = 1;
 							break;
+							break;
+						case SDLK_0:
+							printf ("Music off\n");
+							Mix_HaltMusic();
+							Mix_HaltChannel(-1);
+							data->soundEnabled=0;
+							break;
+						case 	SDLK_m:
+							printf ("Music on /Pause\n");				
+							if( Mix_PlayingMusic() == 0 )  
+								Mix_PlayMusic( data->ingamemusic, -1);			
+							if( Mix_PausedMusic() == 1 )
+								Mix_ResumeMusic(); 
+							else Mix_PauseMusic();						
+							break;
 						default:
 							break;
 					}
