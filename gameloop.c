@@ -316,7 +316,7 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 				i=1;
 				tmp=data->player.anfang;
 				/*sound*/
-				if(data->soundEnabled)
+				if(data->soundEnabled&&data->player.cutSpeed>=2)
 					Mix_PlayChannel(CHAINSAWCHANNEL1, data->chainpause, -1);
 				while(tmp!=NULL&&i) {
 					//Schleife um die Laufbewegung Abzubrechen
