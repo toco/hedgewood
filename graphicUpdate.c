@@ -232,7 +232,7 @@ int headPositionUpdate(dataStore *data,position *newPos,SDL_Surface *l_screen)
 			innerStartTime = SDL_GetTicks();
 			
 			/*Sound */
-			if (!Mix_Playing(CHAINSAWCHANNEL2)&&data->soundEnabled) {
+			if (!Mix_Playing(CHAINSAWCHANNEL2)&&data->soundEnabled&&data->player.cutSpeed>=2) {
 				Mix_PlayChannel(CHAINSAWCHANNEL2, data->chaingo, 0 );
 			}
 			
