@@ -129,7 +129,7 @@ void createRandomField(dataStore *data) {
 }
 int gameloop(dataStore *data,SDL_Surface *screen) {
 	createRandomField(data);
-	clock_t innerStartTime, innerStopTime, startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=500;
+	clock_t innerStartTime, innerStopTime, startTime, stopTime, diffTime,mouseTime,mT,mousetimewait=5000;
 	int done=0,i=0,aVal,motionPath=0,runPath=0,drawPath=0,mouseDown=0,ownpath=0;
 	position *lastmouse=NULL,*mouse_pos=NULL,*tmp=NULL,*lastpath=NULL;
 	SDL_Event event;
@@ -156,15 +156,15 @@ int gameloop(dataStore *data,SDL_Surface *screen) {
 					mouse_pos=calloc(1,sizeof(struct position));
 					SDL_GetMouseState(&mouse_pos->x,&mouse_pos->y);
 					if(mouse_pos->x > 24 && 226 > mouse_pos->x && mouse_pos->y > 24 && 51 >  mouse_pos->y) {
-						aStar(data,&(data->home),screen);
+						/*aStar(data,&(data->home),screen);
 						GraphicUpdate(screen,data);
 						positionListDelete(data);
-						break;
+						break;*/
 					} else if(mouse_pos->x > 574 && 776 > mouse_pos->x && mouse_pos->y > 24 && 51 > mouse_pos->y) {
-						aStar(data,&(data->stash),screen);
+						/*aStar(data,&(data->stash),screen);
 						GraphicUpdate(screen,data);
 						positionListDelete(data);
-						break;
+						break;*/
 					} else {
 						mouse_pos=pixelToGrid(mouse_pos);
 						if(lastmouse!=NULL && mouseDown) {
