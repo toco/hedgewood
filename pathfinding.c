@@ -106,11 +106,12 @@ void aStar( dataStore *data, position *end,SDL_Surface *l_screen)
 					zeiger=zeiger->last;
 				}
 				aStarListDelete(open);
+				SDL_Delay(5000);
 				return;
 			}
 		}
 	}
-	SDL_Delay(5000);
+	
 }
 /**Fuegt vorne an die Liste das Element pos_add an. Last in First out*/
 void positionListAdd(dataStore *data,  position *pos_add)

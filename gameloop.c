@@ -112,7 +112,7 @@ void createRandomField(dataStore *data) {
 	data->player.p_pos.next=NULL;
 	data->player.heading=2;
 	data->player.anfang=NULL;
-	data->player.vision=1;
+	data->player.vision=2;
 	data->player.maxEnergy=1000;
 	data->player.currentEnergy=1000;
 	data->verticalScroll=0;
@@ -125,7 +125,7 @@ void createRandomField(dataStore *data) {
 	data->home.y=2;
 	data->stash.x=13;
 	data->stash.y=2;
-	data->player.cutSpeed=1.0;
+	data->player.cutSpeed=2.0;
 }
 int gameloop(dataStore *data,SDL_Surface *screen) {
 	createRandomField(data);
